@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PickerView">
+            <connections>
+                <outlet property="collectionView" destination="dad-37-tiA" id="Udy-6R-LS4"/>
+                <outlet property="contentView" destination="o7O-Dx-O1C" id="yv2-Mo-0Hi"/>
+                <outlet property="nextButton" destination="Chq-lg-GDU" id="uQ5-BS-trk"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="o7O-Dx-O1C">
+            <rect key="frame" x="0.0" y="0.0" width="423" height="125"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="dad-37-tiA">
+                    <rect key="frame" x="10" y="5" width="323" height="100"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="100" id="gSN-Cj-wtB"/>
+                    </constraints>
+                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="8RN-ZZ-c9P">
+                        <size key="itemSize" width="50" height="50"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                </collectionView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Chq-lg-GDU">
+                    <rect key="frame" x="343" y="5" width="70" height="70"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="70" id="IO3-kg-Fvw"/>
+                        <constraint firstAttribute="width" constant="70" id="N4v-4q-7bM"/>
+                    </constraints>
+                    <state key="normal" image="next_button"/>
+                    <connections>
+                        <action selector="nextButtonTapped:" destination="-1" eventType="touchUpInside" id="jXN-0c-csy"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="dad-37-tiA" firstAttribute="top" secondItem="o7O-Dx-O1C" secondAttribute="top" constant="5" id="Ww2-CN-0H8"/>
+                <constraint firstAttribute="trailing" secondItem="Chq-lg-GDU" secondAttribute="trailing" constant="10" id="cje-nA-MGL"/>
+                <constraint firstItem="Chq-lg-GDU" firstAttribute="leading" secondItem="dad-37-tiA" secondAttribute="trailing" constant="10" id="f3N-4S-Cnf"/>
+                <constraint firstItem="dad-37-tiA" firstAttribute="leading" secondItem="o7O-Dx-O1C" secondAttribute="leading" constant="10" id="nMt-Fb-zrr"/>
+                <constraint firstItem="Chq-lg-GDU" firstAttribute="top" secondItem="o7O-Dx-O1C" secondAttribute="top" constant="5" id="vS7-sm-BOT"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="aGZ-6x-ext"/>
+            <point key="canvasLocation" x="257.24637681159425" y="-142.29910714285714"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="next_button" width="256" height="256"/>
+    </resources>
+</document>

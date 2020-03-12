@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MainViewController">
+            <connections>
+                <outlet property="contactPickerView" destination="v8X-hv-lAW" id="Anc-aZ-ogL"/>
+                <outlet property="searchBar" destination="Fxc-ZP-X4Q" id="D96-9h-rWy"/>
+                <outlet property="tableView" destination="tRh-eK-hdP" id="Dxc-s9-Ds3"/>
+                <outlet property="view" destination="rv6-1W-1IG" id="4cK-hy-eXu"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="rv6-1W-1IG">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <searchBar contentMode="redraw" placeholder="Search for contacts" translatesAutoresizingMaskIntoConstraints="NO" id="Fxc-ZP-X4Q">
+                    <rect key="frame" x="0.0" y="44" width="414" height="56"/>
+                    <textInputTraits key="textInputTraits"/>
+                </searchBar>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="ehR-G3-bjA">
+                    <rect key="frame" x="0.0" y="100" width="414" height="796"/>
+                    <subviews>
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="tRh-eK-hdP">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="676"/>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        </tableView>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v8X-hv-lAW" customClass="ContactPickerView">
+                            <rect key="frame" x="0.0" y="676" width="414" height="120"/>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="120" id="tNA-4m-iJ5"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="tRh-eK-hdP" firstAttribute="top" secondItem="ehR-G3-bjA" secondAttribute="top" id="XLs-Uq-DYx"/>
+                        <constraint firstItem="tRh-eK-hdP" firstAttribute="leading" secondItem="ehR-G3-bjA" secondAttribute="leading" id="kgT-8r-inh"/>
+                        <constraint firstAttribute="trailing" secondItem="tRh-eK-hdP" secondAttribute="trailing" id="q3H-Nh-6HJ"/>
+                    </constraints>
+                </stackView>
+            </subviews>
+            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+            <constraints>
+                <constraint firstItem="Fxc-ZP-X4Q" firstAttribute="leading" secondItem="rv6-1W-1IG" secondAttribute="leading" symbolic="YES" id="7fg-cx-oGD"/>
+                <constraint firstItem="ehR-G3-bjA" firstAttribute="top" secondItem="Fxc-ZP-X4Q" secondAttribute="bottom" id="8MI-IV-fsK"/>
+                <constraint firstAttribute="trailing" secondItem="Fxc-ZP-X4Q" secondAttribute="trailing" symbolic="YES" id="F0f-z4-2QT"/>
+                <constraint firstItem="ehR-G3-bjA" firstAttribute="leading" secondItem="jfY-n9-Pe8" secondAttribute="leading" id="G62-FL-DDY"/>
+                <constraint firstAttribute="bottom" secondItem="ehR-G3-bjA" secondAttribute="bottom" id="ILx-OG-PMR"/>
+                <constraint firstItem="ehR-G3-bjA" firstAttribute="trailing" secondItem="jfY-n9-Pe8" secondAttribute="trailing" id="YuZ-eS-yHG"/>
+                <constraint firstItem="Fxc-ZP-X4Q" firstAttribute="top" secondItem="jfY-n9-Pe8" secondAttribute="top" id="oOC-6z-7xi"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="jfY-n9-Pe8"/>
+            <point key="canvasLocation" x="153.62318840579712" y="122.54464285714285"/>
+        </view>
+    </objects>
+</document>

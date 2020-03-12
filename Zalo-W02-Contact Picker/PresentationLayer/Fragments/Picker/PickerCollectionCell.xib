@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PickerCollectionCell" id="Txx-YF-rul" customClass="PickerCollectionCell">
+            <rect key="frame" x="0.0" y="0.0" width="123" height="100"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="JJj-Lk-XwX">
+                <rect key="frame" x="0.0" y="0.0" width="123" height="100"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="AJc-31-dV5">
+                        <rect key="frame" x="0.0" y="0.0" width="123" height="70"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="70" id="QnH-Hg-nxP"/>
+                        </constraints>
+                    </imageView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HkM-1l-Fnm">
+                        <rect key="frame" x="93" y="0.0" width="30" height="30"/>
+                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="30" id="TiA-ii-Tw5"/>
+                            <constraint firstAttribute="height" constant="30" id="gjt-7y-xfX"/>
+                        </constraints>
+                        <state key="normal" title="X">
+                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                        </state>
+                        <connections>
+                            <action selector="removeButtonTapped:" destination="Txx-YF-rul" eventType="touchUpInside" id="Wrm-eZ-bBA"/>
+                        </connections>
+                    </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L2F-8m-cYD">
+                        <rect key="frame" x="5" y="75" width="113" height="16"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="L2F-8m-cYD" firstAttribute="leading" secondItem="JJj-Lk-XwX" secondAttribute="leading" constant="5" id="Bsg-a9-fxX"/>
+                    <constraint firstAttribute="trailing" secondItem="L2F-8m-cYD" secondAttribute="trailing" constant="5" id="M9N-ar-1Dy"/>
+                    <constraint firstItem="L2F-8m-cYD" firstAttribute="top" secondItem="AJc-31-dV5" secondAttribute="bottom" constant="5" id="MrU-lI-T11"/>
+                    <constraint firstItem="AJc-31-dV5" firstAttribute="top" secondItem="JJj-Lk-XwX" secondAttribute="top" id="OCh-aX-L1y"/>
+                    <constraint firstItem="HkM-1l-Fnm" firstAttribute="top" secondItem="JJj-Lk-XwX" secondAttribute="top" id="Rz9-dk-pvP"/>
+                    <constraint firstAttribute="trailing" secondItem="AJc-31-dV5" secondAttribute="trailing" id="T16-HS-TVr"/>
+                    <constraint firstAttribute="trailing" secondItem="HkM-1l-Fnm" secondAttribute="trailing" id="a2I-bl-mws"/>
+                    <constraint firstItem="AJc-31-dV5" firstAttribute="leading" secondItem="JJj-Lk-XwX" secondAttribute="leading" id="nU9-7b-i8t"/>
+                </constraints>
+            </collectionViewCellContentView>
+            <size key="customSize" width="123" height="100"/>
+            <connections>
+                <outlet property="imageView" destination="AJc-31-dV5" id="fYQ-ar-MX2"/>
+                <outlet property="mImageView" destination="AJc-31-dV5" id="a7b-GO-vJY"/>
+                <outlet property="mNameLabel" destination="L2F-8m-cYD" id="9fi-HI-Mrk"/>
+                <outlet property="mRemoveButton" destination="HkM-1l-Fnm" id="a3d-bO-Czm"/>
+                <outlet property="nameLabel" destination="L2F-8m-cYD" id="qTc-RA-aDP"/>
+                <outlet property="removeButton" destination="HkM-1l-Fnm" id="CDg-9j-9qu"/>
+            </connections>
+            <point key="canvasLocation" x="47.10144927536232" y="154.6875"/>
+        </collectionViewCell>
+    </objects>
+</document>

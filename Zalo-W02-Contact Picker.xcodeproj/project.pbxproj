@@ -7,28 +7,66 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0478F5BE2419ED9A00DA753C /* PickerTableView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0478F5BD2419ED9A00DA753C /* PickerTableView.mm */; };
+		0478F5C02419EDB100DA753C /* PickerTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0478F5BF2419EDB100DA753C /* PickerTableView.xib */; };
+		0478F5C42419EEAA00DA753C /* PickerTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0478F5C22419EEAA00DA753C /* PickerTableViewCell.mm */; };
+		0478F5C52419EEAA00DA753C /* PickerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0478F5C32419EEAA00DA753C /* PickerTableViewCell.xib */; };
+		0478F5C8241A181E00DA753C /* StringHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0478F5C7241A181E00DA753C /* StringHelper.mm */; };
+		049C6F8124192BF100DEFA45 /* Contact.mm in Sources */ = {isa = PBXBuildFile; fileRef = 049C6F8024192BF100DEFA45 /* Contact.mm */; };
+		049C6F8424192ECB00DEFA45 /* PickerModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 049C6F8324192ECB00DEFA45 /* PickerModel.mm */; };
+		04C819FF2419313100918A84 /* ContactAdaper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04C819FE2419313100918A84 /* ContactAdaper.mm */; };
+		04C81A022419313F00918A84 /* ContactBusiness.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04C81A012419313F00918A84 /* ContactBusiness.mm */; };
+		04C81A0A2419358200918A84 /* PickerCollectionCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04C81A092419358200918A84 /* PickerCollectionCell.mm */; };
+		04C81A0C2419359400918A84 /* PickerCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04C81A0B2419359400918A84 /* PickerCollectionCell.xib */; };
 		04D30462241925E00031A670 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D30461241925E00031A670 /* AppDelegate.m */; };
 		04D30465241925E00031A670 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D30464241925E00031A670 /* SceneDelegate.m */; };
-		04D30468241925E00031A670 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D30467241925E00031A670 /* ViewController.m */; };
 		04D3046B241925E00031A670 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04D30469241925E00031A670 /* Main.storyboard */; };
 		04D3046D241925E10031A670 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04D3046C241925E10031A670 /* Assets.xcassets */; };
 		04D30470241925E20031A670 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04D3046E241925E20031A670 /* LaunchScreen.storyboard */; };
 		04D30473241925E20031A670 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D30472241925E20031A670 /* main.m */; };
+		04D30481241927360031A670 /* MainViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04D30480241927360031A670 /* MainViewController.mm */; };
+		04D30483241927530031A670 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04D30482241927530031A670 /* MainViewController.xib */; };
+		04D30489241929000031A670 /* PickerView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04D30488241929000031A670 /* PickerView.mm */; };
+		04D3048B241929ED0031A670 /* PickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04D3048A241929ED0031A670 /* PickerView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0478F5BC2419ED9A00DA753C /* PickerTableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PickerTableView.h; sourceTree = "<group>"; };
+		0478F5BD2419ED9A00DA753C /* PickerTableView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PickerTableView.mm; sourceTree = "<group>"; };
+		0478F5BF2419EDB100DA753C /* PickerTableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PickerTableView.xib; sourceTree = "<group>"; };
+		0478F5C12419EEA900DA753C /* PickerTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PickerTableViewCell.h; sourceTree = "<group>"; };
+		0478F5C22419EEAA00DA753C /* PickerTableViewCell.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PickerTableViewCell.mm; sourceTree = "<group>"; };
+		0478F5C32419EEAA00DA753C /* PickerTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PickerTableViewCell.xib; sourceTree = "<group>"; };
+		0478F5C6241A181E00DA753C /* StringHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StringHelper.h; sourceTree = "<group>"; };
+		0478F5C7241A181E00DA753C /* StringHelper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = StringHelper.mm; sourceTree = "<group>"; };
+		049C6F7F24192BF100DEFA45 /* Contact.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Contact.h; sourceTree = "<group>"; };
+		049C6F8024192BF100DEFA45 /* Contact.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Contact.mm; sourceTree = "<group>"; };
+		049C6F8224192ECB00DEFA45 /* PickerModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PickerModel.h; sourceTree = "<group>"; };
+		049C6F8324192ECB00DEFA45 /* PickerModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PickerModel.mm; sourceTree = "<group>"; };
+		04C819FD2419313100918A84 /* ContactAdaper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactAdaper.h; sourceTree = "<group>"; };
+		04C819FE2419313100918A84 /* ContactAdaper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ContactAdaper.mm; sourceTree = "<group>"; };
+		04C81A002419313F00918A84 /* ContactBusiness.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactBusiness.h; sourceTree = "<group>"; };
+		04C81A012419313F00918A84 /* ContactBusiness.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ContactBusiness.mm; sourceTree = "<group>"; };
+		04C81A072419320800918A84 /* AppConsts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppConsts.h; sourceTree = "<group>"; };
+		04C81A082419358200918A84 /* PickerCollectionCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PickerCollectionCell.h; sourceTree = "<group>"; };
+		04C81A092419358200918A84 /* PickerCollectionCell.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PickerCollectionCell.mm; sourceTree = "<group>"; };
+		04C81A0B2419359400918A84 /* PickerCollectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PickerCollectionCell.xib; sourceTree = "<group>"; };
 		04D3045D241925E00031A670 /* Zalo-W02-Contact Picker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Zalo-W02-Contact Picker.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		04D30460241925E00031A670 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		04D30461241925E00031A670 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		04D30463241925E00031A670 /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
 		04D30464241925E00031A670 /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
-		04D30466241925E00031A670 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		04D30467241925E00031A670 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		04D3046A241925E00031A670 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		04D3046C241925E10031A670 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		04D3046F241925E20031A670 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		04D30471241925E20031A670 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		04D30472241925E20031A670 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		04D3047F241927360031A670 /* MainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MainViewController.h; path = "../../../../../Zalo/Zalo-W02-Contact Picker/Zalo-W02-Contact Picker/PresentationLayer/Screens/MainViewController.h"; sourceTree = "<group>"; };
+		04D30480241927360031A670 /* MainViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = MainViewController.mm; path = "../../../../../Zalo/Zalo-W02-Contact Picker/Zalo-W02-Contact Picker/PresentationLayer/Screens/MainViewController.mm"; sourceTree = "<group>"; };
+		04D30482241927530031A670 /* MainViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainViewController.xib; path = "../../../../../Zalo/Zalo-W02-Contact Picker/Zalo-W02-Contact Picker/PresentationLayer/Screens/MainViewController.xib"; sourceTree = "<group>"; };
+		04D30487241929000031A670 /* PickerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PickerView.h; sourceTree = "<group>"; };
+		04D30488241929000031A670 /* PickerView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PickerView.mm; sourceTree = "<group>"; };
+		04D3048A241929ED0031A670 /* PickerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PickerView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +80,52 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0478F5B92419EB6800DA753C /* Picker */ = {
+			isa = PBXGroup;
+			children = (
+				04D30487241929000031A670 /* PickerView.h */,
+				04D30488241929000031A670 /* PickerView.mm */,
+				04D3048A241929ED0031A670 /* PickerView.xib */,
+				04C81A082419358200918A84 /* PickerCollectionCell.h */,
+				04C81A092419358200918A84 /* PickerCollectionCell.mm */,
+				04C81A0B2419359400918A84 /* PickerCollectionCell.xib */,
+				0478F5BC2419ED9A00DA753C /* PickerTableView.h */,
+				0478F5BD2419ED9A00DA753C /* PickerTableView.mm */,
+				0478F5BF2419EDB100DA753C /* PickerTableView.xib */,
+				0478F5C12419EEA900DA753C /* PickerTableViewCell.h */,
+				0478F5C22419EEAA00DA753C /* PickerTableViewCell.mm */,
+				0478F5C32419EEAA00DA753C /* PickerTableViewCell.xib */,
+			);
+			path = Picker;
+			sourceTree = "<group>";
+		};
+		049C6F7D24192BD500DEFA45 /* PresentationModels */ = {
+			isa = PBXGroup;
+			children = (
+				049C6F8224192ECB00DEFA45 /* PickerModel.h */,
+				049C6F8324192ECB00DEFA45 /* PickerModel.mm */,
+			);
+			path = PresentationModels;
+			sourceTree = "<group>";
+		};
+		049C6F7E24192BE000DEFA45 /* BusinessModels */ = {
+			isa = PBXGroup;
+			children = (
+				049C6F7F24192BF100DEFA45 /* Contact.h */,
+				049C6F8024192BF100DEFA45 /* Contact.mm */,
+			);
+			path = BusinessModels;
+			sourceTree = "<group>";
+		};
+		04C81A032419316E00918A84 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				0478F5C6241A181E00DA753C /* StringHelper.h */,
+				0478F5C7241A181E00DA753C /* StringHelper.mm */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		04D30454241925E00031A670 = {
 			isa = PBXGroup;
 			children = (
@@ -61,12 +145,16 @@
 		04D3045F241925E00031A670 /* Zalo-W02-Contact Picker */ = {
 			isa = PBXGroup;
 			children = (
+				04D3047C241926530031A670 /* PresentationLayer */,
+				04D3047A241926390031A670 /* BusinessLayer */,
+				04D3047B241926410031A670 /* DataAccessLayer */,
+				04D30479241926320031A670 /* Models */,
+				04C81A032419316E00918A84 /* Helpers */,
+				04C81A072419320800918A84 /* AppConsts.h */,
 				04D30460241925E00031A670 /* AppDelegate.h */,
 				04D30461241925E00031A670 /* AppDelegate.m */,
 				04D30463241925E00031A670 /* SceneDelegate.h */,
 				04D30464241925E00031A670 /* SceneDelegate.m */,
-				04D30466241925E00031A670 /* ViewController.h */,
-				04D30467241925E00031A670 /* ViewController.m */,
 				04D30469241925E00031A670 /* Main.storyboard */,
 				04D3046C241925E10031A670 /* Assets.xcassets */,
 				04D3046E241925E20031A670 /* LaunchScreen.storyboard */,
@@ -74,6 +162,60 @@
 				04D30472241925E20031A670 /* main.m */,
 			);
 			path = "Zalo-W02-Contact Picker";
+			sourceTree = "<group>";
+		};
+		04D30479241926320031A670 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				049C6F7E24192BE000DEFA45 /* BusinessModels */,
+				049C6F7D24192BD500DEFA45 /* PresentationModels */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		04D3047A241926390031A670 /* BusinessLayer */ = {
+			isa = PBXGroup;
+			children = (
+				04C81A002419313F00918A84 /* ContactBusiness.h */,
+				04C81A012419313F00918A84 /* ContactBusiness.mm */,
+			);
+			path = BusinessLayer;
+			sourceTree = "<group>";
+		};
+		04D3047B241926410031A670 /* DataAccessLayer */ = {
+			isa = PBXGroup;
+			children = (
+				04C819FD2419313100918A84 /* ContactAdaper.h */,
+				04C819FE2419313100918A84 /* ContactAdaper.mm */,
+			);
+			path = DataAccessLayer;
+			sourceTree = "<group>";
+		};
+		04D3047C241926530031A670 /* PresentationLayer */ = {
+			isa = PBXGroup;
+			children = (
+				04D3047E2419266C0031A670 /* Fragments */,
+				04D3047D241926640031A670 /* Screens */,
+			);
+			path = PresentationLayer;
+			sourceTree = "<group>";
+		};
+		04D3047D241926640031A670 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				04D3047F241927360031A670 /* MainViewController.h */,
+				04D30480241927360031A670 /* MainViewController.mm */,
+				04D30482241927530031A670 /* MainViewController.xib */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		04D3047E2419266C0031A670 /* Fragments */ = {
+			isa = PBXGroup;
+			children = (
+				0478F5B92419EB6800DA753C /* Picker */,
+			);
+			path = Fragments;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -133,9 +275,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04D3048B241929ED0031A670 /* PickerView.xib in Resources */,
+				0478F5C52419EEAA00DA753C /* PickerTableViewCell.xib in Resources */,
 				04D30470241925E20031A670 /* LaunchScreen.storyboard in Resources */,
 				04D3046D241925E10031A670 /* Assets.xcassets in Resources */,
+				04C81A0C2419359400918A84 /* PickerCollectionCell.xib in Resources */,
 				04D3046B241925E00031A670 /* Main.storyboard in Resources */,
+				0478F5C02419EDB100DA753C /* PickerTableView.xib in Resources */,
+				04D30483241927530031A670 /* MainViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -146,10 +293,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04D30468241925E00031A670 /* ViewController.m in Sources */,
+				04C81A022419313F00918A84 /* ContactBusiness.mm in Sources */,
+				049C6F8424192ECB00DEFA45 /* PickerModel.mm in Sources */,
 				04D30462241925E00031A670 /* AppDelegate.m in Sources */,
+				04C81A0A2419358200918A84 /* PickerCollectionCell.mm in Sources */,
 				04D30473241925E20031A670 /* main.m in Sources */,
+				0478F5C42419EEAA00DA753C /* PickerTableViewCell.mm in Sources */,
+				04C819FF2419313100918A84 /* ContactAdaper.mm in Sources */,
 				04D30465241925E00031A670 /* SceneDelegate.m in Sources */,
+				0478F5C8241A181E00DA753C /* StringHelper.mm in Sources */,
+				04D30481241927360031A670 /* MainViewController.mm in Sources */,
+				049C6F8124192BF100DEFA45 /* Contact.mm in Sources */,
+				0478F5BE2419ED9A00DA753C /* PickerTableView.mm in Sources */,
+				04D30489241929000031A670 /* PickerView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
