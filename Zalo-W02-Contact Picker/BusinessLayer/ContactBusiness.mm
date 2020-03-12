@@ -10,7 +10,9 @@
 #import "ContactAdaper.h"
 #import "Contact.h"
 
-@interface ContactBusiness()
+#import <Contacts/Contacts.h>
+
+@interface ContactBusiness ()
 
 @property (strong, nonatomic) NSMutableArray<Contact*> *contacts;
 
@@ -39,7 +41,7 @@ static ContactBusiness *staticInstance;
 }
 
 - (void)fetchContactsWithCompletion:(void (^)(NSMutableArray<Contact *> * contacts, NSError * error))completionHandle {
-    [[ContactAdaper instance] fetchContactsWithCompletion:^(NSError * _Nonnull error) {
+    [[ContactAdaper instance] fetchContactsWithCompletion:^(NSError *error) {
         if (!error) {
             NSMutableArray<Contact*> *contactsData = [[ContactAdaper instance] getContactsList];
             completionHandle(contactsData, nil);
@@ -50,11 +52,31 @@ static ContactBusiness *staticInstance;
 }
 
 - (void)fetchContactImageDataByID:(NSString *)contactID completion:(void (^)(NSData * imageData, NSError * error))completionHandle {
+    __block NSData *imageData = [[ContactAdaper instance] getImageDataOfContactWithID:contactID];
     
+    if (imageData) {
+        completionHandle(imageData, nil);
+        return;
+    }
+    
+    [[ContactAdaper instance] fetchContactImageDataByID:contactID completion:^(NSError *error) {
+        if (!error) {
+            imageData = [[ContactAdaper instance] getImageDataOfContactWithID:contactID];
+            completionHandle(imageData, nil);
+        } else {
+            completionHandle(nil, error);
+        }
+    }];
 }
 
-- (void)checkPermissionToAccessContactDataWithCompletion:(void (^)(NSError * _Nonnull))completionHandle {
-    
+- (CNAuthorizationStatus)checkPermissionToAccessContactData {
+    return [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts];
+}
+
+- (void)requestAccessWithCompletionHandle:(void (^)(BOOL granted, NSError *error))completionHandle {
+    [[[CNContactStore alloc] init] requestAccessForEntityType:CNEntityTypeContacts completionHandler:^(BOOL granted, NSError * _Nullable error) {
+        completionHandle(granted, error);
+    }];
 }
 
 @end

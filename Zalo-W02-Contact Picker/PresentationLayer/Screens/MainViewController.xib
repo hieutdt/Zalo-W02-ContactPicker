@@ -11,7 +11,7 @@
             <connections>
                 <outlet property="contactPickerView" destination="v8X-hv-lAW" id="Anc-aZ-ogL"/>
                 <outlet property="searchBar" destination="Fxc-ZP-X4Q" id="D96-9h-rWy"/>
-                <outlet property="tableView" destination="tRh-eK-hdP" id="Dxc-s9-Ds3"/>
+                <outlet property="tableView" destination="IpT-ey-Txi" id="Pac-u9-RjZ"/>
                 <outlet property="view" destination="rv6-1W-1IG" id="4cK-hy-eXu"/>
             </connections>
         </placeholder>
@@ -27,11 +27,11 @@
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="ehR-G3-bjA">
                     <rect key="frame" x="0.0" y="100" width="414" height="796"/>
                     <subviews>
-                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="tRh-eK-hdP">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IpT-ey-Txi" customClass="PickerTableView">
                             <rect key="frame" x="0.0" y="0.0" width="414" height="676"/>
-                            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        </tableView>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v8X-hv-lAW" customClass="ContactPickerView">
+                            <color key="backgroundColor" systemColor="systemOrangeColor" red="1" green="0.58431372550000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v8X-hv-lAW" customClass="PickerView">
                             <rect key="frame" x="0.0" y="676" width="414" height="120"/>
                             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             <constraints>
@@ -39,11 +39,6 @@
                             </constraints>
                         </view>
                     </subviews>
-                    <constraints>
-                        <constraint firstItem="tRh-eK-hdP" firstAttribute="top" secondItem="ehR-G3-bjA" secondAttribute="top" id="XLs-Uq-DYx"/>
-                        <constraint firstItem="tRh-eK-hdP" firstAttribute="leading" secondItem="ehR-G3-bjA" secondAttribute="leading" id="kgT-8r-inh"/>
-                        <constraint firstAttribute="trailing" secondItem="tRh-eK-hdP" secondAttribute="trailing" id="q3H-Nh-6HJ"/>
-                    </constraints>
                 </stackView>
             </subviews>
             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>

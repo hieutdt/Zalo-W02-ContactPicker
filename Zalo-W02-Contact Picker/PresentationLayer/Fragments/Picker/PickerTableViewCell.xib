@@ -74,7 +74,6 @@
                 <outlet property="avatarImageView" destination="IpB-iG-d6g" id="yag-9m-H6f"/>
                 <outlet property="checkImageView" destination="nSq-QK-Sj6" id="cdH-2K-z05"/>
                 <outlet property="gradientAvatarLabel" destination="qXS-Wv-SVH" id="gxP-cZ-Soa"/>
-                <outlet property="mAvatarLeadingAnchor" destination="U8S-Qi-bLH" id="EyU-W0-FFt"/>
                 <outlet property="nameLabel" destination="TFR-4y-Xdn" id="pcY-IK-ZtI"/>
                 <outlet property="separatorLine" destination="N3L-oV-iaf" id="y6f-xg-JAX"/>
             </connections>

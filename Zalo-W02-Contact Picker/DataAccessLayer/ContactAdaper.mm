@@ -28,6 +28,7 @@ static ContactAdaper *staticInstance;
     self = [super init];
     if (self) {
         _imagesDataCache = [[NSMutableDictionary alloc] init];
+        _contactsCache = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -57,10 +58,9 @@ static ContactAdaper *staticInstance;
                 [contacts addObject:contact];
             }];
             
-            //TODO: Caching here
-            [self saveCNContactsToContactsArray:contacts];
-            
             dispatch_async(dispatch_get_main_queue(), ^{
+                //TODO: Caching here
+                [self saveCNContactsToContactsArray:contacts];
                 completionHandle(nil);
             });
         } catch (NSException *e) {

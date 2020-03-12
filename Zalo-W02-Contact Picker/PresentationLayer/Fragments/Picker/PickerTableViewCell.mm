@@ -67,7 +67,7 @@
         [_avatarImageView setImage:avatarImage];
     } else {
         //TODO: Show gradient avatar here
-        
+        [_avatarImageView setBackgroundColor:[UIColor redColor]];
     }
 }
 

@@ -57,9 +57,6 @@
             <size key="customSize" width="123" height="100"/>
             <connections>
                 <outlet property="imageView" destination="AJc-31-dV5" id="fYQ-ar-MX2"/>
-                <outlet property="mImageView" destination="AJc-31-dV5" id="a7b-GO-vJY"/>
-                <outlet property="mNameLabel" destination="L2F-8m-cYD" id="9fi-HI-Mrk"/>
-                <outlet property="mRemoveButton" destination="HkM-1l-Fnm" id="a3d-bO-Czm"/>
                 <outlet property="nameLabel" destination="L2F-8m-cYD" id="qTc-RA-aDP"/>
                 <outlet property="removeButton" destination="HkM-1l-Fnm" id="CDg-9j-9qu"/>
             </connections>

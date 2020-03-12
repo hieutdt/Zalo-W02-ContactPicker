@@ -46,6 +46,11 @@
     _filteredPickerModels = [[NSMutableArray alloc] init];
     _filteredSectionsArray = [[NSMutableArray alloc] init];
     
+    for (int i = 0; i < ALPHABET_SECTIONS_NUMBER; i++) {
+        _sectionsArray[i] = [[NSMutableArray alloc] init];
+        _filteredSectionsArray[i] = [[NSMutableArray alloc] init];
+    }
+    
     _isSearching = false;
     _selectedCount = 0;
     
@@ -55,6 +60,22 @@
 - (void)resigterNib {
     UINib *nib = [UINib nibWithNibName:PickerTableViewCell.nibName bundle:nil];
     [_tableView registerNib:nib forCellReuseIdentifier:PickerTableViewCell.reuseIdentifier];
+}
+
+- (instancetype)initWithCoder:(NSCoder *)coder {
+    self = [super initWithCoder:coder];
+    if (self) {
+        [self customInit];
+    }
+    return self;
+}
+
+- (instancetype)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self customInit];
+    }
+    return self;
 }
 
 - (void)setModelsData:(NSMutableArray<PickerModel *> *)modelsArray {
@@ -92,7 +113,7 @@
 }
 
 - (void)fitPickerModelsData:(NSMutableArray<PickerModel*> *)models toSections:(NSMutableArray<NSMutableArray*> *)sectionsArray {
-    for (int i = 0; i < models.count; i++) {
+    for (int i = 0; i < sectionsArray.count; i++) {
         [sectionsArray[i] removeAllObjects];
     }
     

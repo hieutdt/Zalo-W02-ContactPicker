@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <Contacts/Contacts.h>
 #import "Contact.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -15,7 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)instance;
 
-- (void)checkPermissionToAccessContactDataWithCompletion:(void (^)(NSError *error))completionHandle;
+- (CNAuthorizationStatus)checkPermissionToAccessContactData;
+- (void)requestAccessWithCompletionHandle:(void (^)(BOOL granted, NSError *error))completionHandle;
 - (void)fetchContactsWithCompletion:(void (^)(NSMutableArray<Contact*> *contacts, NSError *error))completionHandle;
 - (void)fetchContactImageDataByID:(NSString*)contactID completion:(void (^)(NSData *imageData, NSError *error))completionHandle;
 

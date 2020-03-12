@@ -56,7 +56,7 @@
         [_imageView setImage:[UIImage imageWithData:pickerModel.imageData]];
     } else {
         //TODO: Present gradient name avatar here
-        
+        [_imageView setBackgroundColor:[UIColor blueColor]];
     }
 }
 

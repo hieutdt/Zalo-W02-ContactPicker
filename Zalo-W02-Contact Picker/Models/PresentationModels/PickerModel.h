@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface PickerModel : NSObject
 
 @property (strong, nonatomic) NSString *name;
-@property (strong, nonatomic) NSData *imageData;
+@property (strong, nonatomic, nullable) NSData *imageData;
 @property (nonatomic) BOOL isChosen;
 
 - (int)getSectionIndex;
