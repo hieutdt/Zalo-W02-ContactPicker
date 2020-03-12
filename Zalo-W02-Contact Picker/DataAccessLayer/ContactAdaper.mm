@@ -15,7 +15,7 @@
 @interface ContactAdaper()
 
 @property (nonatomic, strong) NSMutableArray<Contact*> *contactsCache;
-@property (nonatomic, strong) NSMutableDictionary<NSString*, NSData*> *imagesDataCache;
+@property (nonatomic, strong) NSMutableArray<NSDictionary<NSString*, NSData*> *> *imagesDataCache;
 
 @end
 
@@ -27,7 +27,7 @@ static ContactAdaper *staticInstance;
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _imagesDataCache = [[NSMutableDictionary alloc] init];
+        _imagesDataCache = [[NSMutableArray alloc] init];
         _contactsCache = [[NSMutableArray alloc] init];
     }
     return self;
@@ -91,7 +91,12 @@ static ContactAdaper *staticInstance;
             return;
         }
         
-        [_imagesDataCache addEntriesFromDictionary:@{contacts[0].identifier : contacts[0].thumbnailImageData}];
+        [_imagesDataCache addObject:@{contacts[0].identifier : contacts[0].thumbnailImageData}];
+        
+        if (_imagesDataCache.count > MAX_IMAGES_CACHE_SIZE) {
+            
+        }
+        
         completionHandle(nil);
         
     } catch (NSException *e) {
@@ -105,7 +110,11 @@ static ContactAdaper *staticInstance;
 }
 
 - (NSData*)getImageDataOfContactWithID:(NSString *)contactID {
-    return [_imagesDataCache objectForKey:contactID];
+    NSMutableDictionary *a = nil;
+//    return [_imagesDataCache objectForKey:contactID];
+    for (int i = 0; i < _imagesDataCache.count; i++) {
+        if (_imagesDataCache[0])
+    }
 }
 
 - (void)saveCNContactsToContactsArray:(NSMutableArray<CNContact*> *)CNContacts {
