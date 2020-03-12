@@ -25,7 +25,7 @@
     [super awakeFromNib];
     
     [_imageView clipsToBounds];
-    _imageView.layer.cornerRadius = _imageView.layer.bounds.size.width / 2;
+    _imageView.layer.cornerRadius = _imageView.layer.bounds.size.height / 2;
     
     [_removeButton clipsToBounds];
     _removeButton.layer.cornerRadius = _removeButton.layer.bounds.size.width / 2;
@@ -51,6 +51,8 @@
         return;
     
     _model = pickerModel;
+    
+    _nameLabel.text = _model.name;
     
     if (pickerModel.imageData) {
         [_imageView setImage:[UIImage imageWithData:pickerModel.imageData]];

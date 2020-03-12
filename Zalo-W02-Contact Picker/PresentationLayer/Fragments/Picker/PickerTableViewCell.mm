@@ -38,7 +38,7 @@
     [_avatarImageView clipsToBounds];
     _avatarImageView.layer.cornerRadius = _avatarImageView.bounds.size.width / 2;
     
-    _checkedImage = [[UIImage imageNamed:@"checked"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    _checkedImage = [UIImage imageNamed:@"checked"];
     _uncheckImage = [[UIImage imageNamed:@"uncheck"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     
     _separatorLine.hidden = true;
