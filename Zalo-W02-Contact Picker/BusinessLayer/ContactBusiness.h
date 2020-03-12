@@ -7,10 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Contact.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ContactBusiness : NSObject
+
++ (instancetype)instance;
+
+- (void)checkPermissionToAccessContactDataWithCompletion:(void (^)(NSError *error))completionHandle;
+- (void)fetchContactsWithCompletion:(void (^)(NSMutableArray<Contact*> *contacts, NSError *error))completionHandle;
+- (void)fetchContactImageDataByID:(NSString*)contactID completion:(void (^)(NSData *imageData, NSError *error))completionHandle;
 
 @end
 

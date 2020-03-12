@@ -22,19 +22,6 @@
 @property (strong, nonatomic) NSMutableArray<Contact*> *filteredContacts;
 @property (strong, nonatomic) NSMutableArray<NSMutableArray*> *filteredData;
 
-//NSMutableArray<Contact*> *mContacts;
-//NSMutableArray<NSMutableArray*> *mData;
-//
-//NSMutableArray<Contact*> *mFilteredContacts;
-//NSMutableArray<NSMutableArray*> *mFilteredData;
-//BOOL isSearching;
-//
-//UILabel *mTitleLabel;
-//UILabel *mSubtitleLabel;
-//int mSelectedCount;
-//
-//UIBarButtonItem *mCancelPickButtonItem;z
-
 @end
 
 @implementation MainViewController

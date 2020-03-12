@@ -14,6 +14,7 @@
 		0478F5C8241A181E00DA753C /* StringHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0478F5C7241A181E00DA753C /* StringHelper.mm */; };
 		049C6F8124192BF100DEFA45 /* Contact.mm in Sources */ = {isa = PBXBuildFile; fileRef = 049C6F8024192BF100DEFA45 /* Contact.mm */; };
 		049C6F8424192ECB00DEFA45 /* PickerModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 049C6F8324192ECB00DEFA45 /* PickerModel.mm */; };
+		04C2972E241A29AC0067D1DF /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04C2972D241A29AC0067D1DF /* Contacts.framework */; };
 		04C819FF2419313100918A84 /* ContactAdaper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04C819FE2419313100918A84 /* ContactAdaper.mm */; };
 		04C81A022419313F00918A84 /* ContactBusiness.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04C81A012419313F00918A84 /* ContactBusiness.mm */; };
 		04C81A0A2419358200918A84 /* PickerCollectionCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04C81A092419358200918A84 /* PickerCollectionCell.mm */; };
@@ -43,6 +44,7 @@
 		049C6F8024192BF100DEFA45 /* Contact.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Contact.mm; sourceTree = "<group>"; };
 		049C6F8224192ECB00DEFA45 /* PickerModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PickerModel.h; sourceTree = "<group>"; };
 		049C6F8324192ECB00DEFA45 /* PickerModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PickerModel.mm; sourceTree = "<group>"; };
+		04C2972D241A29AC0067D1DF /* Contacts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Contacts.framework; path = System/Library/Frameworks/Contacts.framework; sourceTree = SDKROOT; };
 		04C819FD2419313100918A84 /* ContactAdaper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactAdaper.h; sourceTree = "<group>"; };
 		04C819FE2419313100918A84 /* ContactAdaper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ContactAdaper.mm; sourceTree = "<group>"; };
 		04C81A002419313F00918A84 /* ContactBusiness.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactBusiness.h; sourceTree = "<group>"; };
@@ -74,6 +76,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04C2972E241A29AC0067D1DF /* Contacts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -117,6 +120,14 @@
 			path = BusinessModels;
 			sourceTree = "<group>";
 		};
+		04C2972C241A29AB0067D1DF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				04C2972D241A29AC0067D1DF /* Contacts.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		04C81A032419316E00918A84 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -131,6 +142,7 @@
 			children = (
 				04D3045F241925E00031A670 /* Zalo-W02-Contact Picker */,
 				04D3045E241925E00031A670 /* Products */,
+				04C2972C241A29AB0067D1DF /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};

@@ -7,10 +7,19 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Contact.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ContactAdaper : NSObject
+
++ (instancetype)instance;
+
+- (void)fetchContactsWithCompletion:(void (^)(NSError *error))completionHandle;
+- (void)fetchContactImageDataByID:(NSString*)contactID completion:(void (^)(NSError *error))completionHandle;
+
+- (NSMutableArray<Contact*> *)getContactsList;
+- (NSData*)getImageDataOfContactWithID:(NSString*)contactID;
 
 @end
 
