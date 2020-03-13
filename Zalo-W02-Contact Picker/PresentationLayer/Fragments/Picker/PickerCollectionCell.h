@@ -25,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString*)nibName;
 
 - (void)setUpPickerModelForCell:(PickerModel*)pickerModel;
+- (void)setUpImageForCell:(NSData *)imageData;
 
 @end
 

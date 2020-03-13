@@ -140,6 +140,7 @@
     
     for (Contact *contact in _contacts) {
         PickerModel *pickerModel = [[PickerModel alloc] init];
+        pickerModel.identifier = contact.identifier;
         pickerModel.name = contact.name;
         pickerModel.isChosen = false;
         
@@ -171,13 +172,13 @@
     }
 }
 
-- (void)checkedCellOfElement:(PickerModel *)element {
+
+- (void)checkedCellOfElement:(PickerModel *)element withImageData:(NSData *)imageData {
     try {
-        [_contactPickerView addElement:element];
+        [_contactPickerView addElement:element withImageData:imageData];
     } catch (NSException *e) {
         return;
     }
 }
-
 
 @end

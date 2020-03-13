@@ -18,8 +18,11 @@
 @property (weak, nonatomic) IBOutlet UIButton *nextButton;
 
 @property (strong, nonatomic) NSMutableArray<PickerModel*> *dataArray;
+@property (strong, nonatomic) NSCache<NSString *, NSData *> *dataImageCache;
 
 @end
+
+
 
 @implementation PickerView
 
@@ -37,6 +40,7 @@
     [self createNextButton];
     
     _dataArray = [[NSMutableArray alloc] init];
+    _dataImageCache = [[NSCache alloc] init];
 }
 
 - (instancetype)initWithCoder:(NSCoder *)coder {
@@ -77,11 +81,13 @@
     [self scrollToBottom:_collectionView];
 }
 
-- (void)addElement:(PickerModel *)pickerModel {
+- (void)addElement:(PickerModel *)pickerModel withImageData:(nonnull NSData *)imageData {
     if (_dataArray.count == MAX_PICK)
         return;
     
     [_dataArray addObject:pickerModel];
+    if (imageData)
+        [_dataImageCache setObject:imageData forKey:pickerModel.identifier];
     
     self.hidden = (_dataArray == 0);
     
@@ -90,6 +96,8 @@
 
 - (void)removeElement:(PickerModel *)pickerModel {
     [_dataArray removeObject:pickerModel];
+    [_dataImageCache removeObjectForKey:pickerModel.identifier];
+    
     self.hidden = (_dataArray.count == 0);
     
     [self reloadData];
@@ -129,6 +137,7 @@
 
     //TODO: Set up for cell here
     [cell setUpPickerModelForCell:_dataArray[indexPath.row]];
+    [cell setUpImageForCell:[_dataImageCache objectForKey:_dataArray[indexPath.row].identifier]];
     cell.delegate = self;
     
     return cell;
@@ -150,6 +159,13 @@
         return CGSizeZero;
 
     return CGSizeMake(PICKER_COLLECTION_CELL_WIDTH, PICKER_COLLECTION_CELL_HEIGHT);
+}
+
+- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+    cell.hidden = true;
+    [UIView transitionWithView:collectionView duration:0.2 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+        cell.hidden = false;
+    } completion:nil];
 }
 
 

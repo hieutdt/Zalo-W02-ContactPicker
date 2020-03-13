@@ -54,12 +54,12 @@
     
     _nameLabel.text = _model.name;
     
-    if (pickerModel.imageData) {
-        [_imageView setImage:[UIImage imageWithData:pickerModel.imageData]];
-    } else {
-        //TODO: Present gradient name avatar here
-        [_imageView setBackgroundColor:[UIColor blueColor]];
-    }
+    //TODO: Present gradient name avatar here
+    [_imageView setBackgroundColor:[UIColor blueColor]];
+}
+
+- (void)setUpImageForCell:(NSData *)imageData {
+    [_imageView setImage:[UIImage imageWithData:imageData]];
 }
 
 - (IBAction)removeButtonTapped:(id)sender {

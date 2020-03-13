@@ -14,6 +14,7 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
+        _identifier = [[NSString alloc] init];
         _name = [[NSString alloc] init];
     }
     return self;

@@ -72,16 +72,22 @@
 }
 
 - (void)setChecked:(BOOL)isChecked {
-    if (isChecked) {
-        [_checkImageView setImage:_checkedImage];
-    } else {
-        [_checkImageView setImage:_uncheckImage];
-        [_checkImageView setTintColor:[UIColor lightGrayColor]];
-    }
+    [UIView transitionWithView:_checkImageView duration:0.2 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+        if (isChecked) {
+            [self.checkImageView setImage:self.checkedImage];
+        } else {
+            [self.checkImageView setImage:self.uncheckImage];
+            [self.checkImageView setTintColor:[UIColor lightGrayColor]];
+        }
+    } completion:nil];
 }
 
 - (void)showSeparatorLine:(BOOL)show {
     _separatorLine.hidden = !show;
+}
+
+- (NSData *)getImageData {
+    return UIImageJPEGRepresentation(_avatarImageView.image, 0.7);
 }
 
 @end

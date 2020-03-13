@@ -108,13 +108,6 @@
     [_tableView reloadData];
 }
 
-- (void)setImageData:(NSData *)imageData forPickerModelAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row >= _pickerModels.count)
-        return;
-    
-    _pickerModels[indexPath.row].imageData = imageData;
-}
-
 - (void)fitPickerModelsData:(NSMutableArray<PickerModel*> *)models toSections:(NSMutableArray<NSMutableArray*> *)sectionsArray {
     for (int i = 0; i < sectionsArray.count; i++) {
         [sectionsArray[i] removeAllObjects];
@@ -149,13 +142,14 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     PickerTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     PickerModel *pickerModel = _sectionsArray[indexPath.section][indexPath.row];
+    NSData *imageData = [cell getImageData];
     
     if (pickerModel.isChosen) {
         _selectedCount--;
         [_delegate uncheckCellOfElement:pickerModel];
     } else if (_selectedCount < 5) {
         _selectedCount++;
-        [_delegate checkedCellOfElement:pickerModel];
+        [_delegate checkedCellOfElement:pickerModel withImageData:imageData];
     } else
         return;
     

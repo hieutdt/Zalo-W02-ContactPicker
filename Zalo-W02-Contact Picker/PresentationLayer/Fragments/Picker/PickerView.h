@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) id<PickerViewDelegate> delegate;
 
-- (void)addElement:(PickerModel*)pickerModel;
+- (void)addElement:(PickerModel*)pickerModel withImageData:(NSData*)imageData;
 - (void)removeElement:(PickerModel*)pickerModel;
 - (void)removeAll;
 

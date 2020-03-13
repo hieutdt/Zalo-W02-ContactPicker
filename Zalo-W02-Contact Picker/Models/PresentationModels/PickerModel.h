@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface PickerModel : NSObject
 
+@property (strong, nonatomic) NSString *identifier;
 @property (strong, nonatomic) NSString *name;
 @property (nonatomic) BOOL isChosen;
 
