@@ -18,11 +18,6 @@
 
 @property (strong, nonatomic) NSMutableArray<PickerModel*> *pickerModels;
 @property (strong, nonatomic) NSMutableArray<NSMutableArray*> *sectionsArray;
-
-@property (strong, nonatomic) NSMutableArray<PickerModel*> *filteredPickerModels;
-@property (strong, nonatomic) NSMutableArray<NSMutableArray*> *filteredSectionsArray;
-
-@property (nonatomic) BOOL isSearching;
 @property (nonatomic) int selectedCount;
 
 @end
@@ -32,9 +27,15 @@
 - (void)customInit {
     UINib *nib = [UINib nibWithNibName:@"PickerTableView" bundle:nil];
     [nib instantiateWithOwner:self options:nil];
-    
+
     _contentView.frame = self.bounds;
     [self addSubview:_contentView];
+    
+    _contentView.translatesAutoresizingMaskIntoConstraints = false;
+    [_contentView.topAnchor constraintEqualToAnchor:self.topAnchor].active = true;
+    [_contentView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor].active = true;
+    [_contentView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor].active = true;
+    [_contentView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor].active = true;
     
     self.backgroundColor = [UIColor whiteColor];
     
@@ -43,15 +44,10 @@
     
     _pickerModels = [[NSMutableArray alloc] init];
     _sectionsArray = [[NSMutableArray alloc] init];
-    _filteredPickerModels = [[NSMutableArray alloc] init];
-    _filteredSectionsArray = [[NSMutableArray alloc] init];
     
-    for (int i = 0; i < ALPHABET_SECTIONS_NUMBER; i++) {
+    for (int i = 0; i < ALPHABET_SECTIONS_NUMBER; i++)
         _sectionsArray[i] = [[NSMutableArray alloc] init];
-        _filteredSectionsArray[i] = [[NSMutableArray alloc] init];
-    }
     
-    _isSearching = false;
     _selectedCount = 0;
     
     [self resigterNib];
@@ -83,26 +79,26 @@
     [self fitPickerModelsData:_pickerModels toSections:_sectionsArray];
 }
 
-- (void)searchWithSearchString:(NSString *)searchString {
-    if (searchString.length == 0) {
-        _isSearching = false;
-    } else {
-        _isSearching = true;
-        
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"self.name contains[c] %@", searchString];
-        _filteredPickerModels = (NSMutableArray*)[_pickerModels filteredArrayUsingPredicate:predicate];
-        
-        [self fitPickerModelsData:_filteredPickerModels toSections:_filteredSectionsArray];
-    }
-    
-    [self reloadData];
-}
+//- (void)searchWithSearchString:(NSString *)searchString {
+//    if (searchString.length == 0) {
+//        _isSearching = false;
+//    } else {
+//        _isSearching = true;
+//
+//        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"_name contains[c] %@", searchString];
+//        _filteredPickerModels = (NSMutableArray*)[_pickerModels filteredArrayUsingPredicate:predicate];
+//
+//        [self fitPickerModelsData:_filteredPickerModels toSections:_filteredSectionsArray];
+//    }
+//
+//    [self reloadData];
+//}
 
-- (NSMutableArray<NSMutableArray*>*)getValidSectionsArray {
-    if (_isSearching)
-        return _filteredSectionsArray;
-    return _sectionsArray;
-}
+//- (NSMutableArray<NSMutableArray*>*)getValidSectionsArray {
+//    if (_isSearching)
+//        return _filteredSectionsArray;
+//    return _sectionsArray;
+//}
 
 - (int)getSelectedCount {
     return _selectedCount;
@@ -110,6 +106,13 @@
 
 - (void)reloadData {
     [_tableView reloadData];
+}
+
+- (void)setImageData:(NSData *)imageData forPickerModelAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row >= _pickerModels.count)
+        return;
+    
+    _pickerModels[indexPath.row].imageData = imageData;
 }
 
 - (void)fitPickerModelsData:(NSMutableArray<PickerModel*> *)models toSections:(NSMutableArray<NSMutableArray*> *)sectionsArray {
@@ -131,20 +134,28 @@
     }
 }
 
+- (int)indexOfCellFromIndexPath:(NSIndexPath *)indexPath {
+    int index = 0;
+    for (int i = 0; i < indexPath.section; i++)
+        index += _sectionsArray[i].count;
+    
+    index += indexPath.row;
+    
+    return index;
+}
+
 #pragma mark - UITableViewDelegateProtocol
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSMutableArray<NSMutableArray*> *data = [self getValidSectionsArray];
-    
     PickerTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    PickerModel *pickerModel = data[indexPath.section][indexPath.row];
+    PickerModel *pickerModel = _sectionsArray[indexPath.section][indexPath.row];
     
     if (pickerModel.isChosen) {
         _selectedCount--;
-        [_delegate uncheckCellAtIndexPath:indexPath];
+        [_delegate uncheckCellOfElement:pickerModel];
     } else if (_selectedCount < 5) {
         _selectedCount++;
-        [_delegate checkedCellAtIndexPath:indexPath];
+        [_delegate checkedCellOfElement:pickerModel];
     } else
         return;
     
@@ -182,13 +193,11 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSMutableArray<NSMutableArray*> *data = [self getValidSectionsArray];
-    
-    if (data.count == 0)
+    if (_sectionsArray.count == 0)
         return 0;
     
-    if (data[section])
-        return data[section].count;
+    if (_sectionsArray[section])
+        return _sectionsArray[section].count;
     
     return 0;
 }
@@ -200,19 +209,19 @@
         cell = [nib objectAtIndex:0];
     }
     
-    NSMutableArray<NSMutableArray*> *data = [self getValidSectionsArray];
-    
-    PickerModel *pickerModel = data[indexPath.section][indexPath.row];
+    PickerModel *pickerModel = _sectionsArray[indexPath.section][indexPath.row];
     if (!pickerModel)
         return nil;
     
     [cell setName:pickerModel.name];
     [cell setChecked:pickerModel.isChosen];
+    [cell setAvatar:nil];
     
-    if (_delegate)
-        [cell setAvatar:[_delegate getImageForCell:cell atIndexPath:indexPath]];
+    if (_delegate) {
+        [_delegate loadImageToCell:cell atIndexPath:indexPath];
+    }
     
-    if (indexPath.row == data[indexPath.section].count - 1)
+    if (indexPath.row == _sectionsArray[indexPath.section].count - 1)
         [cell showSeparatorLine:true];
     else
         [cell showSeparatorLine:false];

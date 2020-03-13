@@ -14,8 +14,8 @@
 
 @interface ContactAdaper()
 
-@property (nonatomic, strong) NSMutableArray<Contact*> *contactsCache;
-@property (nonatomic, strong) NSMutableArray<NSDictionary<NSString*, NSData*> *> *imagesDataCache;
+@property (nonatomic, strong) NSMutableArray<Contact*> *contacts;
+@property (nonatomic, strong) NSCache<NSString *, NSData *> *imagesDataCache;
 
 @end
 
@@ -27,8 +27,9 @@ static ContactAdaper *staticInstance;
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _imagesDataCache = [[NSMutableArray alloc] init];
-        _contactsCache = [[NSMutableArray alloc] init];
+        self.imagesDataCache = [[NSCache alloc] init];
+        self.imagesDataCache.countLimit = MAX_IMAGES_CACHE_SIZE;
+        self.contacts = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -59,7 +60,7 @@ static ContactAdaper *staticInstance;
             }];
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                //TODO: Caching here
+                // Caching here
                 [self saveCNContactsToContactsArray:contacts];
                 completionHandle(nil);
             });
@@ -83,38 +84,40 @@ static ContactAdaper *staticInstance;
     CNContactStore *contactStore = [[CNContactStore alloc] init];
     NSError *error = [[NSError alloc] initWithDomain:@"ContactAdapter" code:200 userInfo:@{@"Fetch image failed": NSLocalizedDescriptionKey}];
     
-    try {
-        NSArray<CNContact*> *contacts = [contactStore unifiedContactsMatchingPredicate:predicate keysToFetch:@[CNContactThumbnailImageDataKey] error:nil];
-        
-        if (contacts.count == 0) {
-            completionHandle(error);
-            return;
-        }
-        
-        [_imagesDataCache addObject:@{contacts[0].identifier : contacts[0].thumbnailImageData}];
-        
-        if (_imagesDataCache.count > MAX_IMAGES_CACHE_SIZE) {
+    dispatch_queue_t concurrentQueue = dispatch_queue_create("ConcurrentQueue", DISPATCH_QUEUE_CONCURRENT);
+    
+    dispatch_async(concurrentQueue, ^{
+        try {
+            NSArray<CNContact*> *contacts = [contactStore unifiedContactsMatchingPredicate:predicate keysToFetch:@[CNContactThumbnailImageDataKey] error:nil];
             
+            if (contacts.count == 0) {
+                completionHandle(error);
+                return;
+            }
+            
+            // Cache this image data
+            [self.imagesDataCache setObject:contacts[0].thumbnailImageData forKey:contacts[0].identifier];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandle(nil);
+            });
+            
+        } catch (NSException *e) {
+            NSLog(@"Fetch image failed!");
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandle(error);
+            });
         }
-        
-        completionHandle(nil);
-        
-    } catch (NSException *e) {
-        NSLog(@"Fetch image failed!");
-        completionHandle(error);
-    }
+    });
 }
 
 - (NSMutableArray<Contact *> *)getContactsList {
-    return _contactsCache;
+    return self.contacts;
 }
 
 - (NSData*)getImageDataOfContactWithID:(NSString *)contactID {
-    NSMutableDictionary *a = nil;
-//    return [_imagesDataCache objectForKey:contactID];
-    for (int i = 0; i < _imagesDataCache.count; i++) {
-        if (_imagesDataCache[0])
-    }
+    return [self.imagesDataCache objectForKey:contactID];
 }
 
 - (void)saveCNContactsToContactsArray:(NSMutableArray<CNContact*> *)CNContacts {
@@ -131,7 +134,7 @@ static ContactAdaper *staticInstance;
         
         contact.isChosen = false;
         
-        [_contactsCache addObject:contact];
+        [self.contacts addObject:contact];
     }
 }
 

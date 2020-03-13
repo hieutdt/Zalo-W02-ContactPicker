@@ -15,7 +15,6 @@
     self = [super init];
     if (self) {
         _name = [[NSString alloc] init];
-        _imageData = [[NSData alloc] init];
     }
     return self;
 }

@@ -11,6 +11,7 @@
 #import "PickerTableView.h"
 #import "Contact.h"
 #import "ContactBusiness.h"
+#import "AppConsts.h"
 
 @interface MainViewController () <PickerViewDelegate, PickerTableViewDelegate>
 
@@ -35,6 +36,7 @@
     [super viewDidLoad];
     
     _tableView.delegate = self;
+    _tableView.layer.masksToBounds = false;
     _contactPickerView.delegate = self;
     
     _contacts = [[NSMutableArray alloc] init];
@@ -44,6 +46,11 @@
     _filteredSectionData = [[NSMutableArray alloc] init];
     
     _pickerModels = [[NSMutableArray alloc] init];
+    
+    for (int i = 0; i < ALPHABET_SECTIONS_NUMBER; i++) {
+        _sectionData[i] = [[NSMutableArray alloc] init];
+        _filteredSectionData[i] = [[NSMutableArray alloc] init];
+    }
     
     CNAuthorizationStatus authorizationStatus = [[ContactBusiness instance] checkPermissionToAccessContactData];
     switch (authorizationStatus) {
@@ -81,6 +88,8 @@
         
         if (!error) {
             self.contacts = contacts;
+            [self initContactsData:contacts];
+            
             self.pickerModels = [self getPickerModelsArrayFromContacts];
             [self.tableView setModelsData:self.pickerModels];
             [self.tableView reloadData];
@@ -88,6 +97,30 @@
             [self showErrorView];
         }
     }];
+}
+
+- (void)initContactsData:(NSMutableArray<Contact *> *)contacts {
+    _contacts = contacts;
+    [self fitContactsData:_contacts toSections:_sectionData];
+}
+
+- (void)fitContactsData:(NSMutableArray<Contact*> *)models toSections:(NSMutableArray<NSMutableArray*> *)sectionsArray {
+    for (int i = 0; i < sectionsArray.count; i++) {
+        [sectionsArray[i] removeAllObjects];
+    }
+    
+    if (!models or models.count == 0)
+        return;
+    
+    for (int i = 0; i < models.count; i++) {
+        int index = [models[i] getSectionIndex];
+        
+        if (index >= 0 and index < ALPHABET_SECTIONS_NUMBER - 1) {
+            [sectionsArray[index] addObject:models[i]];
+        } else {
+            [sectionsArray[ALPHABET_SECTIONS_NUMBER - 1] addObject:models[i]];
+        }
+    }
 }
 
 - (void)showNotPermissionView {
@@ -109,7 +142,6 @@
         PickerModel *pickerModel = [[PickerModel alloc] init];
         pickerModel.name = contact.name;
         pickerModel.isChosen = false;
-        pickerModel.imageData = nil;
         
         [pickerModels addObject:pickerModel];
     }
@@ -122,18 +154,29 @@
 
 #pragma mark - PickerTableViewDelegateProtocol
 
-- (UIImage*)getImageForCell:(PickerTableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath {
-    return nil;
+- (void)loadImageToCell:(PickerTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+    Contact *contact = (Contact *)_sectionData[indexPath.section][indexPath.row];
+    
+    [[ContactBusiness instance] fetchContactImageDataByID:contact.identifier completion:^(NSData *imageData, NSError *error) {
+        [cell setAvatar:[UIImage imageWithData:imageData]];
+        [cell setNeedsLayout];
+    }];
 }
 
-- (void)uncheckCellAtIndexPath:(NSIndexPath*)indexPath {
-    if (indexPath.row < _pickerModels.count)
-        [_contactPickerView removeElement:_pickerModels[indexPath.row]];
+- (void)uncheckCellOfElement:(PickerModel *)element {
+    try {
+        [_contactPickerView removeElement:element];
+    } catch (NSException *e) {
+        return;
+    }
 }
 
-- (void)checkedCellAtIndexPath:(NSIndexPath*)indexPath {
-    if (indexPath.row < _pickerModels.count)
-        [_contactPickerView addElement:_pickerModels[indexPath.row]];
+- (void)checkedCellOfElement:(PickerModel *)element {
+    try {
+        [_contactPickerView addElement:element];
+    } catch (NSException *e) {
+        return;
+    }
 }
 
 
