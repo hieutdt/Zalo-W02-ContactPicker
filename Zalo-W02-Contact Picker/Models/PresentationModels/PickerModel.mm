@@ -16,6 +16,7 @@
     if (self) {
         _identifier = [[NSString alloc] init];
         _name = [[NSString alloc] init];
+        _isChosen = false;
     }
     return self;
 }

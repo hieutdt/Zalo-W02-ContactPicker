@@ -84,6 +84,8 @@
     if (_dataArray.count == MAX_PICK)
         return;
     
+    self.hidden = false;
+    
     [_collectionView performBatchUpdates:^{
         [_dataArray addObject:pickerModel];
         if (imageData)
@@ -93,7 +95,6 @@
         [_collectionView insertItemsAtIndexPaths:@[indexPath]];
         
     } completion:^(BOOL finished) {
-        self.hidden = (self.dataArray == 0);
         [self scrollToBottom:self.collectionView];
         [self layoutIfNeeded];
     }];

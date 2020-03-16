@@ -181,7 +181,7 @@
     Contact *contact = (Contact *)_sectionData[indexPath.section][indexPath.row];
     
     [[ContactBusiness instance] fetchContactImageDataByID:contact.identifier completion:^(NSData *imageData, NSError *error) {
-        [cell setAvatar:[UIImage imageWithData:imageData]];
+        [cell setAvatar:[UIImage imageWithData:imageData] withColorCode:contact.gradientColorCode];
         [cell setNeedsLayout];
     }];
 }

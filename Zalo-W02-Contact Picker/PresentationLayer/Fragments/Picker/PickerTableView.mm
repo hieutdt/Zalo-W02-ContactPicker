@@ -226,7 +226,6 @@
     
     [cell setName:pickerModel.name];
     [cell setChecked:pickerModel.isChosen];
-    [cell setAvatar:nil];
     
     if (_delegate) {
         [_delegate loadImageToCell:cell atIndexPath:indexPath];

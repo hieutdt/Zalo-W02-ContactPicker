@@ -8,6 +8,7 @@
 
 #import "PickerTableViewCell.h"
 #import "AppConsts.h"
+#import "ColorHelper.h"
 
 @interface PickerTableViewCell()
 
@@ -62,12 +63,17 @@
     _nameLabel.text = name;
 }
 
-- (void)setAvatar:(UIImage*)avatarImage {
+- (void)setAvatar:(UIImage*)avatarImage withColorCode:(int)colorCode {
     if (avatarImage) {
+        //TODO: Show thumbnail avatar here
+        _gradientAvatarLabel.hidden = true;
         [_avatarImageView setImage:avatarImage];
+        _avatarImageView.layer.sublayers = nil;
     } else {
         //TODO: Show gradient avatar here
-        [_avatarImageView setBackgroundColor:[UIColor redColor]];
+        _gradientAvatarLabel.hidden = false;
+        _gradientAvatarLabel.text = [self getShortName:_nameLabel.text];
+        [self setGradientColorBackground:colorCode];
     }
 }
 
@@ -82,6 +88,29 @@
     } completion:nil];
 }
 
+- (void)setGradientColorBackground:(int)colorCode {
+    switch (colorCode) {
+        case GRADIENT_COLOR_RED: {
+            [ColorHelper setRedGradientBackground:_avatarImageView];
+            break;
+        }
+        case GRADIENT_COLOR_BLUE: {
+            [ColorHelper setBlueGradientBackground:_avatarImageView];
+            break;
+        }
+        case GRADIENT_COLOR_GREEN: {
+            [ColorHelper setGreenGradientBackground:_avatarImageView];
+            break;
+        }
+        case GRADIENT_COLOR_ORANGE: {
+            [ColorHelper setOrangeGradientBackground:_avatarImageView];
+            break;
+        }
+        default:
+            break;
+    }
+}
+
 - (void)showSeparatorLine:(BOOL)show {
     _separatorLine.hidden = !show;
 }
@@ -89,5 +118,22 @@
 - (NSData *)getImageData {
     return UIImageJPEGRepresentation(_avatarImageView.image, 0.7);
 }
+
+- (NSString *)getShortName:(NSString *)name {
+    if (name.length == 0)
+        return @"";
+    
+    NSMutableString *shortName = [[NSMutableString alloc] initWithFormat:@"%c", [name characterAtIndex:0]];
+    
+    for (int i = 0; i < name.length - 1; i++) {
+        if ([[name substringWithRange:NSMakeRange(i, 1)] isEqualToString: @" "]) {
+            [shortName appendString:[name substringWithRange:NSMakeRange(i + 1, 1)]];
+            break;
+        }
+    }
+    
+    return shortName;
+}
+
 
 @end

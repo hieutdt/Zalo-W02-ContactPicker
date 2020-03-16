@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0422A340241BE6A9008F5CF3 /* LayoutHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0422A33F241BE6A9008F5CF3 /* LayoutHelper.mm */; };
+		046DF566241FB2E100181491 /* ColorHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 046DF565241FB2E100181491 /* ColorHelper.mm */; };
 		0478F5BE2419ED9A00DA753C /* PickerTableView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0478F5BD2419ED9A00DA753C /* PickerTableView.mm */; };
 		0478F5C02419EDB100DA753C /* PickerTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0478F5BF2419EDB100DA753C /* PickerTableView.xib */; };
 		0478F5C42419EEAA00DA753C /* PickerTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0478F5C22419EEAA00DA753C /* PickerTableViewCell.mm */; };
@@ -35,6 +36,8 @@
 /* Begin PBXFileReference section */
 		0422A33E241BE6A9008F5CF3 /* LayoutHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LayoutHelper.h; sourceTree = "<group>"; };
 		0422A33F241BE6A9008F5CF3 /* LayoutHelper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LayoutHelper.mm; sourceTree = "<group>"; };
+		046DF564241FB2E100181491 /* ColorHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ColorHelper.h; sourceTree = "<group>"; };
+		046DF565241FB2E100181491 /* ColorHelper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ColorHelper.mm; sourceTree = "<group>"; };
 		0478F5BC2419ED9A00DA753C /* PickerTableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PickerTableView.h; sourceTree = "<group>"; };
 		0478F5BD2419ED9A00DA753C /* PickerTableView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PickerTableView.mm; sourceTree = "<group>"; };
 		0478F5BF2419EDB100DA753C /* PickerTableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PickerTableView.xib; sourceTree = "<group>"; };
@@ -138,6 +141,8 @@
 				0478F5C7241A181E00DA753C /* StringHelper.mm */,
 				0422A33E241BE6A9008F5CF3 /* LayoutHelper.h */,
 				0422A33F241BE6A9008F5CF3 /* LayoutHelper.mm */,
+				046DF564241FB2E100181491 /* ColorHelper.h */,
+				046DF565241FB2E100181491 /* ColorHelper.mm */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -320,6 +325,7 @@
 				04C819FF2419313100918A84 /* ContactAdaper.mm in Sources */,
 				04D30465241925E00031A670 /* SceneDelegate.m in Sources */,
 				0478F5C8241A181E00DA753C /* StringHelper.mm in Sources */,
+				046DF566241FB2E100181491 /* ColorHelper.mm in Sources */,
 				04D30481241927360031A670 /* MainViewController.mm in Sources */,
 				049C6F8124192BF100DEFA45 /* Contact.mm in Sources */,
 				0478F5BE2419ED9A00DA753C /* PickerTableView.mm in Sources */,
