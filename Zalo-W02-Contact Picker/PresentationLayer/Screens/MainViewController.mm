@@ -19,6 +19,10 @@
 @property (weak, nonatomic) IBOutlet PickerTableView *tableView;
 @property (weak, nonatomic) IBOutlet PickerView *contactPickerView;
 
+@property (strong, nonatomic) UILabel *titleLabel;
+@property (strong, nonatomic) UILabel *subTitleLabel;
+@property (strong, nonatomic) UIBarButtonItem *cancelButtonItem;
+
 @property (strong, nonatomic) NSMutableArray<Contact *> *contacts;
 @property (strong, nonatomic) NSMutableArray<NSMutableArray *> *sectionData;
 
@@ -36,6 +40,8 @@
     _tableView.layer.masksToBounds = false;
     
     _contactPickerView.delegate = self;
+    _contactPickerView.hidden = true;
+    
     _searchBar.delegate = self;
     
     _contacts = [[NSMutableArray alloc] init];
@@ -45,6 +51,8 @@
     for (int i = 0; i < ALPHABET_SECTIONS_NUMBER; i++) {
         _sectionData[i] = [[NSMutableArray alloc] init];
     }
+    
+    [self customInitNavigationBar];
     
     CNAuthorizationStatus authorizationStatus = [[ContactBusiness instance] checkPermissionToAccessContactData];
     switch (authorizationStatus) {
@@ -144,6 +152,12 @@
     return pickerModels;
 }
 
+- (void)cancelPickContacts {
+    [_tableView removeAllElements];
+    [_contactPickerView removeAll];
+    [self updateNavigationBar];
+}
+
 #pragma mark - UISearchBarDelegateProtocol
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
@@ -154,7 +168,7 @@
 #pragma mark - PickerViewDelegateProtocol
 
 - (void)removeElementFromPickerview:(PickerModel *)pickerModel {
-    
+    [_tableView removeElement:pickerModel];
 }
 
 - (void)nextButtonTapped {
@@ -188,5 +202,51 @@
         return;
     }
 }
+
+#pragma mark - SetUpNavigationBar
+
+- (void)customInitNavigationBar {
+    [self.navigationController setNavigationBarHidden:false animated:true];
+    
+    _titleLabel = [[UILabel alloc] init];
+    _titleLabel.text = @"Contacts list";
+    _titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+    _titleLabel.textColor = [UIColor blackColor];
+    
+    _subTitleLabel = [[UILabel alloc] init];
+    _subTitleLabel.text = @"Selected: 0/5";
+    _subTitleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+    _subTitleLabel.textColor = [UIColor lightGrayColor];
+    
+    UIStackView *stackView = [[UIStackView alloc] initWithArrangedSubviews:@[_titleLabel, _subTitleLabel]];
+    stackView.distribution = UIStackViewDistributionEqualCentering;
+    stackView.alignment = UIStackViewAlignmentCenter;
+    stackView.axis = UILayoutConstraintAxisVertical;
+    
+    self.navigationItem.titleView = stackView;
+    
+    _cancelButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelPickContacts)];
+}
+
+- (void)showCancelPickNavigationButton {
+    self.navigationItem.leftBarButtonItem = _cancelButtonItem;
+}
+
+- (void)hideCancelPickNavigationButton {
+    self.navigationItem.leftBarButtonItem = nil;
+}
+
+- (void)updateNavigationBar {
+    if ([_tableView selectedCount] > 0) {
+        _subTitleLabel.hidden = false;
+        [self showCancelPickNavigationButton];
+    } else {
+        _subTitleLabel.hidden = true;
+        [self hideCancelPickNavigationButton];
+    }
+    
+    _subTitleLabel.text = [NSString stringWithFormat:@"Selected: %d/5", [_tableView selectedCount]];
+}
+
 
 @end

@@ -78,29 +78,40 @@
 
 - (void)reloadData {
     [_collectionView reloadData];
-    [self scrollToBottom:_collectionView];
 }
 
 - (void)addElement:(PickerModel *)pickerModel withImageData:(nonnull NSData *)imageData {
     if (_dataArray.count == MAX_PICK)
         return;
     
-    [_dataArray addObject:pickerModel];
-    if (imageData)
-        [_dataImageCache setObject:imageData forKey:pickerModel.identifier];
-    
-    self.hidden = (_dataArray == 0);
-    
-    [self reloadData];
+    [_collectionView performBatchUpdates:^{
+        [_dataArray addObject:pickerModel];
+        if (imageData)
+            [_dataImageCache setObject:imageData forKey:pickerModel.identifier];
+        
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:_dataArray.count - 1 inSection:0];
+        [_collectionView insertItemsAtIndexPaths:@[indexPath]];
+        
+    } completion:^(BOOL finished) {
+        self.hidden = (self.dataArray == 0);
+        [self scrollToBottom:self.collectionView];
+        [self layoutIfNeeded];
+    }];
 }
 
 - (void)removeElement:(PickerModel *)pickerModel {
-    [_dataArray removeObject:pickerModel];
-    [_dataImageCache removeObjectForKey:pickerModel.identifier];
-    
-    self.hidden = (_dataArray.count == 0);
-    
-    [self reloadData];
+    [_collectionView performBatchUpdates:^{
+        NSUInteger indexInArray = [_dataArray indexOfObject:pickerModel];
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:indexInArray inSection:0];
+        
+        [_dataArray removeObject:pickerModel];
+        [_dataImageCache removeObjectForKey:pickerModel.identifier];
+        [_collectionView deleteItemsAtIndexPaths:@[indexPath]];
+        
+    } completion:^(BOOL finished) {
+        self.hidden = (self.dataArray.count == 0);
+        [self layoutIfNeeded];
+    }];
 }
 
 - (void)removeAll {
@@ -161,25 +172,11 @@
     return CGSizeMake(PICKER_COLLECTION_CELL_WIDTH, PICKER_COLLECTION_CELL_HEIGHT);
 }
 
-- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
-    cell.hidden = true;
-    [UIView transitionWithView:collectionView duration:0.3 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
-        cell.hidden = false;
-    } completion:nil];
-}
-
 
 #pragma mark - PickerCollectionViewDelegateProtocol
 
 - (void)removeButtonTapped:(PickerModel *)pickerModel {
-    [_dataArray removeObject:pickerModel];
-    
-    if (_dataArray.count == 0)
-        self.hidden = true;
-    else
-        self.hidden = false;
-    
-    [self reloadData];
+    [self removeElement:pickerModel];
     
     if (_delegate)
         [_delegate removeElementFromPickerview:pickerModel];

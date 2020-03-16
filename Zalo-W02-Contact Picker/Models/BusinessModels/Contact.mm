@@ -17,7 +17,6 @@
         _identifier = [[NSString alloc] init];
         _name = [[NSString alloc] init];
         _phoneNumber = [[NSString alloc] init];
-        _isChosen = false;
     }
     return self;
 }

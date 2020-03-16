@@ -12,6 +12,7 @@
 @interface PickerCollectionCell()
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
+@property (weak, nonatomic) IBOutlet UIView *removeButtonContainer;
 @property (weak, nonatomic) IBOutlet UIButton *removeButton;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 
@@ -26,6 +27,9 @@
     
     [_imageView clipsToBounds];
     _imageView.layer.cornerRadius = _imageView.layer.bounds.size.height / 2;
+    
+    [_removeButtonContainer clipsToBounds];
+    _removeButtonContainer.layer.cornerRadius = _removeButtonContainer.bounds.size.width / 2;
     
     [_removeButton clipsToBounds];
     _removeButton.layer.cornerRadius = _removeButton.layer.bounds.size.width / 2;
@@ -67,6 +71,5 @@
         [_delegate removeButtonTapped:_model];
     }
 }
-
 
 @end

@@ -131,8 +131,6 @@
         else
             contact.phoneNumber = @"";
         
-        contact.isChosen = false;
-        
         [self.contacts addObject:contact];
     }
 }

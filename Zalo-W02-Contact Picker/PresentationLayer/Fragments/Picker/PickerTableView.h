@@ -24,10 +24,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) id<PickerTableViewDelegate> delegate;
 
-- (void)setModelsData:(NSMutableArray<PickerModel*> *)modelsArray;
+- (void)setModelsData:(NSMutableArray<PickerModel *> *)modelsArray;
 - (void)searchWithSearchString:(NSString*)searchString;
-- (int)getSelectedCount;
+- (int)selectedCount;
 - (void)reloadData;
+- (void)removeElement:(PickerModel *)element;
+- (void)removeAllElements;
 
 @end
 

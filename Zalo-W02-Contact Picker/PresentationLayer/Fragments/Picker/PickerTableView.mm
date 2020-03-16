@@ -106,12 +106,20 @@
     return _sectionsArray;
 }
 
-- (int)getSelectedCount {
+- (int)selectedCount {
     return _selectedCount;
 }
 
 - (void)reloadData {
     [_tableView reloadData];
+}
+
+- (void)removeElement:(PickerModel *)element {
+    if (_selectedCount > 0) {
+        _selectedCount--;
+        element.isChosen = false;
+        [self reloadData];
+    }
 }
 
 - (void)fitPickerModelsData:(NSMutableArray<PickerModel*> *)models toSections:(NSMutableArray<NSMutableArray*> *)sectionsArray {
@@ -168,6 +176,14 @@
     }
 }
 
+- (void)removeAllElements {
+    _selectedCount = 0;
+    for (int i = 0; i < _pickerModels.count; i++) {
+        _pickerModels[i].isChosen = false;
+    }
+    
+    [self reloadData];
+}
 
 #pragma mark - UITableViewDataSourceProtocol
 
