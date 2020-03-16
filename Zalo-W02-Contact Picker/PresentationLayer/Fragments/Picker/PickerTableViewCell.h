@@ -15,8 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString*)nibName;
 + (NSString*)reuseIdentifier;
 
-- (void)setName:(NSString*)name;
-- (void)setAvatar:(UIImage*)avatarImage;
+- (void)setName:(NSString *)name;
+- (void)setAvatar:(UIImage *)avatarImage;
 - (void)setChecked:(BOOL)isChecked;
 - (NSData *)getImageData ;
 - (void)showSeparatorLine:(BOOL)show;

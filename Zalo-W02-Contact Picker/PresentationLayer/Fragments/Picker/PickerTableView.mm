@@ -10,15 +10,21 @@
 #import "PickerTableViewCell.h"
 #import "PickerModel.h"
 #import "AppConsts.h"
+#import "LayoutHelper.h"
 
 @interface PickerTableView() <UITableViewDelegate, UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
-@property (strong, nonatomic) NSMutableArray<PickerModel*> *pickerModels;
-@property (strong, nonatomic) NSMutableArray<NSMutableArray*> *sectionsArray;
+@property (strong, nonatomic) NSMutableArray<PickerModel *> *pickerModels;
+@property (strong, nonatomic) NSMutableArray<NSMutableArray *> *sectionsArray;
+
+@property (strong, nonatomic) NSMutableArray<PickerModel *> *filteredPickerModels;
+@property (strong, nonatomic) NSMutableArray<NSMutableArray *> *filteredSectionsArray;
+
 @property (nonatomic) int selectedCount;
+@property (nonatomic) BOOL isSearching;
 
 @end
 
@@ -30,12 +36,7 @@
 
     _contentView.frame = self.bounds;
     [self addSubview:_contentView];
-    
-    _contentView.translatesAutoresizingMaskIntoConstraints = false;
-    [_contentView.topAnchor constraintEqualToAnchor:self.topAnchor].active = true;
-    [_contentView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor].active = true;
-    [_contentView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor].active = true;
-    [_contentView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor].active = true;
+    [LayoutHelper fitToParent:_contentView];
     
     self.backgroundColor = [UIColor whiteColor];
     
@@ -44,10 +45,15 @@
     
     _pickerModels = [[NSMutableArray alloc] init];
     _sectionsArray = [[NSMutableArray alloc] init];
+    _filteredPickerModels = [[NSMutableArray alloc] init];
+    _filteredSectionsArray = [[NSMutableArray alloc] init];
     
-    for (int i = 0; i < ALPHABET_SECTIONS_NUMBER; i++)
+    for (int i = 0; i < ALPHABET_SECTIONS_NUMBER; i++) {
         _sectionsArray[i] = [[NSMutableArray alloc] init];
+        _filteredSectionsArray[i] = [[NSMutableArray alloc] init];
+    }
     
+    _isSearching = false;
     _selectedCount = 0;
     
     [self resigterNib];
@@ -79,26 +85,26 @@
     [self fitPickerModelsData:_pickerModels toSections:_sectionsArray];
 }
 
-//- (void)searchWithSearchString:(NSString *)searchString {
-//    if (searchString.length == 0) {
-//        _isSearching = false;
-//    } else {
-//        _isSearching = true;
-//
-//        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"_name contains[c] %@", searchString];
-//        _filteredPickerModels = (NSMutableArray*)[_pickerModels filteredArrayUsingPredicate:predicate];
-//
-//        [self fitPickerModelsData:_filteredPickerModels toSections:_filteredSectionsArray];
-//    }
-//
-//    [self reloadData];
-//}
+- (void)searchWithSearchString:(NSString *)searchString {
+    if (searchString.length == 0) {
+        _isSearching = false;
+    } else {
+        _isSearching = true;
 
-//- (NSMutableArray<NSMutableArray*>*)getValidSectionsArray {
-//    if (_isSearching)
-//        return _filteredSectionsArray;
-//    return _sectionsArray;
-//}
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"self.name contains[c] %@", searchString];
+        _filteredPickerModels = (NSMutableArray*)[_pickerModels filteredArrayUsingPredicate:predicate];
+
+        [self fitPickerModelsData:_filteredPickerModels toSections:_filteredSectionsArray];
+    }
+
+    [self reloadData];
+}
+
+- (NSMutableArray<NSMutableArray*>*)getValidSectionsArray {
+    if (_isSearching)
+        return _filteredSectionsArray;
+    return _sectionsArray;
+}
 
 - (int)getSelectedCount {
     return _selectedCount;
@@ -127,21 +133,13 @@
     }
 }
 
-- (int)indexOfCellFromIndexPath:(NSIndexPath *)indexPath {
-    int index = 0;
-    for (int i = 0; i < indexPath.section; i++)
-        index += _sectionsArray[i].count;
-    
-    index += indexPath.row;
-    
-    return index;
-}
-
 #pragma mark - UITableViewDelegateProtocol
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSMutableArray<NSMutableArray *> *data = [self getValidSectionsArray];
+    
     PickerTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    PickerModel *pickerModel = _sectionsArray[indexPath.section][indexPath.row];
+    PickerModel *pickerModel = data[indexPath.section][indexPath.row];
     NSData *imageData = [cell getImageData];
     
     if (pickerModel.isChosen) {
@@ -187,11 +185,13 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (_sectionsArray.count == 0)
+    NSMutableArray<NSMutableArray *> *data = [self getValidSectionsArray];
+    
+    if (data.count == 0)
         return 0;
     
-    if (_sectionsArray[section])
-        return _sectionsArray[section].count;
+    if (data[section])
+        return data[section].count;
     
     return 0;
 }
@@ -203,7 +203,8 @@
         cell = [nib objectAtIndex:0];
     }
     
-    PickerModel *pickerModel = _sectionsArray[indexPath.section][indexPath.row];
+    NSMutableArray<NSMutableArray *> *data = [self getValidSectionsArray];
+    PickerModel *pickerModel = data[indexPath.section][indexPath.row];
     if (!pickerModel)
         return nil;
     

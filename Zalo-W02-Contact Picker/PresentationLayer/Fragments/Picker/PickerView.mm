@@ -163,7 +163,7 @@
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
     cell.hidden = true;
-    [UIView transitionWithView:collectionView duration:0.2 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+    [UIView transitionWithView:collectionView duration:0.3 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
         cell.hidden = false;
     } completion:nil];
 }

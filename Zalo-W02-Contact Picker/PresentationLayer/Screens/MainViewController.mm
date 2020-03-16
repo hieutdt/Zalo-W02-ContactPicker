@@ -13,7 +13,7 @@
 #import "ContactBusiness.h"
 #import "AppConsts.h"
 
-@interface MainViewController () <PickerViewDelegate, PickerTableViewDelegate>
+@interface MainViewController () <PickerViewDelegate, PickerTableViewDelegate, UISearchBarDelegate>
 
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) IBOutlet PickerTableView *tableView;
@@ -21,9 +21,6 @@
 
 @property (strong, nonatomic) NSMutableArray<Contact *> *contacts;
 @property (strong, nonatomic) NSMutableArray<NSMutableArray *> *sectionData;
-
-@property (strong, nonatomic) NSMutableArray<Contact *> *filteredContacts;
-@property (strong, nonatomic) NSMutableArray<NSMutableArray *> *filteredSectionData;
 
 @property (strong, nonatomic) NSMutableArray<PickerModel *> *pickerModels;
 
@@ -37,19 +34,16 @@
     
     _tableView.delegate = self;
     _tableView.layer.masksToBounds = false;
+    
     _contactPickerView.delegate = self;
+    _searchBar.delegate = self;
     
     _contacts = [[NSMutableArray alloc] init];
     _sectionData = [[NSMutableArray alloc] init];
-    
-    _filteredContacts = [[NSMutableArray alloc] init];
-    _filteredSectionData = [[NSMutableArray alloc] init];
-    
     _pickerModels = [[NSMutableArray alloc] init];
     
     for (int i = 0; i < ALPHABET_SECTIONS_NUMBER; i++) {
         _sectionData[i] = [[NSMutableArray alloc] init];
-        _filteredSectionData[i] = [[NSMutableArray alloc] init];
     }
     
     CNAuthorizationStatus authorizationStatus = [[ContactBusiness instance] checkPermissionToAccessContactData];
@@ -58,11 +52,11 @@
             [self loadContacts];
             break;
         }
-        case CNAuthorizationStatusDenied | CNAuthorizationStatusNotDetermined:
+        case CNAuthorizationStatusDenied | CNAuthorizationStatusNotDetermined: {
             [self showNotPermissionView];
             break;
-            
-        default:
+        }
+        default: {
             [[ContactBusiness instance] requestAccessWithCompletionHandle:^(BOOL granted, NSError *error) {
                 if (error) {
                     [self showErrorView];
@@ -71,12 +65,12 @@
                 
                 if (granted) {
                     [self loadContacts];
-                    
                 } else {
                     [self showNotPermissionView];
                 }
             }];
             break;
+        }
     }
 }
 
@@ -150,8 +144,22 @@
     return pickerModels;
 }
 
+#pragma mark - UISearchBarDelegateProtocol
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    [_tableView searchWithSearchString:searchText];
+}
+
+
 #pragma mark - PickerViewDelegateProtocol
 
+- (void)removeElementFromPickerview:(PickerModel *)pickerModel {
+    
+}
+
+- (void)nextButtonTapped {
+    
+}
 
 #pragma mark - PickerTableViewDelegateProtocol
 

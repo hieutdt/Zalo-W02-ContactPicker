@@ -18,7 +18,6 @@
 
 @end
 
-static ContactBusiness *staticInstance;
 
 @implementation ContactBusiness
 
@@ -30,14 +29,14 @@ static ContactBusiness *staticInstance;
 }
 
 + (instancetype)instance {
-    if (!staticInstance) {
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
-            staticInstance = [[ContactBusiness alloc] init];
-        });
-    }
+    static id sharedInstance = nil;
     
-    return staticInstance;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedInstance = [[ContactBusiness alloc] init];
+    });
+    
+    return sharedInstance;
 }
 
 - (void)fetchContactsWithCompletion:(void (^)(NSMutableArray<Contact *> * contacts, NSError * error))completionHandle {

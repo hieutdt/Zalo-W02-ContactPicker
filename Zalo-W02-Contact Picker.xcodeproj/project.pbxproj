@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0422A340241BE6A9008F5CF3 /* LayoutHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0422A33F241BE6A9008F5CF3 /* LayoutHelper.mm */; };
 		0478F5BE2419ED9A00DA753C /* PickerTableView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0478F5BD2419ED9A00DA753C /* PickerTableView.mm */; };
 		0478F5C02419EDB100DA753C /* PickerTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0478F5BF2419EDB100DA753C /* PickerTableView.xib */; };
 		0478F5C42419EEAA00DA753C /* PickerTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0478F5C22419EEAA00DA753C /* PickerTableViewCell.mm */; };
@@ -32,6 +33,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0422A33E241BE6A9008F5CF3 /* LayoutHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LayoutHelper.h; sourceTree = "<group>"; };
+		0422A33F241BE6A9008F5CF3 /* LayoutHelper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LayoutHelper.mm; sourceTree = "<group>"; };
 		0478F5BC2419ED9A00DA753C /* PickerTableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PickerTableView.h; sourceTree = "<group>"; };
 		0478F5BD2419ED9A00DA753C /* PickerTableView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PickerTableView.mm; sourceTree = "<group>"; };
 		0478F5BF2419EDB100DA753C /* PickerTableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PickerTableView.xib; sourceTree = "<group>"; };
@@ -133,6 +136,8 @@
 			children = (
 				0478F5C6241A181E00DA753C /* StringHelper.h */,
 				0478F5C7241A181E00DA753C /* StringHelper.mm */,
+				0422A33E241BE6A9008F5CF3 /* LayoutHelper.h */,
+				0422A33F241BE6A9008F5CF3 /* LayoutHelper.mm */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -308,6 +313,7 @@
 				04C81A022419313F00918A84 /* ContactBusiness.mm in Sources */,
 				049C6F8424192ECB00DEFA45 /* PickerModel.mm in Sources */,
 				04D30462241925E00031A670 /* AppDelegate.m in Sources */,
+				0422A340241BE6A9008F5CF3 /* LayoutHelper.mm in Sources */,
 				04C81A0A2419358200918A84 /* PickerCollectionCell.mm in Sources */,
 				04D30473241925E20031A670 /* main.m in Sources */,
 				0478F5C42419EEAA00DA753C /* PickerTableViewCell.mm in Sources */,

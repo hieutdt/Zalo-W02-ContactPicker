@@ -20,8 +20,6 @@
 @end
 
 
-static ContactAdaper *staticInstance;
-
 @implementation ContactAdaper
 
 - (instancetype)init {
@@ -35,13 +33,14 @@ static ContactAdaper *staticInstance;
 }
 
 + (instancetype)instance {
-    if (!staticInstance) {
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
-            staticInstance = [[ContactAdaper alloc] init];
-        });
-    }
-    return staticInstance;
+    static id sharedInstance = nil;
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedInstance = [[ContactAdaper alloc] init];
+    });
+    
+    return sharedInstance;
 }
 
 - (void)fetchContactsWithCompletion:(void (^)(NSError * error))completionHandle {
