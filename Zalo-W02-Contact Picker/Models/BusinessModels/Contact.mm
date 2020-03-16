@@ -17,7 +17,6 @@
         _identifier = [[NSString alloc] init];
         _name = [[NSString alloc] init];
         _phoneNumber = [[NSString alloc] init];
-        _gradientColorCode = RAND_FROM_TO(0, 3);
     }
     return self;
 }

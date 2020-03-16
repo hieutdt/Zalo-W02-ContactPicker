@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *identifier;
 @property (strong, nonatomic) NSString *name;
 @property (nonatomic) BOOL isChosen;
+@property (nonatomic) int gradientColorCode;
 
 - (int)getSectionIndex;
 

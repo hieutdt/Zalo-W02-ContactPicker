@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ColorHelper : NSObject
 
++ (void)setGradientColorBackgroundToView:(UIView *)view withColorCode:(int)colorCode;
 + (void)setGradientColorBackground:(UIColor *)firstColor andSecondColor:(UIColor *)secondColor toView:(UIView *)view;
 + (void)setBlueGradientBackground:(UIView *)view;
 + (void)setGreenGradientBackground:(UIView *)view;

@@ -169,6 +169,7 @@
 
 - (void)removeElementFromPickerview:(PickerModel *)pickerModel {
     [_tableView removeElement:pickerModel];
+    [self updateNavigationBar];
 }
 
 - (void)nextButtonTapped {
@@ -181,7 +182,7 @@
     Contact *contact = (Contact *)_sectionData[indexPath.section][indexPath.row];
     
     [[ContactBusiness instance] fetchContactImageDataByID:contact.identifier completion:^(NSData *imageData, NSError *error) {
-        [cell setAvatar:[UIImage imageWithData:imageData] withColorCode:contact.gradientColorCode];
+        [cell setAvatar:[UIImage imageWithData:imageData]];
         [cell setNeedsLayout];
     }];
 }
@@ -189,15 +190,22 @@
 - (void)uncheckCellOfElement:(PickerModel *)element {
     try {
         [_contactPickerView removeElement:element];
+        [self updateNavigationBar];
     } catch (NSException *e) {
         return;
     }
 }
 
 
-- (void)checkedCellOfElement:(PickerModel *)element withImageData:(NSData *)imageData {
+- (void)checkedCellOfElement:(PickerModel *)element {
     try {
-        [_contactPickerView addElement:element withImageData:imageData];
+        [[ContactBusiness instance] fetchContactImageDataByID:element.identifier completion:^(NSData *imageData, NSError *error) {
+//            NSUInteger index = [self.pickerModels indexOfObject:element];
+//            Contact *contact = [self.contacts objectAtIndex:index];
+            [self.contactPickerView addElement:element withImageData:imageData];
+        }];
+        
+        [self updateNavigationBar];
     } catch (NSException *e) {
         return;
     }
@@ -226,6 +234,7 @@
     self.navigationItem.titleView = stackView;
     
     _cancelButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelPickContacts)];
+    _cancelButtonItem.tintColor = [UIColor blackColor];
 }
 
 - (void)showCancelPickNavigationButton {

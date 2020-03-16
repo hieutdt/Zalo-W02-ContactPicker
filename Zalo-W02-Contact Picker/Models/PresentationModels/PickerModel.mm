@@ -17,6 +17,7 @@
         _identifier = [[NSString alloc] init];
         _name = [[NSString alloc] init];
         _isChosen = false;
+        _gradientColorCode = RAND_FROM_TO(0, 3);
     }
     return self;
 }

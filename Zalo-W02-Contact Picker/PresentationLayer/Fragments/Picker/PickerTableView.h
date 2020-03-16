@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)loadImageToCell:(PickerTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 - (void)uncheckCellOfElement:(PickerModel *)element;
-- (void)checkedCellOfElement:(PickerModel *)element withImageData:(NSData *)imageData;
+- (void)checkedCellOfElement:(PickerModel *)element;
 
 @end
 

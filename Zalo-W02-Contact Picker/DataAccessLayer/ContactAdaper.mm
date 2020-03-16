@@ -90,7 +90,9 @@
             NSArray<CNContact*> *contacts = [contactStore unifiedContactsMatchingPredicate:predicate keysToFetch:@[CNContactThumbnailImageDataKey] error:nil];
             
             if (contacts.count == 0) {
-                completionHandle(error);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completionHandle(error);
+                });
                 return;
             }
             

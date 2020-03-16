@@ -8,6 +8,7 @@
 
 #import "PickerCollectionCell.h"
 #import <Foundation/Foundation.h>
+#import "ColorHelper.h"
 
 @interface PickerCollectionCell()
 
@@ -38,6 +39,8 @@
 - (void)prepareForReuse {
     [super prepareForReuse];
     
+    _imageView.layer.sublayers = nil;
+    
     [_imageView setImage:nil];
     [_nameLabel setText:@""];
 }
@@ -55,15 +58,15 @@
         return;
     
     _model = pickerModel;
-    
     _nameLabel.text = _model.name;
-    
-    //TODO: Present gradient name avatar here
-    [_imageView setBackgroundColor:[UIColor blueColor]];
+    [ColorHelper setGradientColorBackgroundToView:_imageView withColorCode:_model.gradientColorCode];
 }
 
 - (void)setUpImageForCell:(NSData *)imageData {
-    [_imageView setImage:[UIImage imageWithData:imageData]];
+    if (imageData) {
+        _imageView.layer.sublayers = nil;
+        [_imageView setImage:[UIImage imageWithData:imageData]];
+    }
 }
 
 - (IBAction)removeButtonTapped:(id)sender {

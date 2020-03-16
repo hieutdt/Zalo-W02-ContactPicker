@@ -15,7 +15,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *identifier;
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *phoneNumber;
-@property (nonatomic) int gradientColorCode;
 
 - (int)getSectionIndex;
 

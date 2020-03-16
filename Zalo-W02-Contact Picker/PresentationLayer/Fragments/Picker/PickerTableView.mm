@@ -42,6 +42,7 @@
     
     _tableView.delegate = self;
     _tableView.dataSource = self;
+    _tableView.sectionIndexColor = [UIColor darkGrayColor];
     
     _pickerModels = [[NSMutableArray alloc] init];
     _sectionsArray = [[NSMutableArray alloc] init];
@@ -141,6 +142,15 @@
     }
 }
 
+- (void)removeAllElements {
+    _selectedCount = 0;
+    for (int i = 0; i < _pickerModels.count; i++) {
+        _pickerModels[i].isChosen = false;
+    }
+    
+    [self reloadData];
+}
+
 #pragma mark - UITableViewDelegateProtocol
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -148,14 +158,13 @@
     
     PickerTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     PickerModel *pickerModel = data[indexPath.section][indexPath.row];
-    NSData *imageData = [cell getImageData];
     
     if (pickerModel.isChosen) {
         _selectedCount--;
         [_delegate uncheckCellOfElement:pickerModel];
     } else if (_selectedCount < 5) {
         _selectedCount++;
-        [_delegate checkedCellOfElement:pickerModel withImageData:imageData];
+        [_delegate checkedCellOfElement:pickerModel];
     } else
         return;
     
@@ -176,13 +185,19 @@
     }
 }
 
-- (void)removeAllElements {
-    _selectedCount = 0;
-    for (int i = 0; i < _pickerModels.count; i++) {
-        _pickerModels[i].isChosen = false;
+- (NSArray<NSString *> *)sectionIndexTitlesForTableView:(UITableView *)tableView {
+    NSMutableArray *indexTitles = [[NSMutableArray alloc] init];
+    for (int i = 0; i < ALPHABET_SECTIONS_NUMBER - 1; i++) {
+        char sectionNameChar = i + 97;
+        [indexTitles addObject:[NSString stringWithFormat:@"%c", sectionNameChar].uppercaseString];
     }
+    [indexTitles addObject:@"#"];
     
-    [self reloadData];
+    return indexTitles;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {
+    return index;
 }
 
 #pragma mark - UITableViewDataSourceProtocol
@@ -226,6 +241,7 @@
     
     [cell setName:pickerModel.name];
     [cell setChecked:pickerModel.isChosen];
+    [cell setGradientColorBackground:pickerModel.gradientColorCode];
     
     if (_delegate) {
         [_delegate loadImageToCell:cell atIndexPath:indexPath];

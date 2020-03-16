@@ -16,9 +16,9 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString*)reuseIdentifier;
 
 - (void)setName:(NSString *)name;
-- (void)setAvatar:(UIImage *)avatarImage withColorCode:(int)colorCode;
+- (void)setAvatar:(UIImage *)avatarImage;
+- (void)setGradientColorBackground:(int)colorCode;
 - (void)setChecked:(BOOL)isChecked;
-- (NSData *)getImageData;
 - (void)showSeparatorLine:(BOOL)show;
 
 @end

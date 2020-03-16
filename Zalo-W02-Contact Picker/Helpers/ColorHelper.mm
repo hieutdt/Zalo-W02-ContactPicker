@@ -7,8 +7,32 @@
 //
 
 #import "ColorHelper.h"
+#import "AppConsts.h"
 
 @implementation ColorHelper
+
++ (void)setGradientColorBackgroundToView:(UIView *)view withColorCode:(int)colorCode {
+    switch (colorCode) {
+        case GRADIENT_COLOR_RED: {
+            [ColorHelper setRedGradientBackground:view];
+            break;
+        }
+        case GRADIENT_COLOR_BLUE: {
+            [ColorHelper setBlueGradientBackground:view];
+            break;
+        }
+        case GRADIENT_COLOR_GREEN: {
+            [ColorHelper setGreenGradientBackground:view];
+            break;
+        }
+        case GRADIENT_COLOR_ORANGE: {
+            [ColorHelper setOrangeGradientBackground:view];
+            break;
+        }
+        default:
+            break;
+    }
+}
 
 + (void)setGradientColorBackground:(UIColor *)firstColor andSecondColor:(UIColor *)secondColor toView:(UIView *)view {
     CAGradientLayer *gradient = [CAGradientLayer layer];

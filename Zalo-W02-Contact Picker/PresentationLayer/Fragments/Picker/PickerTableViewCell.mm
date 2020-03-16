@@ -51,6 +51,7 @@
     
     _checkImageView.image = nil;
     _avatarImageView.image = nil;
+    _avatarImageView.layer.sublayers = nil;
     _nameLabel.text = @"";
     _separatorLine.hidden = true;
 }
@@ -63,17 +64,19 @@
     _nameLabel.text = name;
 }
 
-- (void)setAvatar:(UIImage*)avatarImage withColorCode:(int)colorCode {
+- (void)setGradientColorBackground:(int)colorCode {
+    //TODO: Show gradient avatar here
+    _gradientAvatarLabel.hidden = false;
+    _gradientAvatarLabel.text = [self getShortName:_nameLabel.text];
+    [ColorHelper setGradientColorBackgroundToView:_avatarImageView withColorCode:colorCode];
+}
+
+- (void)setAvatar:(UIImage*)avatarImage {
     if (avatarImage) {
         //TODO: Show thumbnail avatar here
         _gradientAvatarLabel.hidden = true;
         [_avatarImageView setImage:avatarImage];
         _avatarImageView.layer.sublayers = nil;
-    } else {
-        //TODO: Show gradient avatar here
-        _gradientAvatarLabel.hidden = false;
-        _gradientAvatarLabel.text = [self getShortName:_nameLabel.text];
-        [self setGradientColorBackground:colorCode];
     }
 }
 
@@ -88,35 +91,8 @@
     } completion:nil];
 }
 
-- (void)setGradientColorBackground:(int)colorCode {
-    switch (colorCode) {
-        case GRADIENT_COLOR_RED: {
-            [ColorHelper setRedGradientBackground:_avatarImageView];
-            break;
-        }
-        case GRADIENT_COLOR_BLUE: {
-            [ColorHelper setBlueGradientBackground:_avatarImageView];
-            break;
-        }
-        case GRADIENT_COLOR_GREEN: {
-            [ColorHelper setGreenGradientBackground:_avatarImageView];
-            break;
-        }
-        case GRADIENT_COLOR_ORANGE: {
-            [ColorHelper setOrangeGradientBackground:_avatarImageView];
-            break;
-        }
-        default:
-            break;
-    }
-}
-
 - (void)showSeparatorLine:(BOOL)show {
     _separatorLine.hidden = !show;
-}
-
-- (NSData *)getImageData {
-    return UIImageJPEGRepresentation(_avatarImageView.image, 0.7);
 }
 
 - (NSString *)getShortName:(NSString *)name {
