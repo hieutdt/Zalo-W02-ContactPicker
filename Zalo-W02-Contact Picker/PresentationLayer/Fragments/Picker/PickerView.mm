@@ -119,7 +119,7 @@
 }
 
 -(void)scrollToBottom:(UICollectionView*)collectionView {
-    [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:_dataArray.count - 1 inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:YES];
+    [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:_dataArray.count - 1 inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:true];
 }
 
 

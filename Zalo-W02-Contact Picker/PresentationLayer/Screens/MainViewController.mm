@@ -13,10 +13,13 @@
 #import "NoPermissionView.h"
 
 #import "LayoutHelper.h"
+#import "LoadingHelper.h"
 
 #import "Contact.h"
 #import "ContactBusiness.h"
 #import "AppConsts.h"
+
+#import <JGProgressHUD/JGProgressHUD.h>
 
 @interface MainViewController () <PickerViewDelegate, PickerTableViewDelegate, UISearchBarDelegate>
 
@@ -107,9 +110,11 @@
 
 - (void)loadContacts {
     //TODO: show loading here
+    [[LoadingHelper instance] showLoadingEffect];
     
     [[ContactBusiness instance] loadContactsWithCompletion:^(NSMutableArray<Contact *> *contacts, NSError *error) {
         //TODO: Hide loading here
+        [[LoadingHelper instance] hideLoadingEffectDelay:1.5];
         
         if (!error) {
             self.contactStackView.hidden = false;
@@ -226,7 +231,12 @@
 }
 
 - (void)nextButtonTapped {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Thông báo" message:@"Bạn đã ấn nút Tiếp tục" preferredStyle:UIAlertControllerStyleActionSheet];
     
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+    
+    [alert addAction:cancelAction];
+    [self presentViewController:alert animated:true completion:nil];
 }
 
 #pragma mark - PickerTableViewDelegateProtocol

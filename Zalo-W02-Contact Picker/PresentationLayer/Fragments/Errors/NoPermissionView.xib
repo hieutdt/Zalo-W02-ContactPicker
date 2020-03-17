@@ -31,13 +31,13 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f6R-lL-fFF">
-                    <rect key="frame" x="142" y="333.5" width="130" height="50"/>
+                    <rect key="frame" x="142" y="338.5" width="130" height="40"/>
                     <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="50" id="LwM-eb-dMt"/>
+                        <constraint firstAttribute="height" constant="40" id="LwM-eb-dMt"/>
                         <constraint firstAttribute="width" constant="130" id="Wuo-EL-u0o"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                     <state key="normal" title="Đến Cài đặt">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
@@ -63,7 +63,7 @@
                 <constraint firstItem="f6R-lL-fFF" firstAttribute="centerX" secondItem="2K7-iO-c1U" secondAttribute="centerX" id="XjV-HF-atx"/>
                 <constraint firstAttribute="trailing" secondItem="oIe-DA-BDg" secondAttribute="trailing" constant="20" id="YW5-fQ-7HH"/>
                 <constraint firstItem="IkG-rh-JC0" firstAttribute="top" secondItem="oIe-DA-BDg" secondAttribute="bottom" constant="15" id="cy1-w2-F7C"/>
-                <constraint firstItem="f6R-lL-fFF" firstAttribute="top" secondItem="IkG-rh-JC0" secondAttribute="bottom" constant="20" id="l7z-qq-Nmv"/>
+                <constraint firstItem="f6R-lL-fFF" firstAttribute="top" secondItem="IkG-rh-JC0" secondAttribute="bottom" constant="25" id="l7z-qq-Nmv"/>
                 <constraint firstItem="oIe-DA-BDg" firstAttribute="top" secondItem="3N6-eA-cvh" secondAttribute="bottom" constant="30" id="lcW-Uh-TfK"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

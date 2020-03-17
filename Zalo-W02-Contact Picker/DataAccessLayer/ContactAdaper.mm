@@ -19,6 +19,7 @@
 
 @end
 
+static ContactAdaper *sharedInstance = nil;
 
 @implementation ContactAdaper
 
@@ -33,12 +34,12 @@
 }
 
 + (instancetype)instance {
-    static id sharedInstance = nil;
-    
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sharedInstance = [[ContactAdaper alloc] init];
-    });
+    if (!sharedInstance) {
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            sharedInstance = [[ContactAdaper alloc] init];
+        });
+    }
     
     return sharedInstance;
 }

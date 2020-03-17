@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -35,6 +35,8 @@
 		04D30483241927530031A670 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04D30482241927530031A670 /* MainViewController.xib */; };
 		04D30489241929000031A670 /* PickerView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04D30488241929000031A670 /* PickerView.mm */; };
 		04D3048B241929ED0031A670 /* PickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04D3048A241929ED0031A670 /* PickerView.xib */; };
+		04FA5EE224208F8900B1395C /* LoadingHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04FA5EE124208F8900B1395C /* LoadingHelper.mm */; };
+		463A50A2688A4221EA94E440 /* Pods_Zalo_W02_Contact_Picker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98F59C91C0CFBFFA00C59DC9 /* Pods_Zalo_W02_Contact_Picker.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -85,6 +87,11 @@
 		04D30487241929000031A670 /* PickerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PickerView.h; sourceTree = "<group>"; };
 		04D30488241929000031A670 /* PickerView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PickerView.mm; sourceTree = "<group>"; };
 		04D3048A241929ED0031A670 /* PickerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PickerView.xib; sourceTree = "<group>"; };
+		04FA5EE024208F8900B1395C /* LoadingHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoadingHelper.h; sourceTree = "<group>"; };
+		04FA5EE124208F8900B1395C /* LoadingHelper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LoadingHelper.mm; sourceTree = "<group>"; };
+		1D5E9E6A2340863B822F8B2A /* Pods-Zalo-W02-Contact Picker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Zalo-W02-Contact Picker.release.xcconfig"; path = "Target Support Files/Pods-Zalo-W02-Contact Picker/Pods-Zalo-W02-Contact Picker.release.xcconfig"; sourceTree = "<group>"; };
+		98F59C91C0CFBFFA00C59DC9 /* Pods_Zalo_W02_Contact_Picker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Zalo_W02_Contact_Picker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DC43C114AD791C99BA7D0969 /* Pods-Zalo-W02-Contact Picker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Zalo-W02-Contact Picker.debug.xcconfig"; path = "Target Support Files/Pods-Zalo-W02-Contact Picker/Pods-Zalo-W02-Contact Picker.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +100,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				04C2972E241A29AC0067D1DF /* Contacts.framework in Frameworks */,
+				463A50A2688A4221EA94E440 /* Pods_Zalo_W02_Contact_Picker.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -153,6 +161,7 @@
 			isa = PBXGroup;
 			children = (
 				04C2972D241A29AC0067D1DF /* Contacts.framework */,
+				98F59C91C0CFBFFA00C59DC9 /* Pods_Zalo_W02_Contact_Picker.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -166,6 +175,8 @@
 				0422A33F241BE6A9008F5CF3 /* LayoutHelper.mm */,
 				046DF564241FB2E100181491 /* ColorHelper.h */,
 				046DF565241FB2E100181491 /* ColorHelper.mm */,
+				04FA5EE024208F8900B1395C /* LoadingHelper.h */,
+				04FA5EE124208F8900B1395C /* LoadingHelper.mm */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -176,6 +187,7 @@
 				04D3045F241925E00031A670 /* Zalo-W02-Contact Picker */,
 				04D3045E241925E00031A670 /* Products */,
 				04C2972C241A29AB0067D1DF /* Frameworks */,
+				5F662EC7594372C7F01D2299 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -264,6 +276,15 @@
 			path = Fragments;
 			sourceTree = "<group>";
 		};
+		5F662EC7594372C7F01D2299 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				DC43C114AD791C99BA7D0969 /* Pods-Zalo-W02-Contact Picker.debug.xcconfig */,
+				1D5E9E6A2340863B822F8B2A /* Pods-Zalo-W02-Contact Picker.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -271,9 +292,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 04D30476241925E20031A670 /* Build configuration list for PBXNativeTarget "Zalo-W02-Contact Picker" */;
 			buildPhases = (
+				005738D05F97B4EB4411395B /* [CP] Check Pods Manifest.lock */,
 				04D30459241925E00031A670 /* Sources */,
 				04D3045A241925E00031A670 /* Frameworks */,
 				04D3045B241925E00031A670 /* Resources */,
+				30D2D8D4604D7E090CD6AEC0 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -336,6 +359,48 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		005738D05F97B4EB4411395B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Zalo-W02-Contact Picker-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		30D2D8D4604D7E090CD6AEC0 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Zalo-W02-Contact Picker/Pods-Zalo-W02-Contact Picker-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Zalo-W02-Contact Picker/Pods-Zalo-W02-Contact Picker-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Zalo-W02-Contact Picker/Pods-Zalo-W02-Contact Picker-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		04D30459241925E00031A670 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -357,6 +422,7 @@
 				04D30481241927360031A670 /* MainViewController.mm in Sources */,
 				049C6F8124192BF100DEFA45 /* Contact.mm in Sources */,
 				0478F5BE2419ED9A00DA753C /* PickerTableView.mm in Sources */,
+				04FA5EE224208F8900B1395C /* LoadingHelper.mm in Sources */,
 				04D30489241929000031A670 /* PickerView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -495,6 +561,7 @@
 		};
 		04D30477241925E20031A670 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DC43C114AD791C99BA7D0969 /* Pods-Zalo-W02-Contact Picker.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -512,6 +579,7 @@
 		};
 		04D30478241925E20031A670 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1D5E9E6A2340863B822F8B2A /* Pods-Zalo-W02-Contact Picker.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;

@@ -18,6 +18,7 @@
 
 @end
 
+static ContactBusiness *sharedInstance = nil;
 
 @implementation ContactBusiness
 
@@ -29,12 +30,12 @@
 }
 
 + (instancetype)instance {
-    static id sharedInstance = nil;
-    
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sharedInstance = [[ContactBusiness alloc] init];
-    });
+    if (!sharedInstance) {
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            sharedInstance = [[ContactBusiness alloc] init];
+        });
+    }
     
     return sharedInstance;
 }

@@ -31,13 +31,13 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6YS-wl-CUe">
-                    <rect key="frame" x="142" y="313" width="130" height="50"/>
+                    <rect key="frame" x="142" y="318" width="130" height="40"/>
                     <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="50" id="JhP-XF-tpQ"/>
+                        <constraint firstAttribute="height" constant="40" id="JhP-XF-tpQ"/>
                         <constraint firstAttribute="width" constant="130" id="xVB-L6-Ke6"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                     <state key="normal" title="Thử lại">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
@@ -64,7 +64,7 @@
                 <constraint firstItem="8v8-z8-GnJ" firstAttribute="top" secondItem="Y2A-69-cay" secondAttribute="bottom" constant="30" id="oXq-Mp-tqk"/>
                 <constraint firstItem="Y2A-69-cay" firstAttribute="centerX" secondItem="iPv-a5-MPY" secondAttribute="centerX" id="tvK-ff-0Zv"/>
                 <constraint firstAttribute="trailing" secondItem="8v8-z8-GnJ" secondAttribute="trailing" constant="20" id="yZs-hc-czI"/>
-                <constraint firstItem="6YS-wl-CUe" firstAttribute="top" secondItem="a88-0a-aHP" secondAttribute="bottom" constant="20" id="zeW-R1-5ud"/>
+                <constraint firstItem="6YS-wl-CUe" firstAttribute="top" secondItem="a88-0a-aHP" secondAttribute="bottom" constant="25" id="zeW-R1-5ud"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="128.98550724637681" y="-6.6964285714285712"/>
