@@ -9,6 +9,7 @@
 #import "PickerTableViewCell.h"
 #import "AppConsts.h"
 #import "ColorHelper.h"
+#import "StringHelper.h"
 
 @interface PickerTableViewCell()
 
@@ -67,7 +68,7 @@
 - (void)setGradientColorBackground:(int)colorCode {
     //TODO: Show gradient avatar here
     _gradientAvatarLabel.hidden = false;
-    _gradientAvatarLabel.text = [self getShortName:_nameLabel.text];
+    _gradientAvatarLabel.text = [StringHelper getShortName:_nameLabel.text];
     [ColorHelper setGradientColorBackgroundToView:_avatarImageView withColorCode:colorCode];
 }
 
@@ -93,22 +94,6 @@
 
 - (void)showSeparatorLine:(BOOL)show {
     _separatorLine.hidden = !show;
-}
-
-- (NSString *)getShortName:(NSString *)name {
-    if (name.length == 0)
-        return @"";
-    
-    NSMutableString *shortName = [[NSMutableString alloc] initWithFormat:@"%c", [name characterAtIndex:0]];
-    
-    for (int i = 0; i < name.length - 1; i++) {
-        if ([[name substringWithRange:NSMakeRange(i, 1)] isEqualToString: @" "]) {
-            [shortName appendString:[name substringWithRange:NSMakeRange(i + 1, 1)]];
-            break;
-        }
-    }
-    
-    return shortName;
 }
 
 

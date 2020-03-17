@@ -9,13 +9,14 @@
 #import "PickerCollectionCell.h"
 #import <Foundation/Foundation.h>
 #import "ColorHelper.h"
+#import "StringHelper.h"
 
 @interface PickerCollectionCell()
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UIView *removeButtonContainer;
 @property (weak, nonatomic) IBOutlet UIButton *removeButton;
-@property (weak, nonatomic) IBOutlet UILabel *nameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *gradientAvatarLabel;
 
 @property (weak, nonatomic) PickerModel *model;
 
@@ -34,6 +35,8 @@
     
     [_removeButton clipsToBounds];
     _removeButton.layer.cornerRadius = _removeButton.layer.bounds.size.width / 2;
+    
+    _gradientAvatarLabel.hidden = true;
 }
 
 - (void)prepareForReuse {
@@ -42,7 +45,6 @@
     _imageView.layer.sublayers = nil;
     
     [_imageView setImage:nil];
-    [_nameLabel setText:@""];
 }
 
 + (NSString*)reuseIdentifier {
@@ -58,12 +60,14 @@
         return;
     
     _model = pickerModel;
-    _nameLabel.text = _model.name;
+    _gradientAvatarLabel.hidden = false;
+    _gradientAvatarLabel.text = [StringHelper getShortName:_model.name];
     [ColorHelper setGradientColorBackgroundToView:_imageView withColorCode:_model.gradientColorCode];
 }
 
 - (void)setUpImageForCell:(NSData *)imageData {
     if (imageData) {
+        _gradientAvatarLabel.hidden = true;
         _imageView.layer.sublayers = nil;
         [_imageView setImage:[UIImage imageWithData:imageData]];
     }

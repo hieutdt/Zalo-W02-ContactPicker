@@ -22,12 +22,6 @@
                             <constraint firstAttribute="height" constant="70" id="QnH-Hg-nxP"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L2F-8m-cYD">
-                        <rect key="frame" x="5" y="80" width="113" height="16"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                        <nil key="textColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hRA-sd-Ifb">
                         <rect key="frame" x="98" y="0.0" width="25" height="25"/>
                         <subviews>
@@ -52,12 +46,21 @@
                             <constraint firstAttribute="trailing" secondItem="HkM-1l-Fnm" secondAttribute="trailing" constant="2" id="tHf-2F-4iB"/>
                         </constraints>
                     </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iJm-Db-OTX">
+                        <rect key="frame" x="0.0" y="5" width="123" height="70"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="70" id="OK2-xD-uGW"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="L2F-8m-cYD" firstAttribute="leading" secondItem="JJj-Lk-XwX" secondAttribute="leading" constant="5" id="Bsg-a9-fxX"/>
+                    <constraint firstItem="iJm-Db-OTX" firstAttribute="top" secondItem="JJj-Lk-XwX" secondAttribute="top" constant="5" id="1rp-N5-8sU"/>
+                    <constraint firstItem="iJm-Db-OTX" firstAttribute="leading" secondItem="JJj-Lk-XwX" secondAttribute="leading" id="2Ju-af-6Fc"/>
                     <constraint firstAttribute="trailing" secondItem="hRA-sd-Ifb" secondAttribute="trailing" id="HxK-Of-hQp"/>
-                    <constraint firstAttribute="trailing" secondItem="L2F-8m-cYD" secondAttribute="trailing" constant="5" id="M9N-ar-1Dy"/>
-                    <constraint firstItem="L2F-8m-cYD" firstAttribute="top" secondItem="AJc-31-dV5" secondAttribute="bottom" constant="5" id="MrU-lI-T11"/>
+                    <constraint firstAttribute="trailing" secondItem="iJm-Db-OTX" secondAttribute="trailing" id="INu-CO-L2C"/>
                     <constraint firstItem="AJc-31-dV5" firstAttribute="top" secondItem="JJj-Lk-XwX" secondAttribute="top" constant="5" id="OCh-aX-L1y"/>
                     <constraint firstAttribute="trailing" secondItem="AJc-31-dV5" secondAttribute="trailing" id="T16-HS-TVr"/>
                     <constraint firstItem="AJc-31-dV5" firstAttribute="leading" secondItem="JJj-Lk-XwX" secondAttribute="leading" id="nU9-7b-i8t"/>
@@ -66,8 +69,8 @@
             </collectionViewCellContentView>
             <size key="customSize" width="123" height="100"/>
             <connections>
+                <outlet property="gradientAvatarLabel" destination="iJm-Db-OTX" id="iaH-k3-ERR"/>
                 <outlet property="imageView" destination="AJc-31-dV5" id="fYQ-ar-MX2"/>
-                <outlet property="nameLabel" destination="L2F-8m-cYD" id="qTc-RA-aDP"/>
                 <outlet property="removeButton" destination="HkM-1l-Fnm" id="CDg-9j-9qu"/>
                 <outlet property="removeButtonContainer" destination="hRA-sd-Ifb" id="hRf-DF-pw7"/>
             </connections>

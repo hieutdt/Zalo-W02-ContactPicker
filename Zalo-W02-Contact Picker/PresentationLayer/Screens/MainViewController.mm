@@ -270,11 +270,11 @@
     _titleLabel = [[UILabel alloc] init];
     _titleLabel.text = @"Contacts list";
     _titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle3];
-    _titleLabel.textColor = [UIColor blackColor];
+    _titleLabel.textColor = [UIColor darkTextColor];
     
     _subTitleLabel = [[UILabel alloc] init];
     _subTitleLabel.text = @"Selected: 0/5";
-    _subTitleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+    _subTitleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
     _subTitleLabel.textColor = [UIColor lightGrayColor];
     
     UIStackView *stackView = [[UIStackView alloc] initWithArrangedSubviews:@[_titleLabel, _subTitleLabel]];

@@ -14,4 +14,20 @@
     return [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 }
 
++ (NSString *)getShortName:(NSString *)name {
+    if (name.length == 0)
+        return @"";
+    
+    NSMutableString *shortName = [[NSMutableString alloc] initWithFormat:@"%c", [name characterAtIndex:0]];
+    
+    for (int i = 0; i < name.length - 1; i++) {
+        if ([[name substringWithRange:NSMakeRange(i, 1)] isEqualToString: @" "]) {
+            [shortName appendString:[name substringWithRange:NSMakeRange(i + 1, 1)]];
+            break;
+        }
+    }
+    
+    return shortName;
+}
+
 @end

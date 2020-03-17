@@ -17,7 +17,7 @@ static const int FIRST_ALPHABET_ASCII_CODE = 97;
 static const int ALPHABET_SECTIONS_NUMBER = 27;
 
 static const int PICKER_COLLECTION_CELL_WIDTH = 70;
-static const int PICKER_COLLECTION_CELL_HEIGHT = 100;
+static const int PICKER_COLLECTION_CELL_HEIGHT = 80;
 
 static const int MAX_PICK = 5;
 

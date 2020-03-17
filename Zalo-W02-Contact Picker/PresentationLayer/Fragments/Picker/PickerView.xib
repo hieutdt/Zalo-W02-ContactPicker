@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,10 +20,10 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="dad-37-tiA">
-                    <rect key="frame" x="10" y="5" width="323" height="100"/>
+                    <rect key="frame" x="10" y="5" width="323" height="80"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="100" id="gSN-Cj-wtB"/>
+                        <constraint firstAttribute="height" constant="80" id="gSN-Cj-wtB"/>
                     </constraints>
                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="8RN-ZZ-c9P">
                         <size key="itemSize" width="50" height="50"/>
@@ -33,13 +33,17 @@
                     </collectionViewFlowLayout>
                 </collectionView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Chq-lg-GDU">
-                    <rect key="frame" x="343" y="5" width="70" height="70"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <rect key="frame" x="343" y="10" width="70" height="70"/>
+                    <color key="backgroundColor" red="0.10614245025702951" green="0.58808881769187149" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="70" id="IO3-kg-Fvw"/>
                         <constraint firstAttribute="width" constant="70" id="N4v-4q-7bM"/>
                     </constraints>
-                    <state key="normal" image="next_button"/>
+                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="32"/>
+                    <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <state key="normal" title="→">
+                        <color key="titleShadowColor" cocoaTouchSystemColor="darkTextColor"/>
+                    </state>
                     <connections>
                         <action selector="nextButtonTapped:" destination="-1" eventType="touchUpInside" id="jXN-0c-csy"/>
                     </connections>
@@ -50,15 +54,12 @@
                 <constraint firstItem="dad-37-tiA" firstAttribute="top" secondItem="o7O-Dx-O1C" secondAttribute="top" constant="5" id="Ww2-CN-0H8"/>
                 <constraint firstAttribute="trailing" secondItem="Chq-lg-GDU" secondAttribute="trailing" constant="10" id="cje-nA-MGL"/>
                 <constraint firstItem="Chq-lg-GDU" firstAttribute="leading" secondItem="dad-37-tiA" secondAttribute="trailing" constant="10" id="f3N-4S-Cnf"/>
+                <constraint firstItem="Chq-lg-GDU" firstAttribute="centerY" secondItem="dad-37-tiA" secondAttribute="centerY" id="f5V-J0-Hkd"/>
                 <constraint firstItem="dad-37-tiA" firstAttribute="leading" secondItem="o7O-Dx-O1C" secondAttribute="leading" constant="10" id="nMt-Fb-zrr"/>
-                <constraint firstItem="Chq-lg-GDU" firstAttribute="top" secondItem="o7O-Dx-O1C" secondAttribute="top" constant="5" id="vS7-sm-BOT"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="aGZ-6x-ext"/>
             <point key="canvasLocation" x="257.24637681159425" y="-142.29910714285714"/>
         </view>
     </objects>
-    <resources>
-        <image name="next_button" width="256" height="256"/>
-    </resources>
 </document>

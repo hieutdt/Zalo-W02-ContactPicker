@@ -242,6 +242,7 @@
     [cell setName:pickerModel.name];
     [cell setChecked:pickerModel.isChosen];
     [cell setGradientColorBackground:pickerModel.gradientColorCode];
+    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     
     if (_delegate) {
         [_delegate loadImageToCell:cell atIndexPath:indexPath];

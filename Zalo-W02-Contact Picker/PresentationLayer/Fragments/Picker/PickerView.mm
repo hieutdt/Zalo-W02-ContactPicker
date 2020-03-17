@@ -60,11 +60,8 @@
 }
 
 - (void)createNextButton {
-    UIImage *buttonImage = [[UIImage imageNamed:@"next_button"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    [_nextButton setImage:buttonImage forState:UIControlStateNormal];
-    [_nextButton setTintColor:[UIColor colorWithRed:56/255.0 green:144/255.0 blue:189/255.0 alpha:1]];
-    
     _nextButton.layer.masksToBounds = false;
+    _nextButton.layer.cornerRadius = _nextButton.bounds.size.width / 2;
     _nextButton.layer.shadowColor = [UIColor blackColor].CGColor;
     _nextButton.layer.shadowOpacity = 0.3;
     _nextButton.layer.shadowOffset = CGSizeZero;
