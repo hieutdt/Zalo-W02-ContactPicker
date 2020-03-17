@@ -11,6 +11,7 @@
 #import "PickerTableView.h"
 #import "ErrorView.h"
 #import "NoPermissionView.h"
+#import "EmptyView.h"
 
 #import "LayoutHelper.h"
 #import "LoadingHelper.h"
@@ -39,6 +40,7 @@
 
 @property (strong, nonatomic) ErrorView *errorView;
 @property (strong, nonatomic) NoPermissionView *noPermissionView;
+@property (strong, nonatomic) EmptyView *emptyView;
 
 @end
 
@@ -67,6 +69,7 @@
     
     _errorView = [[ErrorView alloc] init];
     _noPermissionView = [[NoPermissionView alloc] init];
+    _emptyView = [[EmptyView alloc] init];
     
     for (int i = 0; i < ALPHABET_SECTIONS_NUMBER; i++) {
         _sectionData[i] = [[NSMutableArray alloc] init];
@@ -79,6 +82,7 @@
 - (void)checkPermissionAndLoadContacts {
     [_errorView removeFromSuperview];
     [_noPermissionView removeFromSuperview];
+    [_emptyView removeFromSuperview];
     
     CNAuthorizationStatus authorizationStatus = [[ContactBusiness instance] checkPermissionToAccessContactData];
     switch (authorizationStatus) {
@@ -92,16 +96,18 @@
         }
         default: {
             [[ContactBusiness instance] requestAccessWithCompletionHandle:^(BOOL granted, NSError *error) {
-                if (error) {
-                    [self showErrorViewWithErrorDescription:[error.userInfo valueForKey:NSLocalizedDescriptionKey]];
-                    return;
-                }
-                
-                if (granted) {
-                    [self loadContacts];
-                } else {
-                    [self showNotPermissionView];
-                }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (error) { // Access denied error sent here
+                        [self showNotPermissionView];
+                        return;
+                    }
+                    
+                    if (granted) {
+                        [self loadContacts];
+                    } else {
+                        [self showNotPermissionView];
+                    }
+                });
             }];
             break;
         }
@@ -117,14 +123,20 @@
         [[LoadingHelper instance] hideLoadingEffectDelay:1.5];
         
         if (!error) {
-            self.contactStackView.hidden = false;
-            
             self.contacts = contacts;
-            [self initContactsData:contacts];
             
-            self.pickerModels = [self getPickerModelsArrayFromContacts];
-            [self.tableView setModelsData:self.pickerModels];
-            [self.tableView reloadData];
+            if (self.contacts.count > 0) {
+                self.contactStackView.hidden = false;
+                
+                [self initContactsData:contacts];
+                self.pickerModels = [self getPickerModelsArrayFromContacts];
+                
+                [self.tableView setModelsData:self.pickerModels];
+                [self.tableView reloadData];
+            } else {
+                [self showEmptyView];
+            }
+            
         } else {
             [self showErrorViewWithErrorDescription:[error.userInfo valueForKey:NSLocalizedDescriptionKey]];
         }
@@ -153,6 +165,18 @@
             [sectionsArray[ALPHABET_SECTIONS_NUMBER - 1] addObject:models[i]];
         }
     }
+}
+
+- (void)showEmptyView {
+    _contactStackView.hidden = true;
+    
+    __weak MainViewController *weakSelf = self;
+    [_emptyView setTilte:@"KHÔNG TÌM THẤY DỮ LIỆU" andDescription:@"Danh bạ của bạn đang trống! Vui lòng cập nhật danh bạ và thử lại sau!"];
+    [_emptyView setRetryBlock:^{
+        [weakSelf checkPermissionAndLoadContacts];
+    }];
+    
+    [self showSubView:_emptyView];
 }
 
 - (void)showNotPermissionView {

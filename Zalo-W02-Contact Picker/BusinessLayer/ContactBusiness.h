@@ -18,7 +18,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (CNAuthorizationStatus)checkPermissionToAccessContactData;
 - (void)requestAccessWithCompletionHandle:(void (^)(BOOL granted, NSError *error))completionHandle;
+
 - (void)loadContactsWithCompletion:(void (^)(NSMutableArray<Contact*> *contacts, NSError *error))completionHandle;
+- (void)refetchContactsWithCompletion:(void (^)(NSMutableArray<Contact*> *contacts, NSError *error))completionHandle;
+
 - (void)loadContactImageDataByID:(NSString*)contactID completion:(void (^)(NSData *imageData, NSError *error))completionHandle;
 
 @end

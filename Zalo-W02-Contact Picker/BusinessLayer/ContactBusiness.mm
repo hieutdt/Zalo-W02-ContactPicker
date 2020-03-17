@@ -41,9 +41,29 @@ static ContactBusiness *sharedInstance = nil;
 }
 
 - (void)loadContactsWithCompletion:(void (^)(NSMutableArray<Contact *> * contacts, NSError * error))completionHandle {
+    NSLog(@"TONHIEU: Load contact called");
+    
+    __block NSMutableArray<Contact *> *contactsData = [[ContactAdaper instance] getContactsList];
+    
+    if (contactsData and contactsData.count > 0) {
+        completionHandle(contactsData, nil);
+        return;
+    }
+    
     [[ContactAdaper instance] fetchContactsWithCompletion:^(NSError *error) {
         if (!error) {
-            NSMutableArray<Contact*> *contactsData = [[ContactAdaper instance] getContactsList];
+            contactsData = [[ContactAdaper instance] getContactsList];
+            completionHandle(contactsData, nil);
+        } else {
+            completionHandle(nil, error);
+        }
+    }];
+}
+
+- (void)refetchContactsWithCompletion:(void (^)(NSMutableArray<Contact*> *contacts, NSError *error))completionHandle {
+    [[ContactAdaper instance] fetchContactsWithCompletion:^(NSError *error) {
+        if (!error) {
+            NSMutableArray<Contact *> *contactsData = [[ContactAdaper instance] getContactsList];
             completionHandle(contactsData, nil);
         } else {
             completionHandle(nil, error);

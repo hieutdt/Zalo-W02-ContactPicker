@@ -36,6 +36,8 @@
 		04D30489241929000031A670 /* PickerView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04D30488241929000031A670 /* PickerView.mm */; };
 		04D3048B241929ED0031A670 /* PickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04D3048A241929ED0031A670 /* PickerView.xib */; };
 		04FA5EE224208F8900B1395C /* LoadingHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04FA5EE124208F8900B1395C /* LoadingHelper.mm */; };
+		04FA5EE62420B80500B1395C /* EmptyView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04FA5EE52420B80500B1395C /* EmptyView.mm */; };
+		04FA5EE82420B81A00B1395C /* EmptyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04FA5EE72420B81A00B1395C /* EmptyView.xib */; };
 		463A50A2688A4221EA94E440 /* Pods_Zalo_W02_Contact_Picker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98F59C91C0CFBFFA00C59DC9 /* Pods_Zalo_W02_Contact_Picker.framework */; };
 /* End PBXBuildFile section */
 
@@ -89,6 +91,9 @@
 		04D3048A241929ED0031A670 /* PickerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PickerView.xib; sourceTree = "<group>"; };
 		04FA5EE024208F8900B1395C /* LoadingHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoadingHelper.h; sourceTree = "<group>"; };
 		04FA5EE124208F8900B1395C /* LoadingHelper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LoadingHelper.mm; sourceTree = "<group>"; };
+		04FA5EE42420B80500B1395C /* EmptyView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmptyView.h; sourceTree = "<group>"; };
+		04FA5EE52420B80500B1395C /* EmptyView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EmptyView.mm; sourceTree = "<group>"; };
+		04FA5EE72420B81A00B1395C /* EmptyView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EmptyView.xib; sourceTree = "<group>"; };
 		1D5E9E6A2340863B822F8B2A /* Pods-Zalo-W02-Contact Picker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Zalo-W02-Contact Picker.release.xcconfig"; path = "Target Support Files/Pods-Zalo-W02-Contact Picker/Pods-Zalo-W02-Contact Picker.release.xcconfig"; sourceTree = "<group>"; };
 		98F59C91C0CFBFFA00C59DC9 /* Pods_Zalo_W02_Contact_Picker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Zalo_W02_Contact_Picker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC43C114AD791C99BA7D0969 /* Pods-Zalo-W02-Contact Picker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Zalo-W02-Contact Picker.debug.xcconfig"; path = "Target Support Files/Pods-Zalo-W02-Contact Picker/Pods-Zalo-W02-Contact Picker.debug.xcconfig"; sourceTree = "<group>"; };
@@ -270,10 +275,21 @@
 		04D3047E2419266C0031A670 /* Fragments */ = {
 			isa = PBXGroup;
 			children = (
+				04FA5EE32420B7EA00B1395C /* Empty */,
 				041901E824206B7A001F82C1 /* Errors */,
 				0478F5B92419EB6800DA753C /* Picker */,
 			);
 			path = Fragments;
+			sourceTree = "<group>";
+		};
+		04FA5EE32420B7EA00B1395C /* Empty */ = {
+			isa = PBXGroup;
+			children = (
+				04FA5EE42420B80500B1395C /* EmptyView.h */,
+				04FA5EE52420B80500B1395C /* EmptyView.mm */,
+				04FA5EE72420B81A00B1395C /* EmptyView.xib */,
+			);
+			path = Empty;
 			sourceTree = "<group>";
 		};
 		5F662EC7594372C7F01D2299 /* Pods */ = {
@@ -344,6 +360,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04FA5EE82420B81A00B1395C /* EmptyView.xib in Resources */,
 				04D3048B241929ED0031A670 /* PickerView.xib in Resources */,
 				0478F5C52419EEAA00DA753C /* PickerTableViewCell.xib in Resources */,
 				04D30470241925E20031A670 /* LaunchScreen.storyboard in Resources */,
@@ -418,6 +435,7 @@
 				04D30465241925E00031A670 /* SceneDelegate.m in Sources */,
 				0478F5C8241A181E00DA753C /* StringHelper.mm in Sources */,
 				046DF566241FB2E100181491 /* ColorHelper.mm in Sources */,
+				04FA5EE62420B80500B1395C /* EmptyView.mm in Sources */,
 				041901EB24206BA2001F82C1 /* ErrorView.mm in Sources */,
 				04D30481241927360031A670 /* MainViewController.mm in Sources */,
 				049C6F8124192BF100DEFA45 /* Contact.mm in Sources */,

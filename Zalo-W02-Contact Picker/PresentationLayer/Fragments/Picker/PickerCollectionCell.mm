@@ -43,7 +43,6 @@
     [super prepareForReuse];
     
     _imageView.layer.sublayers = nil;
-    
     [_imageView setImage:nil];
 }
 

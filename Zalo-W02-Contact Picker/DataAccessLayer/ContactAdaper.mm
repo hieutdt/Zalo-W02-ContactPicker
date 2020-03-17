@@ -123,6 +123,8 @@ static ContactAdaper *sharedInstance = nil;
 }
 
 - (void)saveCNContactsToContactsArray:(NSMutableArray<CNContact*> *)CNContacts {
+    [_contacts removeAllObjects];
+    
     for (CNContact *cnContact in CNContacts) {
         Contact *contact = [[Contact alloc] init];
         contact.identifier = cnContact.identifier;
