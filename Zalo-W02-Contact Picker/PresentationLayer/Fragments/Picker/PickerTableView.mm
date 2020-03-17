@@ -161,10 +161,12 @@
     
     if (pickerModel.isChosen) {
         _selectedCount--;
-        [_delegate uncheckCellOfElement:pickerModel];
+        if (_delegate and [_delegate respondsToSelector:@selector(uncheckCellOfElement:)])
+            [_delegate uncheckCellOfElement:pickerModel];
     } else if (_selectedCount < 5) {
         _selectedCount++;
-        [_delegate checkedCellOfElement:pickerModel];
+        if (_delegate and [_delegate respondsToSelector:@selector(checkedCellOfElement:)])
+            [_delegate checkedCellOfElement:pickerModel];
     } else
         return;
     
@@ -244,7 +246,7 @@
     [cell setGradientColorBackground:pickerModel.gradientColorCode];
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     
-    if (_delegate) {
+    if (_delegate and [_delegate respondsToSelector:@selector(loadImageToCell:atIndexPath:)]) {
         [_delegate loadImageToCell:cell atIndexPath:indexPath];
     }
     

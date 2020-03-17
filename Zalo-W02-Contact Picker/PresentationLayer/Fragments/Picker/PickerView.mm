@@ -153,7 +153,7 @@
 }
 
 - (IBAction)nextButtonTapped:(id)sender {
-    if (_delegate) {
+    if (_delegate and [_delegate respondsToSelector:@selector(nextButtonTapped:)]) {
         [_delegate nextButtonTapped];
     }
 }
@@ -176,7 +176,7 @@
 - (void)removeButtonTapped:(PickerModel *)pickerModel {
     [self removeElement:pickerModel];
     
-    if (_delegate)
+    if (_delegate and [_delegate respondsToSelector:@selector(removeElementFromPickerview:)])
         [_delegate removeElementFromPickerview:pickerModel];
 }
 

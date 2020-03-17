@@ -74,7 +74,7 @@
 }
 
 - (IBAction)removeButtonTapped:(id)sender {
-    if (_delegate) {
+    if (_delegate and [_delegate respondsToSelector:@selector(removeButtonTapped:)]) {
         [_delegate removeButtonTapped:_model];
     }
 }
