@@ -153,7 +153,7 @@
 }
 
 - (IBAction)nextButtonTapped:(id)sender {
-    if (_delegate and [_delegate respondsToSelector:@selector(nextButtonTapped:)]) {
+    if (_delegate and [_delegate respondsToSelector:@selector(nextButtonTapped)]) {
         [_delegate nextButtonTapped];
     }
 }

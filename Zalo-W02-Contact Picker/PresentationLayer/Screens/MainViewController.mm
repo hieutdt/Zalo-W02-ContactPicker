@@ -222,6 +222,10 @@
     [_tableView searchWithSearchString:searchText];
 }
 
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    [_searchBar endEditing:true];
+}
+
 
 #pragma mark - PickerViewDelegateProtocol
 
@@ -251,25 +255,17 @@
 }
 
 - (void)uncheckCellOfElement:(PickerModel *)element {
-    try {
-        [_contactPickerView removeElement:element];
-        [self updateNavigationBar];
-    } catch (NSException *e) {
-        return;
-    }
+    [_contactPickerView removeElement:element];
+    [self updateNavigationBar];
 }
 
 
 - (void)checkedCellOfElement:(PickerModel *)element {
-    try {
-        [[ContactBusiness instance] loadContactImageDataByID:element.identifier completion:^(NSData *imageData, NSError *error) {
-            [self.contactPickerView addElement:element withImageData:imageData];
-        }];
-        
-        [self updateNavigationBar];
-    } catch (NSException *e) {
-        return;
-    }
+    [[ContactBusiness instance] loadContactImageDataByID:element.identifier completion:^(NSData *imageData, NSError *error) {
+        [self.contactPickerView addElement:element withImageData:imageData];
+    }];
+    
+    [self updateNavigationBar];
 }
 
 #pragma mark - SetUpNavigationBar
