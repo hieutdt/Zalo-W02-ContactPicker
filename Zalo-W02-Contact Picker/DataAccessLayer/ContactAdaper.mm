@@ -68,7 +68,7 @@
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSMutableDictionary* details = [NSMutableDictionary dictionary];
-                [details setValue:@"Unable to fetch contacts" forKey:NSLocalizedDescriptionKey];
+                [details setValue:@"Lấy dữ liệu danh bạ thất bại." forKey:NSLocalizedDescriptionKey];
                 
                 NSError *error = [[NSError alloc] initWithDomain:@"ContactAdapter" code:200 userInfo:details];
                 
@@ -81,7 +81,7 @@
 - (void)fetchContactImageDataByID:(NSString *)contactID completion:(void (^)(NSError * error))completionHandle {
     NSPredicate *predicate = [CNContact predicateForContactsWithIdentifiers:@[contactID]];
     CNContactStore *contactStore = [[CNContactStore alloc] init];
-    NSError *error = [[NSError alloc] initWithDomain:@"ContactAdapter" code:200 userInfo:@{@"Fetch image failed": NSLocalizedDescriptionKey}];
+    NSError *error = [[NSError alloc] initWithDomain:@"ContactAdapter" code:200 userInfo:@{@"Tải hình ảnh thất bại.": NSLocalizedDescriptionKey}];
     
     dispatch_queue_t concurrentQueue = dispatch_queue_create("ConcurrentQueue", DISPATCH_QUEUE_CONCURRENT);
     
@@ -104,7 +104,7 @@
             });
             
         } catch (NSException *e) {
-            NSLog(@"Fetch image failed!");
+            NSLog(@"Tải hình ảnh thất bại.");
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 completionHandle(error);

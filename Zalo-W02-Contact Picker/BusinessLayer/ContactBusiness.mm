@@ -39,7 +39,7 @@
     return sharedInstance;
 }
 
-- (void)fetchContactsWithCompletion:(void (^)(NSMutableArray<Contact *> * contacts, NSError * error))completionHandle {
+- (void)loadContactsWithCompletion:(void (^)(NSMutableArray<Contact *> * contacts, NSError * error))completionHandle {
     [[ContactAdaper instance] fetchContactsWithCompletion:^(NSError *error) {
         if (!error) {
             NSMutableArray<Contact*> *contactsData = [[ContactAdaper instance] getContactsList];
@@ -50,7 +50,7 @@
     }];
 }
 
-- (void)fetchContactImageDataByID:(NSString *)contactID completion:(void (^)(NSData * imageData, NSError * error))completionHandle {
+- (void)loadContactImageDataByID:(NSString *)contactID completion:(void (^)(NSData * imageData, NSError * error))completionHandle {
     __block NSData *imageData = [[ContactAdaper instance] getImageDataOfContactWithID:contactID];
     
     if (imageData) {

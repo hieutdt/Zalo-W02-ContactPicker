@@ -10,6 +10,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MainViewController">
             <connections>
                 <outlet property="contactPickerView" destination="v8X-hv-lAW" id="Anc-aZ-ogL"/>
+                <outlet property="contactStackView" destination="ehR-G3-bjA" id="PO2-Z9-yJG"/>
                 <outlet property="searchBar" destination="Fxc-ZP-X4Q" id="D96-9h-rWy"/>
                 <outlet property="tableView" destination="IpT-ey-Txi" id="PfY-cy-s35"/>
                 <outlet property="view" destination="rv6-1W-1IG" id="4cK-hy-eXu"/>

@@ -9,6 +9,11 @@
 #import "MainViewController.h"
 #import "PickerView.h"
 #import "PickerTableView.h"
+#import "ErrorView.h"
+#import "NoPermissionView.h"
+
+#import "LayoutHelper.h"
+
 #import "Contact.h"
 #import "ContactBusiness.h"
 #import "AppConsts.h"
@@ -18,6 +23,7 @@
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) IBOutlet PickerTableView *tableView;
 @property (weak, nonatomic) IBOutlet PickerView *contactPickerView;
+@property (weak, nonatomic) IBOutlet UIStackView *contactStackView;
 
 @property (strong, nonatomic) UILabel *titleLabel;
 @property (strong, nonatomic) UILabel *subTitleLabel;
@@ -27,6 +33,9 @@
 @property (strong, nonatomic) NSMutableArray<NSMutableArray *> *sectionData;
 
 @property (strong, nonatomic) NSMutableArray<PickerModel *> *pickerModels;
+
+@property (strong, nonatomic) ErrorView *errorView;
+@property (strong, nonatomic) NoPermissionView *noPermissionView;
 
 @end
 
@@ -41,6 +50,11 @@
     
     _contactPickerView.delegate = self;
     _contactPickerView.hidden = true;
+    _contactPickerView.layer.masksToBounds = false;
+    _contactPickerView.layer.shadowColor = [UIColor blackColor].CGColor;
+    _contactPickerView.layer.shadowOpacity = 0.2;
+    _contactPickerView.layer.shadowOffset = CGSizeZero;
+    _contactPickerView.layer.shadowRadius = 2;
     
     _searchBar.delegate = self;
     
@@ -48,11 +62,20 @@
     _sectionData = [[NSMutableArray alloc] init];
     _pickerModels = [[NSMutableArray alloc] init];
     
+    _errorView = [[ErrorView alloc] init];
+    _noPermissionView = [[NoPermissionView alloc] init];
+    
     for (int i = 0; i < ALPHABET_SECTIONS_NUMBER; i++) {
         _sectionData[i] = [[NSMutableArray alloc] init];
     }
     
     [self customInitNavigationBar];
+    [self checkPermissionAndLoadContacts];
+}
+
+- (void)checkPermissionAndLoadContacts {
+    [_errorView removeFromSuperview];
+    [_noPermissionView removeFromSuperview];
     
     CNAuthorizationStatus authorizationStatus = [[ContactBusiness instance] checkPermissionToAccessContactData];
     switch (authorizationStatus) {
@@ -67,7 +90,7 @@
         default: {
             [[ContactBusiness instance] requestAccessWithCompletionHandle:^(BOOL granted, NSError *error) {
                 if (error) {
-                    [self showErrorView];
+                    [self showErrorViewWithErrorDescription:[error.userInfo valueForKey:NSLocalizedDescriptionKey]];
                     return;
                 }
                 
@@ -85,10 +108,12 @@
 - (void)loadContacts {
     //TODO: show loading here
     
-    [[ContactBusiness instance] fetchContactsWithCompletion:^(NSMutableArray<Contact *> *contacts, NSError *error) {
+    [[ContactBusiness instance] loadContactsWithCompletion:^(NSMutableArray<Contact *> *contacts, NSError *error) {
         //TODO: Hide loading here
         
         if (!error) {
+            self.contactStackView.hidden = false;
+            
             self.contacts = contacts;
             [self initContactsData:contacts];
             
@@ -96,7 +121,7 @@
             [self.tableView setModelsData:self.pickerModels];
             [self.tableView reloadData];
         } else {
-            [self showErrorView];
+            [self showErrorViewWithErrorDescription:[error.userInfo valueForKey:NSLocalizedDescriptionKey]];
         }
     }];
 }
@@ -126,11 +151,39 @@
 }
 
 - (void)showNotPermissionView {
+    _contactStackView.hidden = true;
     
+    [_noPermissionView setTilte:@"TRUY CẬP BỊ TỪ CHỐI" andDescription:@"Bạn đã từ chối ứng dụng truy cập vào danh bạ. Vui lòng cấp quyền ở \"Cài đặt\" để tiếp tục sử dụng!"];
+    [_noPermissionView setRetryBlock:^{
+        [UIApplication.sharedApplication openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString] options:@{} completionHandler:nil];
+    }];
+    
+    [self showSubView:_noPermissionView];
 }
 
-- (void)showErrorView {
+- (void)showErrorViewWithErrorDescription:(NSString *)description {
+    _contactStackView.hidden = true;
     
+    __weak MainViewController *weakSelf = self;
+    [_errorView setTilte:@"THẤT BẠI" andDescription:[NSString stringWithFormat:@"%@ Vui lòng thử lại sau!", description]];
+    [_errorView setRetryBlock:^{
+        [weakSelf checkPermissionAndLoadContacts];
+    }];
+    
+    [self showSubView:_errorView];
+}
+
+- (void)showSubView:(UIView *)view {
+    view.hidden = false;
+    
+    [self.view addSubview:view];
+    view.translatesAutoresizingMaskIntoConstraints = false;
+    [view.topAnchor constraintEqualToAnchor:_searchBar.bottomAnchor].active = true;
+    [view.leadingAnchor constraintEqualToAnchor:view.superview.leadingAnchor].active = true;
+    [view.trailingAnchor constraintEqualToAnchor:view.superview.trailingAnchor].active = true;
+    [view.bottomAnchor constraintEqualToAnchor:view.superview.bottomAnchor].active = true;
+    
+    [self.view layoutIfNeeded];
 }
 
 - (NSMutableArray<PickerModel *> *)getPickerModelsArrayFromContacts {
@@ -181,7 +234,7 @@
 - (void)loadImageToCell:(PickerTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     Contact *contact = (Contact *)_sectionData[indexPath.section][indexPath.row];
     
-    [[ContactBusiness instance] fetchContactImageDataByID:contact.identifier completion:^(NSData *imageData, NSError *error) {
+    [[ContactBusiness instance] loadContactImageDataByID:contact.identifier completion:^(NSData *imageData, NSError *error) {
         [cell setAvatar:[UIImage imageWithData:imageData]];
         [cell setNeedsLayout];
     }];
@@ -199,9 +252,7 @@
 
 - (void)checkedCellOfElement:(PickerModel *)element {
     try {
-        [[ContactBusiness instance] fetchContactImageDataByID:element.identifier completion:^(NSData *imageData, NSError *error) {
-//            NSUInteger index = [self.pickerModels indexOfObject:element];
-//            Contact *contact = [self.contacts objectAtIndex:index];
+        [[ContactBusiness instance] loadContactImageDataByID:element.identifier completion:^(NSData *imageData, NSError *error) {
             [self.contactPickerView addElement:element withImageData:imageData];
         }];
         
@@ -218,7 +269,7 @@
     
     _titleLabel = [[UILabel alloc] init];
     _titleLabel.text = @"Contacts list";
-    _titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+    _titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle3];
     _titleLabel.textColor = [UIColor blackColor];
     
     _subTitleLabel = [[UILabel alloc] init];
@@ -235,6 +286,8 @@
     
     _cancelButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelPickContacts)];
     _cancelButtonItem.tintColor = [UIColor blackColor];
+    
+    _subTitleLabel.hidden = true;
 }
 
 - (void)showCancelPickNavigationButton {
