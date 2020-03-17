@@ -51,6 +51,7 @@
 }
 
 - (void)loadContactImageDataByID:(NSString *)contactID completion:(void (^)(NSData * imageData, NSError * error))completionHandle {
+    // Get image data from ContactAdaperCache
     __block NSData *imageData = [[ContactAdaper instance] getImageDataOfContactWithID:contactID];
     
     if (imageData) {

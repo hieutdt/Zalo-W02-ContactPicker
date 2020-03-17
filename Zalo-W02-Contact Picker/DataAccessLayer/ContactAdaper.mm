@@ -104,7 +104,7 @@
             });
             
         } catch (NSException *e) {
-            NSLog(@"Tải hình ảnh thất bại.");
+            NSLog(@"Load image failed!");
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 completionHandle(error);
