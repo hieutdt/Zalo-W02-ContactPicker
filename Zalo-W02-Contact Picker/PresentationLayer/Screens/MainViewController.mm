@@ -16,6 +16,8 @@
 #import "LayoutHelper.h"
 #import "LoadingHelper.h"
 
+#import "ImageCache.h"
+
 #import "Contact.h"
 #import "ContactBusiness.h"
 #import "AppConsts.h"
@@ -109,6 +111,7 @@
     
     [ContactBusiness loadContactsWithCompletion:^(NSMutableArray<Contact *> *contacts, NSError *error) {
         ASYNC_MAIN({
+            //TODO: hide loading here
             [[LoadingHelper instance] hideLoadingEffectDelay:1.5];
         });
         
@@ -215,6 +218,7 @@
     [self updateNavigationBar];
 }
 
+
 #pragma mark - UISearchBarDelegateProtocol
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
@@ -247,12 +251,19 @@
 - (void)loadImageToCell:(PickerTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     Contact *contact = (Contact *)self.sectionData[indexPath.section][indexPath.row];
     
-    [ContactBusiness loadContactImageByID:contact.identifier completion:^(UIImage *image, NSError *error) {
-        ASYNC_MAIN({
-            [cell setAvatar:image];
-            [cell setNeedsLayout];
-        });
-    }];
+    UIImage *imageFromCache = [[ImageCache instance] imageForKey:contact.identifier];
+    if (imageFromCache) {
+        [cell setAvatar:imageFromCache];
+        [cell setNeedsLayout];
+    } else {
+        [ContactBusiness loadContactImageByID:contact.identifier completion:^(UIImage *image, NSError *error) {
+            ASYNC_MAIN({
+                [[ImageCache instance] setImage:image forKey:contact.identifier];
+                [cell setAvatar:image];
+                [cell setNeedsLayout];
+            });
+        }];
+    }
 }
 
 - (void)uncheckCellOfElement:(PickerModel *)element {
@@ -260,13 +271,18 @@
     [self updateNavigationBar];
 }
 
-
 - (void)checkedCellOfElement:(PickerModel *)element {
-    [ContactBusiness loadContactImageByID:element.identifier completion:^(UIImage *image, NSError *error) {
-        ASYNC_MAIN({
-            [self.contactPickerView addElement:element withImage:image];
-        });
-    }];
+    UIImage *imageFromCache = [[ImageCache instance] imageForKey:element.identifier];
+    if (imageFromCache) {
+        [self.contactPickerView addElement:element withImage:imageFromCache];
+    } else {
+        [ContactBusiness loadContactImageByID:element.identifier completion:^(UIImage *image, NSError *error) {
+            ASYNC_MAIN({
+                [[ImageCache instance] setImage:image forKey:element.identifier];
+                [self.contactPickerView addElement:element withImage:image];
+            });
+        }];
+    }
     
     [self updateNavigationBar];
 }

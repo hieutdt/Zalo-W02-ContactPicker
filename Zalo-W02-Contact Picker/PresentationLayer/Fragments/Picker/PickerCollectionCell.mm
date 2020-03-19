@@ -64,11 +64,11 @@
     [ColorHelper setGradientColorBackgroundToView:_imageView withColorCode:_model.gradientColorCode];
 }
 
-- (void)setUpImageForCell:(NSData *)imageData {
-    if (imageData) {
+- (void)setUpImageForCell:(UIImage *)image {
+    if (image) {
         _gradientAvatarLabel.hidden = true;
         _imageView.layer.sublayers = nil;
-        [_imageView setImage:[UIImage imageWithData:imageData]];
+        [_imageView setImage:image];
     }
 }
 

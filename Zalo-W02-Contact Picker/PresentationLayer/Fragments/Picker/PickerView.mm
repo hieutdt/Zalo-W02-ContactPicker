@@ -18,7 +18,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *nextButton;
 
 @property (strong, nonatomic) NSMutableArray<PickerModel*> *dataArray;
-@property (strong, nonatomic) NSCache<NSString *, NSData *> *dataImageCache;
+@property (strong, nonatomic) NSCache<NSString *, UIImage *> *imageCache;
 
 @end
 
@@ -40,7 +40,7 @@
     [self createNextButton];
     
     _dataArray = [[NSMutableArray alloc] init];
-    _dataImageCache = [[NSCache alloc] init];
+    _imageCache = [[NSCache alloc] init];
 }
 
 - (instancetype)initWithCoder:(NSCoder *)coder {
@@ -85,8 +85,8 @@
     
     [_collectionView performBatchUpdates:^{
         [_dataArray addObject:pickerModel];
-//        if (image)
-//            [_dataImageCache setObject:image forKey:pickerModel.identifier];
+        if (image)
+            [self.imageCache setObject:image forKey:pickerModel.identifier];
         
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:_dataArray.count - 1 inSection:0];
         [_collectionView insertItemsAtIndexPaths:@[indexPath]];
@@ -102,9 +102,9 @@
         NSUInteger indexInArray = [_dataArray indexOfObject:pickerModel];
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:indexInArray inSection:0];
         
-        [_dataArray removeObject:pickerModel];
-        [_dataImageCache removeObjectForKey:pickerModel.identifier];
-        [_collectionView deleteItemsAtIndexPaths:@[indexPath]];
+        [self.dataArray removeObject:pickerModel];
+        [self.imageCache removeObjectForKey:pickerModel.identifier];
+        [self.collectionView deleteItemsAtIndexPaths:@[indexPath]];
         
     } completion:^(BOOL finished) {
         self.hidden = (self.dataArray.count == 0);
@@ -146,7 +146,7 @@
 
     //TODO: Set up for cell here
     [cell setUpPickerModelForCell:_dataArray[indexPath.row]];
-    [cell setUpImageForCell:[_dataImageCache objectForKey:_dataArray[indexPath.row].identifier]];
+    [cell setUpImageForCell:[self.imageCache objectForKey:_dataArray[indexPath.row].identifier]];
     cell.delegate = self;
     
     return cell;
