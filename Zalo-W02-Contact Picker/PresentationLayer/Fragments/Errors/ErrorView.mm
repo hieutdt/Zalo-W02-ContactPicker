@@ -12,6 +12,7 @@
 @interface ErrorView ()
 
 @property (weak, nonatomic) IBOutlet UIView *contentView;
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
 @property (nonatomic, nullable) void (^retryBlock)();
@@ -50,6 +51,12 @@
         [self customInit];
     }
     return self;
+}
+
+- (void)setImage:(UIImage *)image {
+    if (image) {
+        [_imageView setImage:image];
+    }
 }
 
 - (void)setTilte:(NSString *)title andDescription:(NSString *)description {

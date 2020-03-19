@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		041901EB24206BA2001F82C1 /* ErrorView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 041901EA24206BA2001F82C1 /* ErrorView.mm */; };
 		041901ED24206BC4001F82C1 /* ErrorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 041901EC24206BC4001F82C1 /* ErrorView.xib */; };
-		041901F024207964001F82C1 /* NoPermissionView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 041901EF24207964001F82C1 /* NoPermissionView.mm */; };
-		041901F22420797D001F82C1 /* NoPermissionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 041901F12420797D001F82C1 /* NoPermissionView.xib */; };
 		041931F5242314B400500908 /* ImageCache.mm in Sources */ = {isa = PBXBuildFile; fileRef = 041931F4242314B400500908 /* ImageCache.mm */; };
 		0422A340241BE6A9008F5CF3 /* LayoutHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0422A33F241BE6A9008F5CF3 /* LayoutHelper.mm */; };
 		046DF566241FB2E100181491 /* ColorHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 046DF565241FB2E100181491 /* ColorHelper.mm */; };
@@ -37,8 +35,6 @@
 		04D30489241929000031A670 /* PickerView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04D30488241929000031A670 /* PickerView.mm */; };
 		04D3048B241929ED0031A670 /* PickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04D3048A241929ED0031A670 /* PickerView.xib */; };
 		04FA5EE224208F8900B1395C /* LoadingHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04FA5EE124208F8900B1395C /* LoadingHelper.mm */; };
-		04FA5EE62420B80500B1395C /* EmptyView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04FA5EE52420B80500B1395C /* EmptyView.mm */; };
-		04FA5EE82420B81A00B1395C /* EmptyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04FA5EE72420B81A00B1395C /* EmptyView.xib */; };
 		463A50A2688A4221EA94E440 /* Pods_Zalo_W02_Contact_Picker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98F59C91C0CFBFFA00C59DC9 /* Pods_Zalo_W02_Contact_Picker.framework */; };
 /* End PBXBuildFile section */
 
@@ -46,9 +42,6 @@
 		041901E924206BA2001F82C1 /* ErrorView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ErrorView.h; sourceTree = "<group>"; };
 		041901EA24206BA2001F82C1 /* ErrorView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ErrorView.mm; sourceTree = "<group>"; };
 		041901EC24206BC4001F82C1 /* ErrorView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ErrorView.xib; sourceTree = "<group>"; };
-		041901EE24207964001F82C1 /* NoPermissionView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NoPermissionView.h; sourceTree = "<group>"; };
-		041901EF24207964001F82C1 /* NoPermissionView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NoPermissionView.mm; sourceTree = "<group>"; };
-		041901F12420797D001F82C1 /* NoPermissionView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NoPermissionView.xib; sourceTree = "<group>"; };
 		041931F3242314B400500908 /* ImageCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageCache.h; sourceTree = "<group>"; };
 		041931F4242314B400500908 /* ImageCache.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ImageCache.mm; sourceTree = "<group>"; };
 		0422A33E241BE6A9008F5CF3 /* LayoutHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LayoutHelper.h; sourceTree = "<group>"; };
@@ -94,9 +87,6 @@
 		04D3048A241929ED0031A670 /* PickerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PickerView.xib; sourceTree = "<group>"; };
 		04FA5EE024208F8900B1395C /* LoadingHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoadingHelper.h; sourceTree = "<group>"; };
 		04FA5EE124208F8900B1395C /* LoadingHelper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LoadingHelper.mm; sourceTree = "<group>"; };
-		04FA5EE42420B80500B1395C /* EmptyView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmptyView.h; sourceTree = "<group>"; };
-		04FA5EE52420B80500B1395C /* EmptyView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EmptyView.mm; sourceTree = "<group>"; };
-		04FA5EE72420B81A00B1395C /* EmptyView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EmptyView.xib; sourceTree = "<group>"; };
 		1D5E9E6A2340863B822F8B2A /* Pods-Zalo-W02-Contact Picker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Zalo-W02-Contact Picker.release.xcconfig"; path = "Target Support Files/Pods-Zalo-W02-Contact Picker/Pods-Zalo-W02-Contact Picker.release.xcconfig"; sourceTree = "<group>"; };
 		98F59C91C0CFBFFA00C59DC9 /* Pods_Zalo_W02_Contact_Picker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Zalo_W02_Contact_Picker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC43C114AD791C99BA7D0969 /* Pods-Zalo-W02-Contact Picker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Zalo-W02-Contact Picker.debug.xcconfig"; path = "Target Support Files/Pods-Zalo-W02-Contact Picker/Pods-Zalo-W02-Contact Picker.debug.xcconfig"; sourceTree = "<group>"; };
@@ -121,9 +111,6 @@
 				041901E924206BA2001F82C1 /* ErrorView.h */,
 				041901EA24206BA2001F82C1 /* ErrorView.mm */,
 				041901EC24206BC4001F82C1 /* ErrorView.xib */,
-				041901EE24207964001F82C1 /* NoPermissionView.h */,
-				041901EF24207964001F82C1 /* NoPermissionView.mm */,
-				041901F12420797D001F82C1 /* NoPermissionView.xib */,
 			);
 			path = Errors;
 			sourceTree = "<group>";
@@ -288,21 +275,10 @@
 		04D3047E2419266C0031A670 /* Fragments */ = {
 			isa = PBXGroup;
 			children = (
-				04FA5EE32420B7EA00B1395C /* Empty */,
 				041901E824206B7A001F82C1 /* Errors */,
 				0478F5B92419EB6800DA753C /* Picker */,
 			);
 			path = Fragments;
-			sourceTree = "<group>";
-		};
-		04FA5EE32420B7EA00B1395C /* Empty */ = {
-			isa = PBXGroup;
-			children = (
-				04FA5EE42420B80500B1395C /* EmptyView.h */,
-				04FA5EE52420B80500B1395C /* EmptyView.mm */,
-				04FA5EE72420B81A00B1395C /* EmptyView.xib */,
-			);
-			path = Empty;
 			sourceTree = "<group>";
 		};
 		5F662EC7594372C7F01D2299 /* Pods */ = {
@@ -373,14 +349,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04FA5EE82420B81A00B1395C /* EmptyView.xib in Resources */,
 				04D3048B241929ED0031A670 /* PickerView.xib in Resources */,
 				0478F5C52419EEAA00DA753C /* PickerTableViewCell.xib in Resources */,
 				04D30470241925E20031A670 /* LaunchScreen.storyboard in Resources */,
 				04D3046D241925E10031A670 /* Assets.xcassets in Resources */,
 				04C81A0C2419359400918A84 /* PickerCollectionCell.xib in Resources */,
 				04D3046B241925E00031A670 /* Main.storyboard in Resources */,
-				041901F22420797D001F82C1 /* NoPermissionView.xib in Resources */,
 				041901ED24206BC4001F82C1 /* ErrorView.xib in Resources */,
 				0478F5C02419EDB100DA753C /* PickerTableView.xib in Resources */,
 				04D30483241927530031A670 /* MainViewController.xib in Resources */,
@@ -440,7 +414,6 @@
 				049C6F8424192ECB00DEFA45 /* PickerModel.mm in Sources */,
 				041931F5242314B400500908 /* ImageCache.mm in Sources */,
 				04D30462241925E00031A670 /* AppDelegate.m in Sources */,
-				041901F024207964001F82C1 /* NoPermissionView.mm in Sources */,
 				0422A340241BE6A9008F5CF3 /* LayoutHelper.mm in Sources */,
 				04C81A0A2419358200918A84 /* PickerCollectionCell.mm in Sources */,
 				04D30473241925E20031A670 /* main.m in Sources */,
@@ -449,7 +422,6 @@
 				04D30465241925E00031A670 /* SceneDelegate.m in Sources */,
 				0478F5C8241A181E00DA753C /* StringHelper.mm in Sources */,
 				046DF566241FB2E100181491 /* ColorHelper.mm in Sources */,
-				04FA5EE62420B80500B1395C /* EmptyView.mm in Sources */,
 				041901EB24206BA2001F82C1 /* ErrorView.mm in Sources */,
 				04D30481241927360031A670 /* MainViewController.mm in Sources */,
 				049C6F8124192BF100DEFA45 /* Contact.mm in Sources */,

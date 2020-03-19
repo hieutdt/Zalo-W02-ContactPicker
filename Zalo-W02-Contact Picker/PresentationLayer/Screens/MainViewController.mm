@@ -10,8 +10,6 @@
 #import "PickerView.h"
 #import "PickerTableView.h"
 #import "ErrorView.h"
-#import "NoPermissionView.h"
-#import "EmptyView.h"
 
 #import "LayoutHelper.h"
 #import "LoadingHelper.h"
@@ -41,8 +39,6 @@
 @property (strong, nonatomic) NSMutableArray<PickerModel *> *pickerModels;
 
 @property (strong, nonatomic) ErrorView *errorView;
-@property (strong, nonatomic) NoPermissionView *noPermissionView;
-@property (strong, nonatomic) EmptyView *emptyView;
 
 @end
 
@@ -70,17 +66,13 @@
     _pickerModels = [[NSMutableArray alloc] init];
     
     _errorView = [[ErrorView alloc] init];
-    _noPermissionView = [[NoPermissionView alloc] init];
-    _emptyView = [[EmptyView alloc] init];
     
     [self customInitNavigationBar];
     [self checkPermissionAndLoadContacts];
 }
 
 - (void)checkPermissionAndLoadContacts {
-    [self.errorView removeFromSuperview];
-    [self.noPermissionView removeFromSuperview];
-    [self.emptyView removeFromSuperview];
+    [_errorView removeFromSuperview];
     
     ContactAuthorState authorizationState = [ContactBusiness permissionStateToAccessContactData];
     switch (authorizationState) {
@@ -149,29 +141,32 @@
     self.contactStackView.hidden = true;
     
     __weak MainViewController *weakSelf = self;
-    [self.emptyView setTilte:@"KHÔNG TÌM THẤY DỮ LIỆU" andDescription:@"Danh bạ của bạn đang trống! Vui lòng cập nhật danh bạ và thử lại sau!"];
-    [self.emptyView setRetryBlock:^{
+    [self.errorView setTilte:@"KHÔNG TÌM THẤY DỮ LIỆU" andDescription:@"Danh bạ của bạn đang trống! Vui lòng cập nhật danh bạ và thử lại sau!"];
+    [self.errorView setImage:[UIImage imageNamed:@"no-data-found"]];
+    [self.errorView setRetryBlock:^{
         [weakSelf checkPermissionAndLoadContacts];
     }];
     
-    [self showSubView:self.emptyView];
+    [self showSubView:self.errorView];
 }
 
 - (void)showNotPermissionView {
     self.contactStackView.hidden = true;
     
-    [self.noPermissionView setTilte:@"TRUY CẬP BỊ TỪ CHỐI" andDescription:@"Bạn đã từ chối ứng dụng truy cập vào danh bạ. Vui lòng cấp quyền ở \"Cài đặt\" để tiếp tục sử dụng!"];
-    [self.noPermissionView setRetryBlock:^{
+    [self.errorView setTilte:@"TRUY CẬP BỊ TỪ CHỐI" andDescription:@"Bạn đã từ chối ứng dụng truy cập vào danh bạ. Vui lòng cấp quyền ở \"Cài đặt\" để tiếp tục sử dụng!"];
+    [self.errorView setImage:[UIImage imageNamed:@"locked-icon"]];
+    [self.errorView setRetryBlock:^{
         [UIApplication.sharedApplication openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString] options:@{} completionHandler:nil];
     }];
     
-    [self showSubView:self.noPermissionView];
+    [self showSubView:self.errorView];
 }
 
 - (void)showErrorViewWithErrorDescription:(NSString *)description {
     self.contactStackView.hidden = true;
     
     __weak MainViewController *weakSelf = self;
+    [self.errorView setImage:[UIImage imageNamed:@"fail-icon"]];
     [self.errorView setTilte:@"THẤT BẠI" andDescription:[NSString stringWithFormat:@"%@ Vui lòng thử lại sau!", description]];
     [self.errorView setRetryBlock:^{
         [weakSelf checkPermissionAndLoadContacts];

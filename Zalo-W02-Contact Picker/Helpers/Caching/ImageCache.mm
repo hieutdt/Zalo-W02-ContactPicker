@@ -7,6 +7,7 @@
 //
 
 #import "ImageCache.h"
+#import "AppConsts.h"
 
 @interface ImageCache ()
 
@@ -18,7 +19,7 @@
 
 - (void)customInit {
     _imageCache = [[NSCache alloc] init];
-    _imageCache.countLimit = 20;
+    _imageCache.countLimit = MAX_IMAGES_CACHE_SIZE;
 }
 
 - (instancetype)init {

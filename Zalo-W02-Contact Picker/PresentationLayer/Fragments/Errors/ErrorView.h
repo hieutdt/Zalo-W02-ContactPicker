@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ErrorView : UIView
 
+- (void)setImage:(UIImage *)image;
 - (void)setTilte:(NSString *)title andDescription:(NSString *)description;
 - (void)setRetryBlock:(void (^)())retryBlock;
 

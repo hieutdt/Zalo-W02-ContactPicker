@@ -15,8 +15,8 @@
 @interface ContactAdaper()
 
 @property (nonatomic, strong) NSMutableArray<Contact*> *contacts;
-@property (nonatomic, strong) NSCache<NSString *, NSData *> *imagesDataCache;
 @property (nonatomic, strong) dispatch_queue_t serialQueue;
+@property (nonatomic) BOOL contactDidChanged;
 
 @end
 
@@ -25,12 +25,22 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _imagesDataCache = [[NSCache alloc] init];
-        _imagesDataCache.countLimit = MAX_IMAGES_CACHE_SIZE;
         _contacts = [[NSMutableArray alloc] init];
         _serialQueue = dispatch_queue_create("contactAdaperSerialQueue", nullptr);
+        _contactDidChanged = false;
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contactsDidChange) name:CNContactStoreDidChangeNotification object:nil];
     }
     return self;
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)contactsDidChange {
+    NSLog(@"TONHIEU: contact did changed!");
+    self.contactDidChanged = true;
 }
 
 + (instancetype)instance {
@@ -56,6 +66,37 @@
             return;
         }
         
+        NSMutableArray<CNContact*> *contacts = [[NSMutableArray alloc] init];
+        CNContactStore *contactStore = [[CNContactStore alloc] init];
+        
+        auto *fullNameKey = [CNContactFormatter descriptorForRequiredKeysForStyle:CNContactFormatterStyleFullName];
+        CNContactFetchRequest *request = [[CNContactFetchRequest alloc] initWithKeysToFetch:@[fullNameKey, CNContactPhoneNumbersKey, CNContactThumbnailImageDataKey]];
+        
+        try {
+            [contactStore enumerateContactsWithFetchRequest:request error:nil usingBlock:^(CNContact *contact, BOOL *stop) {
+                [contacts addObject:contact];
+            }];
+            
+            // Caching here
+            [self saveCNContactsToContactsArray:contacts];
+            completionHandle(self.contacts, nil);
+            
+        } catch (NSException *e) {
+            NSLog(@"Unable to fetch contacts: %@", e);
+            
+            NSMutableDictionary *details = [NSMutableDictionary dictionary];
+            [details setValue:@"Lấy dữ liệu danh bạ thất bại." forKey:NSLocalizedDescriptionKey];
+            NSError *error = [[NSError alloc] initWithDomain:@"ContactAdapter" code:200 userInfo:details];
+            completionHandle(nil, error);
+        }
+    });
+}
+
+- (void)refetchContactsWithCompletion:(void (^)(NSMutableArray<Contact *> *contacts, NSError *error))completionHandle {
+    if (!completionHandle)
+        return;
+    
+    dispatch_async(self.serialQueue, ^{
         NSMutableArray<CNContact*> *contacts = [[NSMutableArray alloc] init];
         CNContactStore *contactStore = [[CNContactStore alloc] init];
         
@@ -134,6 +175,9 @@
 }
 
 - (void)requestAccessWithCompletionHandle:(void (^)(BOOL granted))completionHandle {
+    if (!completionHandle)
+        return;
+    
     [[[CNContactStore alloc] init] requestAccessForEntityType:CNEntityTypeContacts completionHandler:^(BOOL granted, NSError *error) {
         if (error or !granted) {
             completionHandle(false);
