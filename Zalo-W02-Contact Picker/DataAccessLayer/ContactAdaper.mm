@@ -17,6 +17,7 @@
 @property (nonatomic, strong) NSMutableArray<Contact*> *contacts;
 @property (nonatomic, strong) dispatch_queue_t serialQueue;
 @property (nonatomic) BOOL contactDidChanged;
+@property (nonatomic) NSMutableArray *contactsChangedHandlers;
 
 @end
 
@@ -28,6 +29,7 @@
         _contacts = [[NSMutableArray alloc] init];
         _serialQueue = dispatch_queue_create("contactAdaperSerialQueue", nullptr);
         _contactDidChanged = false;
+        _contactsChangedHandlers = [[NSMutableArray alloc] init];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contactsDidChange) name:CNContactStoreDidChangeNotification object:nil];
     }
@@ -36,11 +38,6 @@
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (void)contactsDidChange {
-    NSLog(@"TONHIEU: contact did changed!");
-    self.contactDidChanged = true;
 }
 
 + (instancetype)instance {
@@ -54,6 +51,17 @@
     }
     
     return sharedInstance;
+}
+
+- (void)contactsDidChange {
+    NSLog(@"TONHIEU: contact did changed!");
+    self.contactDidChanged = true;
+    
+    for (int i = 0; i < self.contactsChangedHandlers.count; i++) {
+        void (^block)() = self.contactsChangedHandlers[i];
+        if (block)
+            block();
+    }
 }
 
 - (void)fetchContactsWithCompletion:(void (^)(NSMutableArray<Contact *> *contacts, NSError * error))completionHandle {
@@ -189,6 +197,14 @@
             completionHandle(true);
         }
     }];
+}
+
+- (void)insertContactsChangedHandler:(void (^)())dataChangedHandler {
+    [self.contactsChangedHandlers addObject:dataChangedHandler];
+}
+
+- (void)removeContactsChangedHandler:(void (^)())dataChangedHandler {
+    [self.contactsChangedHandlers removeObject:dataChangedHandler];
 }
 
 @end

@@ -109,4 +109,12 @@
     return [[ContactAdaper instance] contactDidChanged];
 }
 
++ (void)insertContactsDidChangedHandler:(void (^)())handler {
+    [[ContactAdaper instance] insertContactsChangedHandler:handler];
+}
+
++ (void)removeContactsDidChangedHanldler:(void (^)())handler {
+    [[ContactAdaper instance] removeContactsChangedHandler:handler];
+}
+
 @end

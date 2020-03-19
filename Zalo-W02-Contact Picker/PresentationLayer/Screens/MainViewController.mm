@@ -40,6 +40,8 @@
 
 @property (strong, nonatomic) ErrorView *errorView;
 
+@property (strong, nonatomic) void (^contactChangedHandler)();
+
 @end
 
 
@@ -67,29 +69,19 @@
     
     _errorView = [[ErrorView alloc] init];
     
+    __weak MainViewController *weakSelf = self;
+    _contactChangedHandler = ^() {
+        [weakSelf loadContacts];
+    };
+    
+    [ContactBusiness insertContactsDidChangedHandler:self.contactChangedHandler];
+    
     [self customInitNavigationBar];
     [self checkPermissionAndLoadContacts];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appEnteredForeground) name:UIApplicationWillEnterForegroundNotification object:nil];
-}
-
-- (void)appEnteredForeground {
-    NSLog(@"TONHIEU: App entered foreground!");
-    
-    BOOL contactsDidChanged = [ContactBusiness contactsDidChanged];
-    
-    if (contactsDidChanged) {
-        [self loadContacts];
-    }
-}
-
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+- (void)dealloc {
+    [ContactBusiness removeContactsDidChangedHanldler:self.contactChangedHandler];
 }
 
 - (void)checkPermissionAndLoadContacts {
