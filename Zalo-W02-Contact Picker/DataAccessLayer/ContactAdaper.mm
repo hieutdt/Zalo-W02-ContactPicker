@@ -16,24 +16,26 @@
 
 @property (nonatomic, strong) NSMutableArray<Contact*> *contacts;
 @property (nonatomic, strong) NSCache<NSString *, NSData *> *imagesDataCache;
+@property (nonatomic, strong) dispatch_queue_t serialQueue;
 
 @end
-
-static ContactAdaper *sharedInstance = nil;
 
 @implementation ContactAdaper
 
 - (instancetype)init {
     self = [super init];
     if (self) {
-        self.imagesDataCache = [[NSCache alloc] init];
-        self.imagesDataCache.countLimit = MAX_IMAGES_CACHE_SIZE;
-        self.contacts = [[NSMutableArray alloc] init];
+        _imagesDataCache = [[NSCache alloc] init];
+        _imagesDataCache.countLimit = MAX_IMAGES_CACHE_SIZE;
+        _contacts = [[NSMutableArray alloc] init];
+        _serialQueue = dispatch_queue_create("contactAdaperSerialQueue", nullptr);
     }
     return self;
 }
 
 + (instancetype)instance {
+    static id sharedInstance = nil;
+    
     if (!sharedInstance) {
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
@@ -44,10 +46,16 @@ static ContactAdaper *sharedInstance = nil;
     return sharedInstance;
 }
 
-- (void)fetchContactsWithCompletion:(void (^)(NSError * error))completionHandle {
-    dispatch_queue_t concurrentQueue = dispatch_queue_create("fetch_contact_queue", DISPATCH_QUEUE_CONCURRENT);
+- (void)fetchContactsWithCompletion:(void (^)(NSMutableArray<Contact *> *contacts, NSError * error))completionHandle {
+    if (!completionHandle)
+        return;
     
-    dispatch_async(concurrentQueue, ^{
+    dispatch_async(self.serialQueue, ^{
+        if (self.contacts and self.contacts.count > 0) {
+            completionHandle(self.contacts, nil);
+            return;
+        }
+        
         NSMutableArray<CNContact*> *contacts = [[NSMutableArray alloc] init];
         CNContactStore *contactStore = [[CNContactStore alloc] init];
         
@@ -55,75 +63,56 @@ static ContactAdaper *sharedInstance = nil;
         CNContactFetchRequest *request = [[CNContactFetchRequest alloc] initWithKeysToFetch:@[fullNameKey, CNContactPhoneNumbersKey, CNContactThumbnailImageDataKey]];
         
         try {
-            [contactStore enumerateContactsWithFetchRequest:request error:nil usingBlock:^(CNContact * _Nonnull contact, BOOL * _Nonnull stop) {
+            [contactStore enumerateContactsWithFetchRequest:request error:nil usingBlock:^(CNContact *contact, BOOL *stop) {
                 [contacts addObject:contact];
             }];
             
-            dispatch_async(dispatch_get_main_queue(), ^{
-                // Caching here
-                [self saveCNContactsToContactsArray:contacts];
-                completionHandle(nil);
-            });
-        } catch (NSException *e) {
-            NSLog(@"Unable to fetch contacts");
+            // Caching here
+            [self saveCNContactsToContactsArray:contacts];
+            completionHandle(self.contacts, nil);
             
-            dispatch_async(dispatch_get_main_queue(), ^{
-                NSMutableDictionary* details = [NSMutableDictionary dictionary];
-                [details setValue:@"Lấy dữ liệu danh bạ thất bại." forKey:NSLocalizedDescriptionKey];
-                
-                NSError *error = [[NSError alloc] initWithDomain:@"ContactAdapter" code:200 userInfo:details];
-                
-                completionHandle(error);
-            });
+        } catch (NSException *e) {
+            NSLog(@"Unable to fetch contacts: %@", e);
+            
+            NSMutableDictionary *details = [NSMutableDictionary dictionary];
+            [details setValue:@"Lấy dữ liệu danh bạ thất bại." forKey:NSLocalizedDescriptionKey];
+            NSError *error = [[NSError alloc] initWithDomain:@"ContactAdapter" code:200 userInfo:details];
+            completionHandle(nil, error);
         }
     });
 }
 
-- (void)fetchContactImageDataByID:(NSString *)contactID completion:(void (^)(NSError * error))completionHandle {
+- (void)fetchContactImageDataByID:(NSString *)contactID completion:(void (^)(UIImage *image, NSError *error))completionHandle {
+    if (!completionHandle)
+        return;
+    
     NSPredicate *predicate = [CNContact predicateForContactsWithIdentifiers:@[contactID]];
     CNContactStore *contactStore = [[CNContactStore alloc] init];
     NSError *error = [[NSError alloc] initWithDomain:@"ContactAdapter" code:200 userInfo:@{@"Tải hình ảnh thất bại.": NSLocalizedDescriptionKey}];
     
-    dispatch_queue_t concurrentQueue = dispatch_queue_create("ConcurrentQueue", DISPATCH_QUEUE_CONCURRENT);
-    
-    dispatch_async(concurrentQueue, ^{
+    dispatch_async(self.serialQueue, ^{
         try {
             NSArray<CNContact*> *contacts = [contactStore unifiedContactsMatchingPredicate:predicate keysToFetch:@[CNContactThumbnailImageDataKey] error:nil];
             
             if (contacts.count == 0) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    completionHandle(error);
+                    completionHandle(nil, error);
                 });
                 return;
             }
             
-            // Cache this image data
-            [self.imagesDataCache setObject:contacts[0].thumbnailImageData forKey:contacts[0].identifier];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completionHandle(nil);
-            });
+            UIImage *image = [UIImage imageWithData:contacts[0].thumbnailImageData];
+            completionHandle(image, nil);
             
         } catch (NSException *e) {
-            NSLog(@"Load image failed!");
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completionHandle(error);
-            });
+            NSLog(@"Load image failed: %@", e);
+            completionHandle(nil, error);
         }
     });
 }
 
-- (NSMutableArray<Contact *> *)getContactsList {
-    return self.contacts;
-}
-
-- (NSData*)getImageDataOfContactWithID:(NSString *)contactID {
-    return [self.imagesDataCache objectForKey:contactID];
-}
-
 - (void)saveCNContactsToContactsArray:(NSMutableArray<CNContact*> *)CNContacts {
-    [_contacts removeAllObjects];
+    [self.contacts removeAllObjects];
     
     for (CNContact *cnContact in CNContacts) {
         Contact *contact = [[Contact alloc] init];
@@ -138,6 +127,20 @@ static ContactAdaper *sharedInstance = nil;
         
         [self.contacts addObject:contact];
     }
+}
+
+- (CNAuthorizationStatus)getAccessContactAuthorizationStatus {
+    return [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts];
+}
+
+- (void)requestAccessWithCompletionHandle:(void (^)(BOOL granted))completionHandle {
+    [[[CNContactStore alloc] init] requestAccessForEntityType:CNEntityTypeContacts completionHandler:^(BOOL granted, NSError *error) {
+        if (error or !granted) {
+            completionHandle(false);
+        } else {
+            completionHandle(true);
+        }
+    }];
 }
 
 @end

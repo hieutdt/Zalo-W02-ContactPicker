@@ -18,86 +18,76 @@
 
 @end
 
-static ContactBusiness *sharedInstance = nil;
-
 @implementation ContactBusiness
 
-- (instancetype)init {
-    self = [super init];
-    if (self) {
-    }
-    return self;
++ (void)loadContactsWithCompletion:(void (^)(NSMutableArray<Contact *> * contacts, NSError * error))completionHandle {
+    [[ContactAdaper instance] fetchContactsWithCompletion:^(NSMutableArray<Contact *> *contacts, NSError *error) {
+        if (!error) {
+            completionHandle(contacts, nil);
+        } else {
+            completionHandle(nil, error);
+        }
+    }];
 }
 
-+ (instancetype)instance {
-    if (!sharedInstance) {
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
-            sharedInstance = [[ContactBusiness alloc] init];
-        });
-    }
-    
-    return sharedInstance;
++ (void)loadContactImageByID:(NSString *)contactID completion:(void (^)(UIImage *image, NSError * error))completionHandle {
+    [[ContactAdaper instance] fetchContactImageDataByID:contactID completion:^(UIImage *image, NSError *error) {
+        if (!error) {
+            completionHandle(image, nil);
+        } else {
+            completionHandle(nil, error);
+        }
+    }];
 }
 
-- (void)loadContactsWithCompletion:(void (^)(NSMutableArray<Contact *> * contacts, NSError * error))completionHandle {
-    NSLog(@"TONHIEU: Load contact called");
++ (ContactAuthorState)permissionStateToAccessContactData {
+    CNAuthorizationStatus authorStatus = [[ContactAdaper instance] getAccessContactAuthorizationStatus];
+    if (authorStatus == CNAuthorizationStatusAuthorized) {
+        return ContactAuthorStateAuthorized;
+    } else if (authorStatus == CNAuthorizationStatusDenied) {
+        return ContactAuthorStateDenied;
+    } else if (authorStatus == CNAuthorizationStatusNotDetermined) {
+        return ContactAuthorStateNotDetermined;
+    } else {
+        return ContactAuthorStateDefault;
+    }
+}
+
++ (void)requestAccessWithCompletionHandle:(void (^)(BOOL granted))completionHandle {
+    [[ContactAdaper instance] requestAccessWithCompletionHandle:^(BOOL granted) {
+        completionHandle(granted);
+    }];
+}
+
++ (NSMutableArray<NSMutableArray *> *)sortedByAlphabetSectionsArrayFromContacts:(NSMutableArray<Contact *> *)contacts {
+    NSMutableArray<NSMutableArray *> *sectionsArray = [[NSMutableArray alloc] init];
     
-    __block NSMutableArray<Contact *> *contactsData = [[ContactAdaper instance] getContactsList];
+    for (int i = 0; i < ALPHABET_SECTIONS_NUMBER; i++) {
+        sectionsArray[i] = [[NSMutableArray alloc] init];
+    }
     
-    if (contactsData and contactsData.count > 0) {
-        completionHandle(contactsData, nil);
+    [ContactBusiness fitContactsData:contacts toSectionArray:sectionsArray];
+    
+    return sectionsArray;
+}
+
++ (void)fitContactsData:(NSMutableArray<Contact *> *)contacts toSectionArray:(NSMutableArray<NSMutableArray *> *)sections {
+    if (!contacts or contacts.count == 0 or !sections or sections.count != ALPHABET_SECTIONS_NUMBER)
         return;
+    
+    for (int i = 0; i < sections.count; i++) {
+        [sections[i] removeAllObjects];
     }
     
-    [[ContactAdaper instance] fetchContactsWithCompletion:^(NSError *error) {
-        if (!error) {
-            contactsData = [[ContactAdaper instance] getContactsList];
-            completionHandle(contactsData, nil);
+    for (int i = 0; i < contacts.count; i++) {
+        int index = [contacts[i] getSectionIndex];
+        
+        if (index >= 0 and index < ALPHABET_SECTIONS_NUMBER - 1) {
+            [sections[index] addObject:contacts[i]];
         } else {
-            completionHandle(nil, error);
+            [sections[ALPHABET_SECTIONS_NUMBER - 1] addObject:contacts[i]];
         }
-    }];
-}
-
-- (void)refetchContactsWithCompletion:(void (^)(NSMutableArray<Contact*> *contacts, NSError *error))completionHandle {
-    [[ContactAdaper instance] fetchContactsWithCompletion:^(NSError *error) {
-        if (!error) {
-            NSMutableArray<Contact *> *contactsData = [[ContactAdaper instance] getContactsList];
-            completionHandle(contactsData, nil);
-        } else {
-            completionHandle(nil, error);
-        }
-    }];
-}
-
-- (void)loadContactImageDataByID:(NSString *)contactID completion:(void (^)(NSData * imageData, NSError * error))completionHandle {
-    // Get image data from ContactAdaperCache
-    __block NSData *imageData = [[ContactAdaper instance] getImageDataOfContactWithID:contactID];
-    
-    if (imageData) {
-        completionHandle(imageData, nil);
-        return;
     }
-    
-    [[ContactAdaper instance] fetchContactImageDataByID:contactID completion:^(NSError *error) {
-        if (!error) {
-            imageData = [[ContactAdaper instance] getImageDataOfContactWithID:contactID];
-            completionHandle(imageData, nil);
-        } else {
-            completionHandle(nil, error);
-        }
-    }];
-}
-
-- (CNAuthorizationStatus)checkPermissionToAccessContactData {
-    return [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts];
-}
-
-- (void)requestAccessWithCompletionHandle:(void (^)(BOOL granted, NSError *error))completionHandle {
-    [[[CNContactStore alloc] init] requestAccessForEntityType:CNEntityTypeContacts completionHandler:^(BOOL granted, NSError * _Nullable error) {
-        completionHandle(granted, error);
-    }];
 }
 
 @end

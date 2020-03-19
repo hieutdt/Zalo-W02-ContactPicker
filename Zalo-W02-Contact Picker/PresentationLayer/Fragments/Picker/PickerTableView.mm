@@ -82,8 +82,8 @@
 }
 
 - (void)setModelsData:(NSMutableArray<PickerModel *> *)modelsArray {
-    _pickerModels = modelsArray;
-    [self fitPickerModelsData:_pickerModels toSections:_sectionsArray];
+    self.pickerModels = modelsArray;
+    [self fitPickerModelsData:self.pickerModels toSections:self.sectionsArray];
 }
 
 - (void)searchWithSearchString:(NSString *)searchString {

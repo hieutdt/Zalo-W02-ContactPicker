@@ -13,6 +13,15 @@
 
 #define RAND_FROM_TO(min, max) (min + arc4random_uniform(max - min + 1))
 
+#define ASYNC_MAIN(...) dispatch_async(dispatch_get_main_queue(), ^{ __VA_ARGS__ })
+
+typedef NS_ENUM(NSInteger, ContactAuthorState) {
+    ContactAuthorStateDefault,
+    ContactAuthorStateAuthorized,
+    ContactAuthorStateDenied,
+    ContactAuthorStateNotDetermined
+};
+
 static const int FIRST_ALPHABET_ASCII_CODE = 97;
 static const int ALPHABET_SECTIONS_NUMBER = 27;
 

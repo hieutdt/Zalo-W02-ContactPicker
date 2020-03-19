@@ -11,6 +11,7 @@
 		041901ED24206BC4001F82C1 /* ErrorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 041901EC24206BC4001F82C1 /* ErrorView.xib */; };
 		041901F024207964001F82C1 /* NoPermissionView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 041901EF24207964001F82C1 /* NoPermissionView.mm */; };
 		041901F22420797D001F82C1 /* NoPermissionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 041901F12420797D001F82C1 /* NoPermissionView.xib */; };
+		041931F5242314B400500908 /* ImageCache.mm in Sources */ = {isa = PBXBuildFile; fileRef = 041931F4242314B400500908 /* ImageCache.mm */; };
 		0422A340241BE6A9008F5CF3 /* LayoutHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0422A33F241BE6A9008F5CF3 /* LayoutHelper.mm */; };
 		046DF566241FB2E100181491 /* ColorHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 046DF565241FB2E100181491 /* ColorHelper.mm */; };
 		0478F5BE2419ED9A00DA753C /* PickerTableView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0478F5BD2419ED9A00DA753C /* PickerTableView.mm */; };
@@ -48,6 +49,8 @@
 		041901EE24207964001F82C1 /* NoPermissionView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NoPermissionView.h; sourceTree = "<group>"; };
 		041901EF24207964001F82C1 /* NoPermissionView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NoPermissionView.mm; sourceTree = "<group>"; };
 		041901F12420797D001F82C1 /* NoPermissionView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NoPermissionView.xib; sourceTree = "<group>"; };
+		041931F3242314B400500908 /* ImageCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageCache.h; sourceTree = "<group>"; };
+		041931F4242314B400500908 /* ImageCache.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ImageCache.mm; sourceTree = "<group>"; };
 		0422A33E241BE6A9008F5CF3 /* LayoutHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LayoutHelper.h; sourceTree = "<group>"; };
 		0422A33F241BE6A9008F5CF3 /* LayoutHelper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LayoutHelper.mm; sourceTree = "<group>"; };
 		046DF564241FB2E100181491 /* ColorHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ColorHelper.h; sourceTree = "<group>"; };
@@ -125,6 +128,15 @@
 			path = Errors;
 			sourceTree = "<group>";
 		};
+		041931F2242314A200500908 /* Caching */ = {
+			isa = PBXGroup;
+			children = (
+				041931F3242314B400500908 /* ImageCache.h */,
+				041931F4242314B400500908 /* ImageCache.mm */,
+			);
+			path = Caching;
+			sourceTree = "<group>";
+		};
 		0478F5B92419EB6800DA753C /* Picker */ = {
 			isa = PBXGroup;
 			children = (
@@ -174,6 +186,7 @@
 		04C81A032419316E00918A84 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				041931F2242314A200500908 /* Caching */,
 				0478F5C6241A181E00DA753C /* StringHelper.h */,
 				0478F5C7241A181E00DA753C /* StringHelper.mm */,
 				0422A33E241BE6A9008F5CF3 /* LayoutHelper.h */,
@@ -425,6 +438,7 @@
 			files = (
 				04C81A022419313F00918A84 /* ContactBusiness.mm in Sources */,
 				049C6F8424192ECB00DEFA45 /* PickerModel.mm in Sources */,
+				041931F5242314B400500908 /* ImageCache.mm in Sources */,
 				04D30462241925E00031A670 /* AppDelegate.m in Sources */,
 				041901F024207964001F82C1 /* NoPermissionView.mm in Sources */,
 				0422A340241BE6A9008F5CF3 /* LayoutHelper.mm in Sources */,

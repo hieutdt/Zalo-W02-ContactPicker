@@ -77,7 +77,7 @@
     [_collectionView reloadData];
 }
 
-- (void)addElement:(PickerModel *)pickerModel withImageData:(nonnull NSData *)imageData {
+- (void)addElement:(PickerModel *)pickerModel withImage:(nonnull UIImage *)image {
     if (_dataArray.count == MAX_PICK)
         return;
     
@@ -85,8 +85,8 @@
     
     [_collectionView performBatchUpdates:^{
         [_dataArray addObject:pickerModel];
-        if (imageData)
-            [_dataImageCache setObject:imageData forKey:pickerModel.identifier];
+//        if (image)
+//            [_dataImageCache setObject:image forKey:pickerModel.identifier];
         
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:_dataArray.count - 1 inSection:0];
         [_collectionView insertItemsAtIndexPaths:@[indexPath]];
