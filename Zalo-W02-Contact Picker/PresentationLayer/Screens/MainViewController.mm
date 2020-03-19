@@ -74,13 +74,15 @@
         [weakSelf loadContacts];
     };
     
-    [ContactBusiness insertContactsDidChangedHandler:self.contactChangedHandler];
-    
     [self customInitNavigationBar];
     [self checkPermissionAndLoadContacts];
 }
 
-- (void)dealloc {
+- (void)viewWillAppear:(BOOL)animated {
+    [ContactBusiness insertContactsDidChangedHandler:self.contactChangedHandler];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
     [ContactBusiness removeContactsDidChangedHanldler:self.contactChangedHandler];
 }
 
@@ -157,7 +159,9 @@
     [self.errorView setTilte:@"KHÔNG TÌM THẤY DỮ LIỆU" andDescription:@"Danh bạ của bạn đang trống! Vui lòng cập nhật danh bạ và thử lại sau!"];
     [self.errorView setImage:[UIImage imageNamed:@"no-data-found"]];
     [self.errorView setRetryBlock:^{
-        [weakSelf checkPermissionAndLoadContacts];
+        ASYNC_MAIN({
+            [weakSelf checkPermissionAndLoadContacts];
+        });
     }];
     
     [self showSubView:self.errorView];

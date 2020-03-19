@@ -46,9 +46,6 @@
     }];
 }
 
-+ (void)loadContactsWithFetchKeys:(NSMutableArray *)keysToFetch completion:(void (^)(NSMutableArray<Contact *> *contacts, NSError *error))completionHandle {
-}
-
 + (ContactAuthorState)permissionStateToAccessContactData {
     CNAuthorizationStatus authorStatus = [[ContactAdaper instance] getAccessContactAuthorizationStatus];
     if (authorStatus == CNAuthorizationStatusAuthorized) {

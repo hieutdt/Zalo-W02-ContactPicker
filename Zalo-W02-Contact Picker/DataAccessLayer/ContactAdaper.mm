@@ -55,12 +55,18 @@
 
 - (void)contactsDidChange {
     NSLog(@"TONHIEU: contact did changed!");
+    
     self.contactDidChanged = true;
     
     for (int i = 0; i < self.contactsChangedHandlers.count; i++) {
         void (^block)() = self.contactsChangedHandlers[i];
-        if (block)
-            block();
+        if (block) {
+            try {
+                block();
+            } catch (NSException *e) {
+                NSLog(@"Exception: %@", e);
+            }
+        }
     }
 }
 

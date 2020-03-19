@@ -20,14 +20,13 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)requestAccessWithCompletionHandle:(void (^)(BOOL granted))completionHandle;
 
 + (void)loadContactsWithCompletion:(void (^)(NSMutableArray<Contact *> *contacts, NSError *error))completionHandle;
-+ (void)loadContactsWithFetchKeys:(NSMutableArray *)keysToFetch completion:(void (^)(NSMutableArray<Contact *> *contacts, NSError *error))completionHandle;
 + (void)loadContactImageByID:(NSString*)contactID completion:(void (^)(UIImage *image, NSError *error))completionHandle;
 
 + (NSMutableArray<NSMutableArray *> *)sortedByAlphabetSectionsArrayFromContacts:(NSMutableArray<Contact *> *)contacts;
 + (void)fitContactsData:(NSMutableArray<Contact *> *)contacts toSectionArray:(NSMutableArray<NSMutableArray *> *)sections;
 + (BOOL)contactsDidChanged;
-+ (void)insertContactsDidChangedHandler:(void (^)())handler;
-+ (void)removeContactsDidChangedHanldler:(void (^)())handler;
++ (void)insertContactsDidChangedHandler:(void (^)(void))handler;
++ (void)removeContactsDidChangedHanldler:(void (^)(void))handler;
 
 @end
 
