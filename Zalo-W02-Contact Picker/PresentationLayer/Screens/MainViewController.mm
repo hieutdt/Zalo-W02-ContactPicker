@@ -71,6 +71,27 @@
     [self checkPermissionAndLoadContacts];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appEnteredForeground) name:UIApplicationWillEnterForegroundNotification object:nil];
+}
+
+- (void)appEnteredForeground {
+    NSLog(@"TONHIEU: App entered foreground!");
+    
+    BOOL contactsDidChanged = [ContactBusiness contactsDidChanged];
+    
+    if (contactsDidChanged) {
+        [self loadContacts];
+    }
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)checkPermissionAndLoadContacts {
     [_errorView removeFromSuperview];
     

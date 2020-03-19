@@ -61,7 +61,7 @@
         return;
     
     dispatch_async(self.serialQueue, ^{
-        if (self.contacts and self.contacts.count > 0) {
+        if (self.contacts and self.contacts.count > 0 and !self.contactDidChanged) {
             completionHandle(self.contacts, nil);
             return;
         }
@@ -76,6 +76,8 @@
             [contactStore enumerateContactsWithFetchRequest:request error:nil usingBlock:^(CNContact *contact, BOOL *stop) {
                 [contacts addObject:contact];
             }];
+            
+            self.contactDidChanged = false;
             
             // Caching here
             [self saveCNContactsToContactsArray:contacts];
@@ -107,6 +109,8 @@
             [contactStore enumerateContactsWithFetchRequest:request error:nil usingBlock:^(CNContact *contact, BOOL *stop) {
                 [contacts addObject:contact];
             }];
+            
+            self.contactDidChanged = false;
             
             // Caching here
             [self saveCNContactsToContactsArray:contacts];

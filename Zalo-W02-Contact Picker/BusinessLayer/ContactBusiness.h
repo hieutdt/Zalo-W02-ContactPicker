@@ -25,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSMutableArray<NSMutableArray *> *)sortedByAlphabetSectionsArrayFromContacts:(NSMutableArray<Contact *> *)contacts;
 + (void)fitContactsData:(NSMutableArray<Contact *> *)contacts toSectionArray:(NSMutableArray<NSMutableArray *> *)sections;
++ (BOOL)contactsDidChanged;
 
 @end
 

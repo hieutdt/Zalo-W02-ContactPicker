@@ -105,4 +105,8 @@
     }
 }
 
++ (BOOL)contactsDidChanged {
+    return [[ContactAdaper instance] contactDidChanged];
+}
+
 @end
