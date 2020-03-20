@@ -18,8 +18,9 @@
 
 #import "Contact.h"
 #import "ContactBusiness.h"
-#import "ContactAdaper.h"
 #import "AppConsts.h"
+
+#import "ContactDidChangedDelegate.h"
 
 #import <JGProgressHUD/JGProgressHUD.h>
 
@@ -76,12 +77,14 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [[ContactAdaper instance] addContactDidChangedDelegate:self];
-    [[ContactAdaper instance] addContactDidChangedDelegate:self];
+    
+    [ContactBusiness resigterContactDidChangedDelegate:self];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    
+    [ContactBusiness removeContactDidChangedDelegate:self];
 }
 
 - (void)checkPermissionAndLoadContacts {
@@ -116,32 +119,27 @@
     
     [ContactBusiness loadContactsWithCompletion:^(NSMutableArray<Contact *> *contacts, NSError *error) {
         ASYNC_MAIN({
-            //TODO: hide loading here
-            [[LoadingHelper instance] hideLoadingEffectDelay:1.5];
-        });
-        
-        if (!error) {
-            self.contacts = contacts;
-            
-            if (self.contacts.count > 0) {
-                [self initContactsData:contacts];
-                self.pickerModels = [self getPickerModelsArrayFromContacts];
-                [self.tableView setModelsData:self.pickerModels];
+            if (!error) {
+                self.contacts = contacts;
                 
-                ASYNC_MAIN({
+                if (self.contacts.count > 0) {
+                    [self initContactsData:contacts];
+                    self.pickerModels = [self getPickerModelsArrayFromContacts];
+                    [self.tableView setModelsData:self.pickerModels];
+                    
+                    // tableView.reloadData have to run after set up models data
+                    [[LoadingHelper instance] hideLoadingEffectDelay:1.5];
                     self.contactStackView.hidden = false;
                     [self.tableView reloadData];
-                });
-            } else {
-                ASYNC_MAIN({
+                } else {
+                    [[LoadingHelper instance] hideLoadingEffectDelay:1.5];
                     [self showEmptyView];
-                });
-            }
-        } else {
-            ASYNC_MAIN({
+                }
+            } else {
+                [[LoadingHelper instance] hideLoadingEffectDelay:1.5];
                 [self showErrorViewWithErrorDescription:[error.userInfo valueForKey:NSLocalizedDescriptionKey]];
-            });
-        }
+            }
+        });
     }];
 }
 
@@ -184,7 +182,9 @@
     [self.errorView setImage:[UIImage imageNamed:@"fail-icon"]];
     [self.errorView setTilte:@"THẤT BẠI" andDescription:[NSString stringWithFormat:@"%@ Vui lòng thử lại sau!", description]];
     [self.errorView setRetryBlock:^{
-        [weakSelf checkPermissionAndLoadContacts];
+        ASYNC_MAIN({
+            [weakSelf checkPermissionAndLoadContacts];
+        });
     }];
     
     [self showSubView:self.errorView];
@@ -347,13 +347,14 @@
 
 #pragma mark - ContactDidChangedDelegateProtocol
 
-- (void)contactDidChanged {
-    if ([self.tableView selectedCount] > 0) {
-        [self cancelPickContacts];
-    }
-    
-    [self loadContacts];
+- (void)contactsDidChanged {
+    ASYNC_MAIN({
+        if ([self.tableView selectedCount] > 0) {
+            [self cancelPickContacts];
+        }
+        
+        [self loadContacts];
+    });
 }
-
 
 @end

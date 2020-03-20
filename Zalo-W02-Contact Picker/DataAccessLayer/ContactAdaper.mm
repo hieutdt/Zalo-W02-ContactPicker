@@ -16,7 +16,6 @@
 
 @property (nonatomic, strong) NSMutableArray<Contact*> *contacts;
 @property (nonatomic, strong) dispatch_queue_t serialQueue;
-@property (nonatomic) BOOL contactDidChanged;
 @property (nonatomic, strong) NSMutableArray<id<ContactDidChangedDelegate>> *contactDidChangedDelegates;
 
 @end
@@ -28,7 +27,6 @@
     if (self) {
         _contacts = [[NSMutableArray alloc] init];
         _serialQueue = dispatch_queue_create("contactAdaperSerialQueue", nullptr);
-        _contactDidChanged = false;
         _contactDidChangedDelegates = [[NSMutableArray alloc] init];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contactsDidChange) name:CNContactStoreDidChangeNotification object:nil];
@@ -56,14 +54,17 @@
 - (void)contactsDidChange {
     NSLog(@"TONHIEU: contact did changed!");
     
-    self.contactDidChanged = true;
-    
-    for (int i = 0; i < self.contactDidChangedDelegates.count; i++) {
-        id<ContactDidChangedDelegate> delegate = [self.contactDidChangedDelegates objectAtIndex:i];
-        if (delegate and [delegate respondsToSelector:@selector(contactDidChanged)]) {
-            [delegate contactDidChanged];
+    [self refetchContactsWithCompletion:^(NSMutableArray<Contact *> *contacts, NSError *error) {
+        if (error)
+            return;
+        
+        for (int i = 0; i < self.contactDidChangedDelegates.count; i++) {
+            id<ContactDidChangedDelegate> delegate = [self.contactDidChangedDelegates objectAtIndex:i];
+            if (delegate and [delegate respondsToSelector:@selector(contactsDidChanged)]) {
+                [delegate contactsDidChanged];
+            }
         }
-    }
+    }];
 }
 
 - (void)fetchContactsWithCompletion:(void (^)(NSMutableArray<Contact *> *contacts, NSError * error))completionHandle {
@@ -71,7 +72,7 @@
         return;
     
     dispatch_async(self.serialQueue, ^{
-        if (self.contacts and self.contacts.count > 0 and !self.contactDidChanged) {
+        if (self.contacts and self.contacts.count > 0) {
             completionHandle(self.contacts, nil);
             return;
         }
@@ -86,8 +87,6 @@
             [contactStore enumerateContactsWithFetchRequest:request error:nil usingBlock:^(CNContact *contact, BOOL *stop) {
                 [contacts addObject:contact];
             }];
-            
-            self.contactDidChanged = false;
             
             // Caching here
             [self saveCNContactsToContactsArray:contacts];
@@ -119,8 +118,6 @@
             [contactStore enumerateContactsWithFetchRequest:request error:nil usingBlock:^(CNContact *contact, BOOL *stop) {
                 [contacts addObject:contact];
             }];
-            
-            self.contactDidChanged = false;
             
             // Caching here
             [self saveCNContactsToContactsArray:contacts];
@@ -201,7 +198,7 @@
     }];
 }
 
-- (void)addContactDidChangedDelegate:(id<ContactDidChangedDelegate>)delegate {
+- (void)resigterContactDidChangedDelegate:(id<ContactDidChangedDelegate>)delegate {
     if (!delegate)
         return;
     

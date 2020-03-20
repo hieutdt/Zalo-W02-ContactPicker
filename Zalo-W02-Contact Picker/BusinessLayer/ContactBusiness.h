@@ -12,6 +12,8 @@
 #import "Contact.h"
 #import "AppConsts.h"
 
+#import "ContactDidChangedDelegate.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ContactBusiness : NSObject
@@ -24,7 +26,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSMutableArray<NSMutableArray *> *)sortedByAlphabetSectionsArrayFromContacts:(NSMutableArray<Contact *> *)contacts;
 + (void)fitContactsData:(NSMutableArray<Contact *> *)contacts toSectionArray:(NSMutableArray<NSMutableArray *> *)sections;
-+ (BOOL)contactsDidChanged;
+
++ (void)resigterContactDidChangedDelegate:(id<ContactDidChangedDelegate>)delegate;
++ (void)removeContactDidChangedDelegate:(id<ContactDidChangedDelegate>)delegate;
 
 @end
 

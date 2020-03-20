@@ -102,8 +102,18 @@
     }
 }
 
-+ (BOOL)contactsDidChanged {
-    return [[ContactAdaper instance] contactDidChanged];
++ (void)resigterContactDidChangedDelegate:(id<ContactDidChangedDelegate>)delegate {
+    if (!delegate)
+        return;
+    
+    [[ContactAdaper instance] resigterContactDidChangedDelegate:delegate];
+}
+
++ (void)removeContactDidChangedDelegate:(id<ContactDidChangedDelegate>)delegate {
+    if (!delegate)
+        return;
+    
+    [[ContactAdaper instance] removeContactDidChangedDelegate:delegate];
 }
 
 @end

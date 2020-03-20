@@ -10,14 +10,9 @@
 #import <UIKit/UIKit.h>
 #import <Contacts/Contacts.h>
 #import "Contact.h"
+#import "ContactDidChangedDelegate.h"
 
 NS_ASSUME_NONNULL_BEGIN
-
-@protocol ContactDidChangedDelegate <NSObject>
-
-- (void)contactDidChanged;
-
-@end
 
 @interface ContactAdaper : NSObject
 
@@ -25,11 +20,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (CNAuthorizationStatus)getAccessContactAuthorizationStatus;
 - (void)requestAccessWithCompletionHandle:(void (^)(BOOL granted))completionHandle;
+
 - (void)fetchContactsWithCompletion:(void (^)(NSMutableArray<Contact *> *contacts, NSError *error))completionHandle;
 - (void)refetchContactsWithCompletion:(void (^)(NSMutableArray<Contact *> *contacts, NSError *error))completionHandle;
 - (void)fetchContactImageDataByID:(NSString*)contactID completion:(void (^)(UIImage *image, NSError *error))completionHandle;
-- (BOOL)contactDidChanged;
-- (void)addContactDidChangedDelegate:(id<ContactDidChangedDelegate>)delegate;
+
+- (void)resigterContactDidChangedDelegate:(id<ContactDidChangedDelegate>)delegate;
+- (void)removeContactDidChangedDelegate:(id<ContactDidChangedDelegate>)delegate;
 
 @end
 
