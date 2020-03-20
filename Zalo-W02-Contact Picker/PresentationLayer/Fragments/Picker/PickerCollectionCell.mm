@@ -42,8 +42,8 @@
 - (void)prepareForReuse {
     [super prepareForReuse];
     
-    _imageView.layer.sublayers = nil;
-    [_imageView setImage:nil];
+    self.imageView.layer.sublayers = nil;
+    [self.imageView setImage:nil];
 }
 
 + (NSString*)reuseIdentifier {
@@ -58,23 +58,23 @@
     if (!pickerModel)
         return;
     
-    _model = pickerModel;
-    _gradientAvatarLabel.hidden = false;
-    _gradientAvatarLabel.text = [StringHelper getShortName:_model.name];
-    [ColorHelper setGradientColorBackgroundToView:_imageView withColorCode:_model.gradientColorCode];
+    self.model = pickerModel;
+    self.gradientAvatarLabel.hidden = false;
+    self.gradientAvatarLabel.text = [StringHelper getShortName:self.model.name];
+    [ColorHelper setGradientColorBackgroundToView:self.imageView withColorCode:self.model.gradientColorCode];
 }
 
 - (void)setUpImageForCell:(UIImage *)image {
     if (image) {
-        _gradientAvatarLabel.hidden = true;
-        _imageView.layer.sublayers = nil;
-        [_imageView setImage:image];
+        self.gradientAvatarLabel.hidden = true;
+        self.imageView.layer.sublayers = nil;
+        [self.imageView setImage:image];
     }
 }
 
 - (IBAction)removeButtonTapped:(id)sender {
-    if (_delegate and [_delegate respondsToSelector:@selector(removeButtonTapped:)]) {
-        [_delegate removeButtonTapped:_model];
+    if (self.delegate and [self.delegate respondsToSelector:@selector(removeButtonTapped:)]) {
+        [self.delegate removeButtonTapped:self.model];
     }
 }
 

@@ -19,6 +19,9 @@
 		0478F5C8241A181E00DA753C /* StringHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0478F5C7241A181E00DA753C /* StringHelper.mm */; };
 		049C6F8124192BF100DEFA45 /* Contact.mm in Sources */ = {isa = PBXBuildFile; fileRef = 049C6F8024192BF100DEFA45 /* Contact.mm */; };
 		049C6F8424192ECB00DEFA45 /* PickerModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 049C6F8324192ECB00DEFA45 /* PickerModel.mm */; };
+		04C245982424A06B0048143A /* ContactAdaper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04C819FE2419313100918A84 /* ContactAdaper.mm */; };
+		04C245992424A0790048143A /* ContactBusiness.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04C81A012419313F00918A84 /* ContactBusiness.mm */; };
+		04C2459A2424A0800048143A /* Contact.mm in Sources */ = {isa = PBXBuildFile; fileRef = 049C6F8024192BF100DEFA45 /* Contact.mm */; };
 		04C2972E241A29AC0067D1DF /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04C2972D241A29AC0067D1DF /* Contacts.framework */; };
 		04C819FF2419313100918A84 /* ContactAdaper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04C819FE2419313100918A84 /* ContactAdaper.mm */; };
 		04C81A022419313F00918A84 /* ContactBusiness.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04C81A012419313F00918A84 /* ContactBusiness.mm */; };
@@ -37,6 +40,16 @@
 		04FA5EE224208F8900B1395C /* LoadingHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04FA5EE124208F8900B1395C /* LoadingHelper.mm */; };
 		463A50A2688A4221EA94E440 /* Pods_Zalo_W02_Contact_Picker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98F59C91C0CFBFFA00C59DC9 /* Pods_Zalo_W02_Contact_Picker.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		04C245932424A0550048143A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 04D30455241925E00031A670 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 04D3045C241925E00031A670;
+			remoteInfo = "Zalo-W02-Contact Picker";
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		041901E924206BA2001F82C1 /* ErrorView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ErrorView.h; sourceTree = "<group>"; };
@@ -61,6 +74,8 @@
 		049C6F8024192BF100DEFA45 /* Contact.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Contact.mm; sourceTree = "<group>"; };
 		049C6F8224192ECB00DEFA45 /* PickerModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PickerModel.h; sourceTree = "<group>"; };
 		049C6F8324192ECB00DEFA45 /* PickerModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PickerModel.mm; sourceTree = "<group>"; };
+		04C2458E2424A0550048143A /* ContactAdapterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ContactAdapterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		04C2459C2424A1660048143A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		04C2972D241A29AC0067D1DF /* Contacts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Contacts.framework; path = System/Library/Frameworks/Contacts.framework; sourceTree = SDKROOT; };
 		04C819FD2419313100918A84 /* ContactAdaper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactAdaper.h; sourceTree = "<group>"; };
 		04C819FE2419313100918A84 /* ContactAdaper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ContactAdaper.mm; sourceTree = "<group>"; };
@@ -94,6 +109,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		04C2458B2424A0550048143A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		04D3045A241925E00031A670 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -173,6 +195,7 @@
 		04C2972C241A29AB0067D1DF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				04C2459C2424A1660048143A /* XCTest.framework */,
 				04C2972D241A29AC0067D1DF /* Contacts.framework */,
 				98F59C91C0CFBFFA00C59DC9 /* Pods_Zalo_W02_Contact_Picker.framework */,
 			);
@@ -209,6 +232,7 @@
 			isa = PBXGroup;
 			children = (
 				04D3045D241925E00031A670 /* Zalo-W02-Contact Picker.app */,
+				04C2458E2424A0550048143A /* ContactAdapterTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -303,6 +327,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		04C2458D2424A0550048143A /* ContactAdapterTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 04C245972424A0560048143A /* Build configuration list for PBXNativeTarget "ContactAdapterTests" */;
+			buildPhases = (
+				04C2458A2424A0550048143A /* Sources */,
+				04C2458B2424A0550048143A /* Frameworks */,
+				04C2458C2424A0550048143A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				04C245942424A0550048143A /* PBXTargetDependency */,
+			);
+			name = ContactAdapterTests;
+			productName = ContactAdapterTests;
+			productReference = 04C2458E2424A0550048143A /* ContactAdapterTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		04D3045C241925E00031A670 /* Zalo-W02-Contact Picker */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 04D30476241925E20031A670 /* Build configuration list for PBXNativeTarget "Zalo-W02-Contact Picker" */;
@@ -331,6 +373,10 @@
 				LastUpgradeCheck = 1110;
 				ORGANIZATIONNAME = "Trần Đình Tôn Hiếu";
 				TargetAttributes = {
+					04C2458D2424A0550048143A = {
+						CreatedOnToolsVersion = 11.3.1;
+						TestTargetID = 04D3045C241925E00031A670;
+					};
 					04D3045C241925E00031A670 = {
 						CreatedOnToolsVersion = 11.1;
 					};
@@ -350,11 +396,19 @@
 			projectRoot = "";
 			targets = (
 				04D3045C241925E00031A670 /* Zalo-W02-Contact Picker */,
+				04C2458D2424A0550048143A /* ContactAdapterTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		04C2458C2424A0550048143A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		04D3045B241925E00031A670 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -416,6 +470,16 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		04C2458A2424A0550048143A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				04C245992424A0790048143A /* ContactBusiness.mm in Sources */,
+				04C2459A2424A0800048143A /* Contact.mm in Sources */,
+				04C245982424A06B0048143A /* ContactAdaper.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		04D30459241925E00031A670 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -443,6 +507,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		04C245942424A0550048143A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 04D3045C241925E00031A670 /* Zalo-W02-Contact Picker */;
+			targetProxy = 04C245932424A0550048143A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		04D30469241925E00031A670 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -463,6 +535,46 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		04C245952424A0560048143A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = VC54UPHUD4;
+				INFOPLIST_FILE = ContactAdapterTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = zalo.tranhieu.ContactAdapterTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Zalo-W02-Contact Picker.app/Zalo-W02-Contact Picker";
+			};
+			name = Debug;
+		};
+		04C245962424A0560048143A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = VC54UPHUD4;
+				INFOPLIST_FILE = ContactAdapterTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = zalo.tranhieu.ContactAdapterTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Zalo-W02-Contact Picker.app/Zalo-W02-Contact Picker";
+			};
+			name = Release;
+		};
 		04D30474241925E20031A670 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -612,6 +724,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		04C245972424A0560048143A /* Build configuration list for PBXNativeTarget "ContactAdapterTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				04C245952424A0560048143A /* Debug */,
+				04C245962424A0560048143A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		04D30458241925E00031A670 /* Build configuration list for PBXProject "Zalo-W02-Contact Picker" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

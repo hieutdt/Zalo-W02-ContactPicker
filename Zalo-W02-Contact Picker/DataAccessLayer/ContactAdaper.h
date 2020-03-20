@@ -22,7 +22,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)requestAccessWithCompletionHandle:(void (^)(BOOL granted))completionHandle;
 
 - (void)fetchContactsWithCompletion:(void (^)(NSMutableArray<Contact *> *contacts, NSError *error))completionHandle;
-- (void)refetchContactsWithCompletion:(void (^)(NSMutableArray<Contact *> *contacts, NSError *error))completionHandle;
 - (void)fetchContactImageDataByID:(NSString*)contactID completion:(void (^)(UIImage *image, NSError *error))completionHandle;
 
 - (void)resigterContactDidChangedDelegate:(id<ContactDidChangedDelegate>)delegate;

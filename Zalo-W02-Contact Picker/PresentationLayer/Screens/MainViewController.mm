@@ -118,28 +118,32 @@
     [[LoadingHelper instance] showLoadingEffect];
     
     [ContactBusiness loadContactsWithCompletion:^(NSMutableArray<Contact *> *contacts, NSError *error) {
-        ASYNC_MAIN({
-            if (!error) {
-                self.contacts = contacts;
+        if (!error) {
+            self.contacts = contacts;
+            
+            if (self.contacts.count > 0) {
+                [self initContactsData:contacts];
+                self.pickerModels = [self getPickerModelsArrayFromContacts];
+                [self.tableView setModelsData:self.pickerModels];
                 
-                if (self.contacts.count > 0) {
-                    [self initContactsData:contacts];
-                    self.pickerModels = [self getPickerModelsArrayFromContacts];
-                    [self.tableView setModelsData:self.pickerModels];
-                    
-                    // tableView.reloadData have to run after set up models data
-                    [[LoadingHelper instance] hideLoadingEffectDelay:1.5];
+                // tableView.reloadData have to run after set up models data
+                ASYNC_MAIN({
+                    [[LoadingHelper instance] hideLoadingEffectDelay:1];
                     self.contactStackView.hidden = false;
                     [self.tableView reloadData];
-                } else {
-                    [[LoadingHelper instance] hideLoadingEffectDelay:1.5];
-                    [self showEmptyView];
-                }
+                });
             } else {
-                [[LoadingHelper instance] hideLoadingEffectDelay:1.5];
-                [self showErrorViewWithErrorDescription:[error.userInfo valueForKey:NSLocalizedDescriptionKey]];
+                ASYNC_MAIN({
+                    [[LoadingHelper instance] hideLoadingEffectDelay:1];
+                    [self showEmptyView];
+                });
             }
-        });
+        } else {
+            ASYNC_MAIN({
+                [[LoadingHelper instance] hideLoadingEffectDelay:1];
+                [self showErrorViewWithErrorDescription:[error.userInfo valueForKey:NSLocalizedDescriptionKey]];
+            });
+        }
     }];
 }
 

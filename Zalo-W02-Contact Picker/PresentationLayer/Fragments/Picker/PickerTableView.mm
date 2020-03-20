@@ -62,7 +62,7 @@
 
 - (void)resigterNib {
     UINib *nib = [UINib nibWithNibName:PickerTableViewCell.nibName bundle:nil];
-    [_tableView registerNib:nib forCellReuseIdentifier:PickerTableViewCell.reuseIdentifier];
+    [self.tableView registerNib:nib forCellReuseIdentifier:PickerTableViewCell.reuseIdentifier];
 }
 
 - (instancetype)initWithCoder:(NSCoder *)coder {
@@ -88,23 +88,23 @@
 
 - (void)searchWithSearchString:(NSString *)searchString {
     if (searchString.length == 0) {
-        _isSearching = false;
+        self.isSearching = false;
     } else {
-        _isSearching = true;
+        self.isSearching = true;
 
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"self.name contains[c] %@", searchString];
-        _filteredPickerModels = (NSMutableArray*)[_pickerModels filteredArrayUsingPredicate:predicate];
+        self.filteredPickerModels = (NSMutableArray*)[_pickerModels filteredArrayUsingPredicate:predicate];
 
-        [self fitPickerModelsData:_filteredPickerModels toSections:_filteredSectionsArray];
+        [self fitPickerModelsData:self.filteredPickerModels toSections:self.filteredSectionsArray];
     }
 
     [self reloadData];
 }
 
 - (NSMutableArray<NSMutableArray*>*)getValidSectionsArray {
-    if (_isSearching)
-        return _filteredSectionsArray;
-    return _sectionsArray;
+    if (self.isSearching)
+        return self.filteredSectionsArray;
+    return self.sectionsArray;
 }
 
 - (int)selectedCount {
@@ -112,12 +112,12 @@
 }
 
 - (void)reloadData {
-    [_tableView reloadData];
+    [self.tableView reloadData];
 }
 
 - (void)removeElement:(PickerModel *)element {
-    if (_selectedCount > 0) {
-        _selectedCount--;
+    if (self.selectedCount > 0) {
+        self.selectedCount--;
         element.isChosen = false;
         [self reloadData];
     }
@@ -143,9 +143,9 @@
 }
 
 - (void)removeAllElements {
-    _selectedCount = 0;
-    for (int i = 0; i < _pickerModels.count; i++) {
-        _pickerModels[i].isChosen = false;
+    self.selectedCount = 0;
+    for (int i = 0; i < self.pickerModels.count; i++) {
+        self.pickerModels[i].isChosen = false;
     }
     
     [self reloadData];
@@ -160,13 +160,13 @@
     PickerModel *pickerModel = data[indexPath.section][indexPath.row];
     
     if (pickerModel.isChosen) {
-        _selectedCount--;
-        if (_delegate and [_delegate respondsToSelector:@selector(uncheckCellOfElement:)])
-            [_delegate uncheckCellOfElement:pickerModel];
-    } else if (_selectedCount < 5) {
-        _selectedCount++;
-        if (_delegate and [_delegate respondsToSelector:@selector(checkedCellOfElement:)])
-            [_delegate checkedCellOfElement:pickerModel];
+        self.selectedCount--;
+        if (self.delegate and [self.delegate respondsToSelector:@selector(uncheckCellOfElement:)])
+            [self.delegate uncheckCellOfElement:pickerModel];
+    } else if (self.selectedCount < 5) {
+        self.selectedCount++;
+        if (self.delegate and [self.delegate respondsToSelector:@selector(checkedCellOfElement:)])
+            [self.delegate checkedCellOfElement:pickerModel];
     } else
         return;
     
@@ -246,8 +246,8 @@
     [cell setGradientColorBackground:pickerModel.gradientColorCode];
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     
-    if (_delegate and [_delegate respondsToSelector:@selector(loadImageToCell:atIndexPath:)]) {
-        [_delegate loadImageToCell:cell atIndexPath:indexPath];
+    if (self.delegate and [self.delegate respondsToSelector:@selector(loadImageToCell:atIndexPath:)]) {
+        [self.delegate loadImageToCell:cell atIndexPath:indexPath];
     }
     
     if (indexPath.row == _sectionsArray[indexPath.section].count - 1)

@@ -16,6 +16,7 @@
 
 @property (nonatomic, strong) NSMutableArray<Contact*> *contacts;
 @property (nonatomic, strong) dispatch_queue_t serialQueue;
+@property (nonatomic, strong) dispatch_queue_t concurrentQueue;
 @property (nonatomic, strong) NSMutableArray<id<ContactDidChangedDelegate>> *contactDidChangedDelegates;
 
 @end
@@ -26,9 +27,11 @@
     self = [super init];
     if (self) {
         _contacts = [[NSMutableArray alloc] init];
-        _serialQueue = dispatch_queue_create("contactAdaperSerialQueue", nullptr);
+        _serialQueue = dispatch_queue_create("contactAdaperSerialQueue", DISPATCH_QUEUE_SERIAL);
+        _concurrentQueue = dispatch_queue_create("contactAdapterConcurrentQueue", DISPATCH_QUEUE_CONCURRENT);
         _contactDidChangedDelegates = [[NSMutableArray alloc] init];
         
+        // Add Contact changes Observer
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contactsDidChange) name:CNContactStoreDidChangeNotification object:nil];
     }
     return self;
@@ -67,12 +70,21 @@
     }];
 }
 
+- (BOOL)hasContactsData {
+    return self.contacts and self.contacts.count > 0;
+}
+
 - (void)fetchContactsWithCompletion:(void (^)(NSMutableArray<Contact *> *contacts, NSError * error))completionHandle {
     if (!completionHandle)
         return;
     
+    if ([self hasContactsData]) {
+        completionHandle(self.contacts, nil);
+        return;
+    }
+    
     dispatch_async(self.serialQueue, ^{
-        if (self.contacts and self.contacts.count > 0) {
+        if ([self hasContactsData]) {
             completionHandle(self.contacts, nil);
             return;
         }
@@ -142,14 +154,12 @@
     CNContactStore *contactStore = [[CNContactStore alloc] init];
     NSError *error = [[NSError alloc] initWithDomain:@"ContactAdapter" code:200 userInfo:@{@"Tải hình ảnh thất bại.": NSLocalizedDescriptionKey}];
     
-    dispatch_async(self.serialQueue, ^{
+    dispatch_async(self.concurrentQueue, ^{
         try {
             NSArray<CNContact*> *contacts = [contactStore unifiedContactsMatchingPredicate:predicate keysToFetch:@[CNContactThumbnailImageDataKey] error:nil];
             
             if (contacts.count == 0) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completionHandle(nil, error);
-                });
+                completionHandle(nil, error);
                 return;
             }
             
@@ -164,20 +174,22 @@
 }
 
 - (void)saveCNContactsToContactsArray:(NSMutableArray<CNContact*> *)CNContacts {
-    [self.contacts removeAllObjects];
-    
-    for (CNContact *cnContact in CNContacts) {
-        Contact *contact = [[Contact alloc] init];
-        contact.identifier = cnContact.identifier;
-        contact.name = [[NSString alloc] initWithFormat:@"%@ %@", cnContact.givenName, cnContact.familyName];
-        contact.name = [StringHelper standardizeString:contact.name];
+    @synchronized (self) {
+        [self.contacts removeAllObjects];
         
-        if (cnContact.phoneNumbers.count > 0)
-            contact.phoneNumber = [cnContact.phoneNumbers objectAtIndex:0].value.stringValue;
-        else
-            contact.phoneNumber = @"";
-        
-        [self.contacts addObject:contact];
+        for (CNContact *cnContact in CNContacts) {
+            Contact *contact = [[Contact alloc] init];
+            contact.identifier = cnContact.identifier;
+            contact.name = [[NSString alloc] initWithFormat:@"%@ %@", cnContact.givenName, cnContact.familyName];
+            contact.name = [StringHelper standardizeString:contact.name];
+            
+            if (cnContact.phoneNumbers.count > 0)
+                contact.phoneNumber = [cnContact.phoneNumbers objectAtIndex:0].value.stringValue;
+            else
+                contact.phoneNumber = @"";
+            
+            [self.contacts addObject:contact];
+        }
     }
 }
 
@@ -202,17 +214,22 @@
     if (!delegate)
         return;
     
+    // Avoid run one task more times
     if ([self.contactDidChangedDelegates containsObject:delegate])
         return;
-    
-    [self.contactDidChangedDelegates addObject:delegate];
+
+    @synchronized (self) {
+        [self.contactDidChangedDelegates addObject:delegate];
+    }
 }
 
 - (void)removeContactDidChangedDelegate:(id<ContactDidChangedDelegate>)delegate {
     if (!delegate)
         return;
     
-    [self.contactDidChangedDelegates removeObject:delegate];
+    @synchronized (self) {
+        [self.contactDidChangedDelegates removeObject:delegate];
+    }
 }
 
 @end
