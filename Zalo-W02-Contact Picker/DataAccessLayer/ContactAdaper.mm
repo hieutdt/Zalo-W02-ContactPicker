@@ -154,6 +154,7 @@
     CNContactStore *contactStore = [[CNContactStore alloc] init];
     NSError *error = [[NSError alloc] initWithDomain:@"ContactAdapter" code:200 userInfo:@{@"Tải hình ảnh thất bại.": NSLocalizedDescriptionKey}];
     
+    // Fetch multiple images concurrently
     dispatch_async(self.concurrentQueue, ^{
         try {
             NSArray<CNContact*> *contacts = [contactStore unifiedContactsMatchingPredicate:predicate keysToFetch:@[CNContactThumbnailImageDataKey] error:nil];

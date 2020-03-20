@@ -11,6 +11,7 @@
                 <outlet property="contentView" destination="iPv-a5-MPY" id="WH7-kb-T7h"/>
                 <outlet property="descriptionLabel" destination="a88-0a-aHP" id="o0i-fy-1kr"/>
                 <outlet property="imageView" destination="Y2A-69-cay" id="Khb-lm-Tyx"/>
+                <outlet property="retryButton" destination="6YS-wl-CUe" id="KHK-ch-yOL"/>
                 <outlet property="titleLabel" destination="8v8-z8-GnJ" id="SLR-K1-Ynk"/>
             </connections>
         </placeholder>

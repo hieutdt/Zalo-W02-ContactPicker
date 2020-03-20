@@ -15,6 +15,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
+@property (weak, nonatomic) IBOutlet UIButton *retryButton;
 @property (nonatomic, nullable) void (^retryBlock)();
 
 @end
@@ -66,6 +67,10 @@
 
 - (void)setRetryBlock:(void (^)())retryBlock {
     _retryBlock = retryBlock;
+}
+
+- (void)setRetryButtonTitle:(NSString *)buttonTitle {
+    [_retryButton setTitle:buttonTitle forState:UIControlStateNormal];
 }
 
 - (IBAction)retryButtonTapped:(id)sender {

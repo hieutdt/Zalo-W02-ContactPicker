@@ -50,11 +50,11 @@
 - (void)prepareForReuse {
     [super prepareForReuse];
     
-    _checkImageView.image = nil;
-    _avatarImageView.image = nil;
-    _avatarImageView.layer.sublayers = nil;
-    _nameLabel.text = @"";
-    _separatorLine.hidden = true;
+    self.checkImageView.image = nil;
+    self.avatarImageView.image = nil;
+    self.avatarImageView.layer.sublayers = nil;
+    self.nameLabel.text = @"";
+    self.separatorLine.hidden = true;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -67,17 +67,17 @@
 
 - (void)setGradientColorBackground:(int)colorCode {
     //TODO: Show gradient avatar here
-    _gradientAvatarLabel.hidden = false;
-    _gradientAvatarLabel.text = [StringHelper getShortName:_nameLabel.text];
-    [ColorHelper setGradientColorBackgroundToView:_avatarImageView withColorCode:colorCode];
+    self.gradientAvatarLabel.hidden = false;
+    self.gradientAvatarLabel.text = [StringHelper getShortName:self.nameLabel.text];
+    [ColorHelper setGradientColorBackgroundToView:self.avatarImageView withColorCode:colorCode];
 }
 
 - (void)setAvatar:(UIImage*)avatarImage {
     if (avatarImage) {
         //TODO: Show thumbnail avatar here
-        _gradientAvatarLabel.hidden = true;
-        [_avatarImageView setImage:avatarImage];
-        _avatarImageView.layer.sublayers = nil;
+        self.gradientAvatarLabel.hidden = true;
+        [self.avatarImageView setImage:avatarImage];
+        self.avatarImageView.layer.sublayers = nil;
     }
 }
 
@@ -93,7 +93,7 @@
 }
 
 - (void)showSeparatorLine:(BOOL)show {
-    _separatorLine.hidden = !show;
+    self.separatorLine.hidden = !show;
 }
 
 

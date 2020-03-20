@@ -22,15 +22,6 @@ typedef NS_ENUM(NSInteger, ContactAuthorState) {
     ContactAuthorStateNotDetermined
 };
 
-typedef NS_ENUM(NSInteger, ContactDataFetchKey) {
-    ContactDataFetchKeyFullName,
-    ContactDataFetchKeyPhoneNumber,
-    ContactDataFetchKeyImage,
-    ContactDataFetchKeyNickname,
-    ContactDataFetchKeyBirthday,
-    ContactDataFetchKeyJobTitle
-};
-
 static const int FIRST_ALPHABET_ASCII_CODE = 97;
 static const int ALPHABET_SECTIONS_NUMBER = 27;
 

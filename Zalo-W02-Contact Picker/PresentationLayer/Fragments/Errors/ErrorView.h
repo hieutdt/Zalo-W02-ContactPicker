@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setImage:(UIImage *)image;
 - (void)setTilte:(NSString *)title andDescription:(NSString *)description;
 - (void)setRetryBlock:(void (^)())retryBlock;
+- (void)setRetryButtonTitle:(NSString *)buttonTitle;
 
 @end
 

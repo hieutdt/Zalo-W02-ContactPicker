@@ -114,7 +114,6 @@
 }
 
 - (void)loadContacts {
-    //TODO: show loading here
     [[LoadingHelper instance] showLoadingEffect];
     
     [ContactBusiness loadContactsWithCompletion:^(NSMutableArray<Contact *> *contacts, NSError *error) {
@@ -122,6 +121,7 @@
             self.contacts = contacts;
             
             if (self.contacts.count > 0) {
+                // Set up data will run in background
                 [self initContactsData:contacts];
                 self.pickerModels = [self getPickerModelsArrayFromContacts];
                 [self.tableView setModelsData:self.pickerModels];
@@ -158,6 +158,7 @@
     __weak MainViewController *weakSelf = self;
     [self.errorView setTilte:@"KHÔNG TÌM THẤY DỮ LIỆU" andDescription:@"Danh bạ của bạn đang trống! Vui lòng cập nhật danh bạ và thử lại sau!"];
     [self.errorView setImage:[UIImage imageNamed:@"no-data-found"]];
+    [self.errorView setRetryButtonTitle:@"Thử lại"];
     [self.errorView setRetryBlock:^{
         ASYNC_MAIN({
             [weakSelf checkPermissionAndLoadContacts];
@@ -172,6 +173,7 @@
     
     [self.errorView setTilte:@"TRUY CẬP BỊ TỪ CHỐI" andDescription:@"Bạn đã từ chối ứng dụng truy cập vào danh bạ. Vui lòng cấp quyền ở \"Cài đặt\" để tiếp tục sử dụng!"];
     [self.errorView setImage:[UIImage imageNamed:@"locked-icon"]];
+    [self.errorView setRetryButtonTitle:@"Đến Cài đặt"];
     [self.errorView setRetryBlock:^{
         [UIApplication.sharedApplication openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString] options:@{} completionHandler:nil];
     }];
@@ -185,6 +187,7 @@
     __weak MainViewController *weakSelf = self;
     [self.errorView setImage:[UIImage imageNamed:@"fail-icon"]];
     [self.errorView setTilte:@"THẤT BẠI" andDescription:[NSString stringWithFormat:@"%@ Vui lòng thử lại sau!", description]];
+    [self.errorView setRetryButtonTitle:@"Thử lại"];
     [self.errorView setRetryBlock:^{
         ASYNC_MAIN({
             [weakSelf checkPermissionAndLoadContacts];
