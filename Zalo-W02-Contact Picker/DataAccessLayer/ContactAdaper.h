@@ -19,12 +19,15 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)instance;
 
 - (CNAuthorizationStatus)getAccessContactAuthorizationStatus;
+
 - (void)requestAccessWithCompletionHandle:(void (^)(BOOL granted))completionHandle;
 
 - (void)fetchContactsWithCompletion:(void (^)(NSMutableArray<Contact *> *contacts, NSError *error))completionHandle;
+
 - (void)fetchContactImageDataByID:(NSString*)contactID completion:(void (^)(UIImage *image, NSError *error))completionHandle;
 
 - (void)resigterContactDidChangedDelegate:(id<ContactDidChangedDelegate>)delegate;
+
 - (void)removeContactDidChangedDelegate:(id<ContactDidChangedDelegate>)delegate;
 
 @end
