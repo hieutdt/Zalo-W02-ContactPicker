@@ -13,6 +13,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol ContactDidChangedDelegate <NSObject>
+
+- (void)contactDidChanged;
+
+@end
+
 @interface ContactAdaper : NSObject
 
 + (instancetype)instance;
@@ -23,8 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)refetchContactsWithCompletion:(void (^)(NSMutableArray<Contact *> *contacts, NSError *error))completionHandle;
 - (void)fetchContactImageDataByID:(NSString*)contactID completion:(void (^)(UIImage *image, NSError *error))completionHandle;
 - (BOOL)contactDidChanged;
-- (void)insertContactsChangedHandler:(void (^)())dataChangedHandler;
-- (void)removeContactsChangedHandler:(void (^)())dataChangedHandler;
+- (void)addContactDidChangedDelegate:(id<ContactDidChangedDelegate>)delegate;
 
 @end
 

@@ -18,11 +18,12 @@
 
 #import "Contact.h"
 #import "ContactBusiness.h"
+#import "ContactAdaper.h"
 #import "AppConsts.h"
 
 #import <JGProgressHUD/JGProgressHUD.h>
 
-@interface MainViewController () <PickerViewDelegate, PickerTableViewDelegate, UISearchBarDelegate>
+@interface MainViewController () <PickerViewDelegate, PickerTableViewDelegate, UISearchBarDelegate, ContactDidChangedDelegate>
 
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) IBOutlet PickerTableView *tableView;
@@ -69,21 +70,18 @@
     
     _errorView = [[ErrorView alloc] init];
     
-    __weak MainViewController *weakSelf = self;
-    _contactChangedHandler = ^() {
-        [weakSelf loadContacts];
-    };
-    
     [self customInitNavigationBar];
     [self checkPermissionAndLoadContacts];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    [ContactBusiness insertContactsDidChangedHandler:self.contactChangedHandler];
+    [super viewWillAppear:animated];
+    [[ContactAdaper instance] addContactDidChangedDelegate:self];
+    [[ContactAdaper instance] addContactDidChangedDelegate:self];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
-    [ContactBusiness removeContactsDidChangedHanldler:self.contactChangedHandler];
+    [super viewWillDisappear:animated];
 }
 
 - (void)checkPermissionAndLoadContacts {
@@ -345,6 +343,16 @@
     }
     
     self.subTitleLabel.text = [NSString stringWithFormat:@"Selected: %d/5", [self.tableView selectedCount]];
+}
+
+#pragma mark - ContactDidChangedDelegateProtocol
+
+- (void)contactDidChanged {
+    if ([self.tableView selectedCount] > 0) {
+        [self cancelPickContacts];
+    }
+    
+    [self loadContacts];
 }
 
 

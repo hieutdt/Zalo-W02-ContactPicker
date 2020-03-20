@@ -17,7 +17,7 @@
 @property (nonatomic, strong) NSMutableArray<Contact*> *contacts;
 @property (nonatomic, strong) dispatch_queue_t serialQueue;
 @property (nonatomic) BOOL contactDidChanged;
-@property (nonatomic) NSMutableArray *contactsChangedHandlers;
+@property (nonatomic, strong) NSMutableArray<id<ContactDidChangedDelegate>> *contactDidChangedDelegates;
 
 @end
 
@@ -29,7 +29,7 @@
         _contacts = [[NSMutableArray alloc] init];
         _serialQueue = dispatch_queue_create("contactAdaperSerialQueue", nullptr);
         _contactDidChanged = false;
-        _contactsChangedHandlers = [[NSMutableArray alloc] init];
+        _contactDidChangedDelegates = [[NSMutableArray alloc] init];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contactsDidChange) name:CNContactStoreDidChangeNotification object:nil];
     }
@@ -58,14 +58,10 @@
     
     self.contactDidChanged = true;
     
-    for (int i = 0; i < self.contactsChangedHandlers.count; i++) {
-        void (^block)() = self.contactsChangedHandlers[i];
-        if (block) {
-            try {
-                block();
-            } catch (NSException *e) {
-                NSLog(@"Exception: %@", e);
-            }
+    for (int i = 0; i < self.contactDidChangedDelegates.count; i++) {
+        id<ContactDidChangedDelegate> delegate = [self.contactDidChangedDelegates objectAtIndex:i];
+        if (delegate and [delegate respondsToSelector:@selector(contactDidChanged)]) {
+            [delegate contactDidChanged];
         }
     }
 }
@@ -205,12 +201,21 @@
     }];
 }
 
-- (void)insertContactsChangedHandler:(void (^)())dataChangedHandler {
-    [self.contactsChangedHandlers addObject:dataChangedHandler];
+- (void)addContactDidChangedDelegate:(id<ContactDidChangedDelegate>)delegate {
+    if (!delegate)
+        return;
+    
+    if ([self.contactDidChangedDelegates containsObject:delegate])
+        return;
+    
+    [self.contactDidChangedDelegates addObject:delegate];
 }
 
-- (void)removeContactsChangedHandler:(void (^)())dataChangedHandler {
-    [self.contactsChangedHandlers removeObject:dataChangedHandler];
+- (void)removeContactDidChangedDelegate:(id<ContactDidChangedDelegate>)delegate {
+    if (!delegate)
+        return;
+    
+    [self.contactDidChangedDelegates removeObject:delegate];
 }
 
 @end
