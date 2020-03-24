@@ -74,14 +74,7 @@
 
 - (BOOL)isDataOutUpdate {
     @synchronized (self) {
-        BOOL dataUpdated = [[NSUserDefaults standardUserDefaults] valueForKey:@"dataUpdated"];
-        return !dataUpdated;
-    }
-}
-
-- (void)setDataUpdated:(BOOL)updated {
-    @synchronized (self) {
-        [[NSUserDefaults standardUserDefaults] setBool:updated forKey:@"dataUpdated"];
+        return self.dataOutUpdated;
     }
 }
 
@@ -142,7 +135,7 @@
         [self saveCNContactsToContactsArray:contacts];
         if (save) {
             [self saveContactsDataToCoreData:self.contacts];
-            [self setDataUpdated:YES];
+            self.dataOutUpdated = NO;
         }
         
         completionHandle(self.contacts, nil);
@@ -253,7 +246,7 @@
 - (void)contactsDidChange {
     NSLog(@"TONHIEU: contact did changed!");
     
-    [self setDataUpdated:NO];
+    self.dataOutUpdated = YES;
     
     for (int i = 0; i < self.contactDidChangedDelegates.count; i++) {
         id<ContactDidChangedDelegate> delegate = [self.contactDidChangedDelegates objectAtIndex:i];
@@ -298,7 +291,9 @@
             }];
             
             if (contacts.count != self.contacts.count) {
+                self.dataOutUpdated = YES;
                 completionHandle(YES);
+                return;
             }
             
             int i = 0;
@@ -313,11 +308,21 @@
                 else
                     contact.phoneNumber = @"";
                 
-                if (contact.i)
+                if (contact.identifier != self.contacts[i].identifier or contact.name != self.contacts[i].name or contact.phoneNumber != self.contacts[i].phoneNumber) {
+                    self.dataOutUpdated = YES;
+                    completionHandle(YES);
+                    return;
+                }
+                
+                i++;
             }
             
-        } catch (NSException *e) {
+            self.dataOutUpdated = NO;
+            completionHandle(NO);
             
+        } catch (NSException *e) {
+            self.dataOutUpdated = NO;
+            completionHandle(NO);
         }
         
     });

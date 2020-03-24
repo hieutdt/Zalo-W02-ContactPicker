@@ -73,7 +73,7 @@
     _errorView = [[ErrorView alloc] init];
     
     [self customInitNavigationBar];
-    [self checkDataOutUpdatedAndShowButton];
+    [self checkDataOutUpdatedAndShowButtonWithAfterInitApp:YES];
     [self checkPermissionAndLoadContacts];
 }
 
@@ -131,7 +131,20 @@
     }];
 }
 
-- (void)checkDataOutUpdatedAndShowButton {
+- (void)checkDataOutUpdatedAndShowButtonWithAfterInitApp:(BOOL)afterInit {
+    if (afterInit) {
+        [ContactBusiness checkAppDataOutUpdatedWhenInitWithCompletion:^(BOOL outUpdated) {
+            ASYNC_MAIN({
+                if (outUpdated)
+                    [self showUpdateNavigationButton];
+                else
+                    [self hideUpdateNavigationButton];
+            });
+        }];
+        
+        return;
+    }
+    
     if ([ContactBusiness contactsDataOutUpdated]) {
         [self showUpdateNavigationButton];
     } else {
@@ -244,21 +257,21 @@
             // tableView.reloadData have to run after set up models data
             ASYNC_MAIN({
                 [[LoadingHelper instance] hideLoadingEffectDelay:1];
-                [self checkDataOutUpdatedAndShowButton];
+                [self checkDataOutUpdatedAndShowButtonWithAfterInitApp:NO];
                 self.contactStackView.hidden = false;
                 [self.tableView reloadData];
             });
         } else {
             ASYNC_MAIN({
                 [[LoadingHelper instance] hideLoadingEffectDelay:1];
-                [self checkDataOutUpdatedAndShowButton];
+                [self checkDataOutUpdatedAndShowButtonWithAfterInitApp:NO];
                 [self showEmptyView];
             });
         }
     } else {
         ASYNC_MAIN({
             [[LoadingHelper instance] hideLoadingEffectDelay:1];
-            [self checkDataOutUpdatedAndShowButton];
+            [self checkDataOutUpdatedAndShowButtonWithAfterInitApp:NO];
             [self showErrorViewWithErrorDescription:[error.userInfo valueForKey:NSLocalizedDescriptionKey]];
         });
     }

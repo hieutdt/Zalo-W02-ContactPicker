@@ -134,7 +134,9 @@
 }
 
 + (void)checkAppDataOutUpdatedWhenInitWithCompletion:(void (^)(BOOL outUpdated))completionHandle {
-    
+    [[ContactAdaper instance] checkDataOutUpdateWithComletion:^(BOOL outUpdated) {
+        completionHandle(outUpdated);
+    }];
 }
 
 @end

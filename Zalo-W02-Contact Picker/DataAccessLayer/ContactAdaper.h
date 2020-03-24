@@ -34,6 +34,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)isDataOutUpdate;
 
+- (void)checkDataOutUpdateWithComletion:(void (^)(BOOL outUpdated))completionHandle;
+
 @end
 
 NS_ASSUME_NONNULL_END
