@@ -18,7 +18,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *removeButton;
 @property (weak, nonatomic) IBOutlet UILabel *gradientAvatarLabel;
 
-@property (weak, nonatomic) PickerModel *model;
+@property (weak, nonatomic) PickerViewModel *model;
 
 @end
 
@@ -54,7 +54,7 @@
     return @"PickerCollectionCell";
 }
 
-- (void)setUpPickerModelForCell:(PickerModel*)pickerModel {
+- (void)setUpPickerModelForCell:(PickerViewModel *)pickerModel {
     if (!pickerModel)
         return;
     

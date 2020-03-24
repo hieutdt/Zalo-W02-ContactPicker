@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "PickerModel.h"
+#import "PickerViewModel.h"
 #import "PickerTableViewCell.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -15,8 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol PickerTableViewDelegate <NSObject>
 
 - (void)loadImageToCell:(PickerTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
-- (void)uncheckCellOfElement:(PickerModel *)element;
-- (void)checkedCellOfElement:(PickerModel *)element;
+- (void)uncheckCellOfElement:(PickerViewModel *)element;
+- (void)checkedCellOfElement:(PickerViewModel *)element;
 
 @end
 
@@ -24,11 +24,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) id<PickerTableViewDelegate> delegate;
 
-- (void)setModelsData:(NSMutableArray<PickerModel *> *)modelsArray;
+- (void)setModelsData:(NSMutableArray<PickerViewModel *> *)modelsArray;
 - (void)searchWithSearchString:(NSString*)searchString;
 - (int)selectedCount;
 - (void)reloadData;
-- (void)removeElement:(PickerModel *)element;
+- (void)removeElement:(PickerViewModel *)element;
 - (void)removeAllElements;
 
 @end

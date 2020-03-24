@@ -7,13 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "PickerModel.h"
+#import "PickerViewModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol PickerViewDelegate <NSObject>
 
-- (void)removeElementFromPickerview:(PickerModel*)pickerModel;
+- (void)removeElementFromPickerview:(PickerViewModel *)pickerModel;
 - (void)nextButtonTapped;
 
 @end
@@ -22,8 +22,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) id<PickerViewDelegate> delegate;
 
-- (void)addElement:(PickerModel*)pickerModel withImage:(UIImage *)image;
-- (void)removeElement:(PickerModel*)pickerModel;
+- (void)addElement:(PickerViewModel *)pickerModel withImage:(UIImage *)image;
+- (void)removeElement:(PickerViewModel *)pickerModel;
 - (void)removeAll;
 
 @end

@@ -7,7 +7,7 @@
 //
 
 #import "PickerView.h"
-#import "PickerModel.h"
+#import "PickerViewModel.h"
 #import "PickerCollectionCell.h"
 #import "AppConsts.h"
 
@@ -17,7 +17,7 @@
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UIButton *nextButton;
 
-@property (strong, nonatomic) NSMutableArray<PickerModel*> *dataArray;
+@property (strong, nonatomic) NSMutableArray<PickerViewModel *> *dataArray;
 @property (strong, nonatomic) NSCache<NSString *, UIImage *> *imageCache;
 
 @end
@@ -77,7 +77,7 @@
     [_collectionView reloadData];
 }
 
-- (void)addElement:(PickerModel *)pickerModel withImage:(nonnull UIImage *)image {
+- (void)addElement:(PickerViewModel *)pickerModel withImage:(nonnull UIImage *)image {
     if (_dataArray.count == MAX_PICK)
         return;
     
@@ -97,7 +97,7 @@
     }];
 }
 
-- (void)removeElement:(PickerModel *)pickerModel {
+- (void)removeElement:(PickerViewModel *)pickerModel {
     [_collectionView performBatchUpdates:^{
         NSUInteger indexInArray = [_dataArray indexOfObject:pickerModel];
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:indexInArray inSection:0];
@@ -173,7 +173,7 @@
 
 #pragma mark - PickerCollectionViewDelegateProtocol
 
-- (void)removeButtonTapped:(PickerModel *)pickerModel {
+- (void)removeButtonTapped:(PickerViewModel *)pickerModel {
     [self removeElement:pickerModel];
     
     if (_delegate and [_delegate respondsToSelector:@selector(removeElementFromPickerview:)])

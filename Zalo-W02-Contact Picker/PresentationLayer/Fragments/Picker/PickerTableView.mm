@@ -8,7 +8,7 @@
 
 #import "PickerTableView.h"
 #import "PickerTableViewCell.h"
-#import "PickerModel.h"
+#import "PickerViewModel.h"
 #import "AppConsts.h"
 #import "LayoutHelper.h"
 
@@ -17,10 +17,10 @@
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
-@property (strong, nonatomic) NSMutableArray<PickerModel *> *pickerModels;
+@property (strong, nonatomic) NSMutableArray<PickerViewModel *> *pickerModels;
 @property (strong, nonatomic) NSMutableArray<NSMutableArray *> *sectionsArray;
 
-@property (strong, nonatomic) NSMutableArray<PickerModel *> *filteredPickerModels;
+@property (strong, nonatomic) NSMutableArray<PickerViewModel *> *filteredPickerModels;
 @property (strong, nonatomic) NSMutableArray<NSMutableArray *> *filteredSectionsArray;
 
 @property (nonatomic) int selectedCount;
@@ -81,7 +81,7 @@
     return self;
 }
 
-- (void)setModelsData:(NSMutableArray<PickerModel *> *)modelsArray {
+- (void)setModelsData:(NSMutableArray<PickerViewModel *> *)modelsArray {
     self.pickerModels = modelsArray;
     [self fitPickerModelsData:self.pickerModels toSections:self.sectionsArray];
 }
@@ -115,7 +115,7 @@
     [self.tableView reloadData];
 }
 
-- (void)removeElement:(PickerModel *)element {
+- (void)removeElement:(PickerViewModel *)element {
     if (self.selectedCount > 0) {
         self.selectedCount--;
         element.isChosen = false;
@@ -123,7 +123,7 @@
     }
 }
 
-- (void)fitPickerModelsData:(NSMutableArray<PickerModel*> *)models toSections:(NSMutableArray<NSMutableArray*> *)sectionsArray {
+- (void)fitPickerModelsData:(NSMutableArray<PickerViewModel*> *)models toSections:(NSMutableArray<NSMutableArray*> *)sectionsArray {
     for (int i = 0; i < sectionsArray.count; i++) {
         [sectionsArray[i] removeAllObjects];
     }
@@ -157,7 +157,7 @@
     NSMutableArray<NSMutableArray *> *data = [self getValidSectionsArray];
     
     PickerTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    PickerModel *pickerModel = data[indexPath.section][indexPath.row];
+    PickerViewModel *pickerModel = data[indexPath.section][indexPath.row];
     
     if (pickerModel.isChosen) {
         self.selectedCount--;
@@ -237,7 +237,7 @@
     }
     
     NSMutableArray<NSMutableArray *> *data = [self getValidSectionsArray];
-    PickerModel *pickerModel = data[indexPath.section][indexPath.row];
+    PickerViewModel *pickerModel = data[indexPath.section][indexPath.row];
     if (!pickerModel)
         return nil;
     

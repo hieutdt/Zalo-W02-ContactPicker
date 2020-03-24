@@ -18,7 +18,7 @@
 		0478F5C52419EEAA00DA753C /* PickerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0478F5C32419EEAA00DA753C /* PickerTableViewCell.xib */; };
 		0478F5C8241A181E00DA753C /* StringHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0478F5C7241A181E00DA753C /* StringHelper.mm */; };
 		049C6F8124192BF100DEFA45 /* Contact.mm in Sources */ = {isa = PBXBuildFile; fileRef = 049C6F8024192BF100DEFA45 /* Contact.mm */; };
-		049C6F8424192ECB00DEFA45 /* PickerModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 049C6F8324192ECB00DEFA45 /* PickerModel.mm */; };
+		049C6F8424192ECB00DEFA45 /* PickerVIewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 049C6F8324192ECB00DEFA45 /* PickerVIewModel.mm */; };
 		04C2972E241A29AC0067D1DF /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04C2972D241A29AC0067D1DF /* Contacts.framework */; };
 		04C819FF2419313100918A84 /* ContactAdaper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04C819FE2419313100918A84 /* ContactAdaper.mm */; };
 		04C81A022419313F00918A84 /* ContactBusiness.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04C81A012419313F00918A84 /* ContactBusiness.mm */; };
@@ -59,8 +59,8 @@
 		048D99E524246C6A0077C3C3 /* ContactDidChangedDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactDidChangedDelegate.h; sourceTree = "<group>"; };
 		049C6F7F24192BF100DEFA45 /* Contact.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Contact.h; sourceTree = "<group>"; };
 		049C6F8024192BF100DEFA45 /* Contact.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Contact.mm; sourceTree = "<group>"; };
-		049C6F8224192ECB00DEFA45 /* PickerModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PickerModel.h; sourceTree = "<group>"; };
-		049C6F8324192ECB00DEFA45 /* PickerModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PickerModel.mm; sourceTree = "<group>"; };
+		049C6F8224192ECB00DEFA45 /* PickerViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PickerViewModel.h; sourceTree = "<group>"; };
+		049C6F8324192ECB00DEFA45 /* PickerVIewModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PickerVIewModel.mm; sourceTree = "<group>"; };
 		04C2459C2424A1660048143A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		04C2972D241A29AC0067D1DF /* Contacts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Contacts.framework; path = System/Library/Frameworks/Contacts.framework; sourceTree = SDKROOT; };
 		04C819FD2419313100918A84 /* ContactAdaper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactAdaper.h; sourceTree = "<group>"; };
@@ -156,8 +156,8 @@
 		049C6F7D24192BD500DEFA45 /* PresentationModels */ = {
 			isa = PBXGroup;
 			children = (
-				049C6F8224192ECB00DEFA45 /* PickerModel.h */,
-				049C6F8324192ECB00DEFA45 /* PickerModel.mm */,
+				049C6F8224192ECB00DEFA45 /* PickerViewModel.h */,
+				049C6F8324192ECB00DEFA45 /* PickerVIewModel.mm */,
 			);
 			path = PresentationModels;
 			sourceTree = "<group>";
@@ -423,7 +423,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				04C81A022419313F00918A84 /* ContactBusiness.mm in Sources */,
-				049C6F8424192ECB00DEFA45 /* PickerModel.mm in Sources */,
+				049C6F8424192ECB00DEFA45 /* PickerVIewModel.mm in Sources */,
 				041931F5242314B400500908 /* ImageCache.mm in Sources */,
 				04D30462241925E00031A670 /* AppDelegate.m in Sources */,
 				0422A340241BE6A9008F5CF3 /* LayoutHelper.mm in Sources */,

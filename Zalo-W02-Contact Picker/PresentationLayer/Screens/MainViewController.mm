@@ -38,7 +38,7 @@
 @property (strong, nonatomic) NSMutableArray<Contact *> *contacts;
 @property (strong, nonatomic) NSMutableArray<NSMutableArray *> *sectionData;
 
-@property (strong, nonatomic) NSMutableArray<PickerModel *> *pickerModels;
+@property (strong, nonatomic) NSMutableArray<PickerViewModel *> *pickerModels;
 
 @property (strong, nonatomic) ErrorView *errorView;
 
@@ -210,15 +210,15 @@
     [self.view layoutIfNeeded];
 }
 
-- (NSMutableArray<PickerModel *> *)getPickerModelsArrayFromContacts {
+- (NSMutableArray<PickerViewModel *> *)getPickerModelsArrayFromContacts {
     if (!self.contacts) {
         return nil;
     }
     
-    NSMutableArray<PickerModel *> *pickerModels = [[NSMutableArray alloc] init];
+    NSMutableArray<PickerViewModel *> *pickerModels = [[NSMutableArray alloc] init];
     
     for (Contact *contact in self.contacts) {
-        PickerModel *pickerModel = [[PickerModel alloc] init];
+        PickerViewModel *pickerModel = [[PickerViewModel alloc] init];
         pickerModel.identifier = contact.identifier;
         pickerModel.name = contact.name;
         pickerModel.isChosen = false;
@@ -249,7 +249,7 @@
 
 #pragma mark - PickerViewDelegateProtocol
 
-- (void)removeElementFromPickerview:(PickerModel *)pickerModel {
+- (void)removeElementFromPickerview:(PickerViewModel *)pickerModel {
     [self.tableView removeElement:pickerModel];
     [self updateNavigationBar];
 }
@@ -283,12 +283,12 @@
     }
 }
 
-- (void)uncheckCellOfElement:(PickerModel *)element {
+- (void)uncheckCellOfElement:(PickerViewModel *)element {
     [self.contactPickerView removeElement:element];
     [self updateNavigationBar];
 }
 
-- (void)checkedCellOfElement:(PickerModel *)element {
+- (void)checkedCellOfElement:(PickerViewModel *)element {
     UIImage *imageFromCache = [[ImageCache instance] imageForKey:element.identifier];
     if (imageFromCache) {
         [self.contactPickerView addElement:element withImage:imageFromCache];

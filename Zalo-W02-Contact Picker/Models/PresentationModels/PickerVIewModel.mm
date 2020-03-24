@@ -6,10 +6,10 @@
 //  Copyright © 2020 Trần Đình Tôn Hiếu. All rights reserved.
 //
 
-#import "PickerModel.h"
+#import "PickerViewModel.h"
 #import "AppConsts.h"
 
-@implementation PickerModel
+@implementation PickerViewModel
 
 - (instancetype)init {
     self = [super init];

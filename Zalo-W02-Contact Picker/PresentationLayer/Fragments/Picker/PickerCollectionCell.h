@@ -7,13 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "PickerModel.h"
+#import "PickerViewModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol PickerCollectionCellDelegate <NSObject>
 
-- (void)removeButtonTapped:(PickerModel*)pickerModel;
+- (void)removeButtonTapped:(PickerViewModel *)pickerModel;
 
 @end
 
@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString*)reuseIdentifier;
 + (NSString*)nibName;
 
-- (void)setUpPickerModelForCell:(PickerModel*)pickerModel;
+- (void)setUpPickerModelForCell:(PickerViewModel *)pickerModel;
 - (void)setUpImageForCell:(UIImage *)image;
 
 @end
