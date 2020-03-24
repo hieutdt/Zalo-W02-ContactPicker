@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		040B5F252429F4DD00E72754 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 040B5F242429F4DD00E72754 /* CoreData.framework */; };
+		040B5F292429F79C00E72754 /* Contacts.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 040B5F272429F79C00E72754 /* Contacts.xcdatamodeld */; };
 		041901EB24206BA2001F82C1 /* ErrorView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 041901EA24206BA2001F82C1 /* ErrorView.mm */; };
 		041901ED24206BC4001F82C1 /* ErrorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 041901EC24206BC4001F82C1 /* ErrorView.xib */; };
 		041931F5242314B400500908 /* ImageCache.mm in Sources */ = {isa = PBXBuildFile; fileRef = 041931F4242314B400500908 /* ImageCache.mm */; };
@@ -39,6 +41,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		040B5F242429F4DD00E72754 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		040B5F282429F79C00E72754 /* Contacts.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Contacts.xcdatamodel; sourceTree = "<group>"; };
 		041901E924206BA2001F82C1 /* ErrorView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ErrorView.h; sourceTree = "<group>"; };
 		041901EA24206BA2001F82C1 /* ErrorView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ErrorView.mm; sourceTree = "<group>"; };
 		041901EC24206BC4001F82C1 /* ErrorView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ErrorView.xib; sourceTree = "<group>"; };
@@ -99,6 +103,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				040B5F252429F4DD00E72754 /* CoreData.framework in Frameworks */,
 				04C2972E241A29AC0067D1DF /* Contacts.framework in Frameworks */,
 				463A50A2688A4221EA94E440 /* Pods_Zalo_W02_Contact_Picker.framework in Frameworks */,
 			);
@@ -107,6 +112,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		040B5F262429F78900E72754 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				040B5F272429F79C00E72754 /* Contacts.xcdatamodeld */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
 		041901E824206B7A001F82C1 /* Errors */ = {
 			isa = PBXGroup;
 			children = (
@@ -139,8 +152,8 @@
 				0478F5BD2419ED9A00DA753C /* PickerTableView.mm */,
 				0478F5BF2419EDB100DA753C /* PickerTableView.xib */,
 				0478F5C12419EEA900DA753C /* PickerTableViewCell.h */,
-				0478F5C32419EEAA00DA753C /* PickerTableViewCell.xib */,
 				0478F5C22419EEAA00DA753C /* PickerTableViewCell.mm */,
+				0478F5C32419EEAA00DA753C /* PickerTableViewCell.xib */,
 			);
 			path = Picker;
 			sourceTree = "<group>";
@@ -153,27 +166,28 @@
 			path = Delegate;
 			sourceTree = "<group>";
 		};
-		049C6F7D24192BD500DEFA45 /* ViewModels */ = {
+		049C6F7D24192BD500DEFA45 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
 				049C6F8224192ECB00DEFA45 /* PickerViewModel.h */,
 				049C6F8324192ECB00DEFA45 /* PickerVIewModel.mm */,
 			);
-			path = ViewModels;
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
-		049C6F7E24192BE000DEFA45 /* Entities */ = {
+		049C6F7E24192BE000DEFA45 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
 				049C6F7F24192BF100DEFA45 /* Contact.h */,
 				049C6F8024192BF100DEFA45 /* Contact.mm */,
 			);
-			path = Entities;
+			path = Entity;
 			sourceTree = "<group>";
 		};
 		04C2972C241A29AB0067D1DF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				040B5F242429F4DD00E72754 /* CoreData.framework */,
 				04C2459C2424A1660048143A /* XCTest.framework */,
 				04C2972D241A29AC0067D1DF /* Contacts.framework */,
 				98F59C91C0CFBFFA00C59DC9 /* Pods_Zalo_W02_Contact_Picker.framework */,
@@ -223,6 +237,7 @@
 				04D3047B241926410031A670 /* DataAccessLayer */,
 				04D30479241926320031A670 /* Models */,
 				04C81A032419316E00918A84 /* Helpers */,
+				040B5F262429F78900E72754 /* CoreData */,
 				04C81A072419320800918A84 /* AppConsts.h */,
 				04D30460241925E00031A670 /* AppDelegate.h */,
 				04D30461241925E00031A670 /* AppDelegate.m */,
@@ -240,8 +255,8 @@
 		04D30479241926320031A670 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				049C6F7E24192BE000DEFA45 /* Entities */,
-				049C6F7D24192BD500DEFA45 /* ViewModels */,
+				049C6F7E24192BE000DEFA45 /* Entity */,
+				049C6F7D24192BD500DEFA45 /* ViewModel */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -427,6 +442,7 @@
 				041931F5242314B400500908 /* ImageCache.mm in Sources */,
 				04D30462241925E00031A670 /* AppDelegate.m in Sources */,
 				0422A340241BE6A9008F5CF3 /* LayoutHelper.mm in Sources */,
+				040B5F292429F79C00E72754 /* Contacts.xcdatamodeld in Sources */,
 				04C81A0A2419358200918A84 /* PickerCollectionCell.mm in Sources */,
 				04D30473241925E20031A670 /* main.m in Sources */,
 				0478F5C42419EEAA00DA753C /* PickerTableViewCell.mm in Sources */,
@@ -579,6 +595,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DC43C114AD791C99BA7D0969 /* Pods-Zalo-W02-Contact Picker.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VC54UPHUD4;
@@ -597,6 +614,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1D5E9E6A2340863B822F8B2A /* Pods-Zalo-W02-Contact Picker.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VC54UPHUD4;
@@ -633,6 +651,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		040B5F272429F79C00E72754 /* Contacts.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				040B5F282429F79C00E72754 /* Contacts.xcdatamodel */,
+			);
+			currentVersion = 040B5F282429F79C00E72754 /* Contacts.xcdatamodel */;
+			path = Contacts.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 04D30455241925E00031A670 /* Project object */;
 }

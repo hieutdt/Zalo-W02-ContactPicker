@@ -9,8 +9,10 @@
 #import "ContactAdaper.h"
 #import "StringHelper.h"
 #import "AppConsts.h"
+#import "AppDelegate.h"
 
 #import <Contacts/Contacts.h>
+#import <CoreData/CoreData.h>
 
 @interface ContactAdaper()
 
@@ -19,6 +21,8 @@
 @property (nonatomic, strong) dispatch_queue_t concurrentQueue;
 @property (nonatomic, strong) NSMutableArray<id<ContactDidChangedDelegate>> *contactDidChangedDelegates;
 @property (nonatomic, strong) NSMutableArray<NSString *> *keysToFetch;
+@property (nonatomic, assign) AppDelegate *appDelegate;
+@property (nonatomic) BOOL dataOutUpdated;
 
 @end
 
@@ -34,6 +38,10 @@
         
         auto *fullNameKey = [CNContactFormatter descriptorForRequiredKeysForStyle:CNContactFormatterStyleFullName];
         _keysToFetch = [NSMutableArray arrayWithArray:@[fullNameKey, CNContactPhoneNumbersKey, CNContactThumbnailImageDataKey]];
+        
+        _appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+        
+        _dataOutUpdated = NO;
         
         // Add Contact changes Observer
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contactsDidChange) name:CNContactStoreDidChangeNotification object:nil];
@@ -58,34 +66,30 @@
     return sharedInstance;
 }
 
-- (void)contactsDidChange {
-    NSLog(@"TONHIEU: contact did changed!");
-    
-    [self refetchContactsWithCompletion:^(NSMutableArray<Contact *> *contacts, NSError *error) {
-        if (error)
-            return;
-        
-        for (int i = 0; i < self.contactDidChangedDelegates.count; i++) {
-            id<ContactDidChangedDelegate> delegate = [self.contactDidChangedDelegates objectAtIndex:i];
-            if (delegate and [delegate respondsToSelector:@selector(contactsDidChanged)]) {
-                [delegate contactsDidChanged];
-            }
-        }
-    }];
-}
-
 - (BOOL)hasContactsData {
     return self.contacts and self.contacts.count > 0;
 }
 
+#pragma mark - CheckDataIsOutUpdated
+
+- (BOOL)isDataOutUpdate {
+    @synchronized (self) {
+        BOOL dataUpdated = [[NSUserDefaults standardUserDefaults] valueForKey:@"dataUpdated"];
+        return !dataUpdated;
+    }
+}
+
+- (void)setDataUpdated:(BOOL)updated {
+    @synchronized (self) {
+        [[NSUserDefaults standardUserDefaults] setBool:updated forKey:@"dataUpdated"];
+    }
+}
+
+#pragma mark - FetchMethods
+
 - (void)fetchContactsWithCompletion:(void (^)(NSMutableArray<Contact *> *contacts, NSError * error))completionHandle {
     if (!completionHandle)
         return;
-    
-    if ([self hasContactsData]) {
-        completionHandle(self.contacts, nil);
-        return;
-    }
     
     dispatch_async(self.serialQueue, ^{
         if ([self hasContactsData]) {
@@ -93,59 +97,64 @@
             return;
         }
         
-        NSMutableArray<CNContact*> *contacts = [[NSMutableArray alloc] init];
-        CNContactStore *contactStore = [[CNContactStore alloc] init];
+        [self fetchContactsFromCoreData];
         
-        CNContactFetchRequest *request = [[CNContactFetchRequest alloc] initWithKeysToFetch:self.keysToFetch];
-        
-        try {
-            [contactStore enumerateContactsWithFetchRequest:request error:nil usingBlock:^(CNContact *contact, BOOL *stop) {
-                [contacts addObject:contact];
-            }];
-            
-            // Caching here
-            [self saveCNContactsToContactsArray:contacts];
+        if ([self hasContactsData]) {
             completionHandle(self.contacts, nil);
-            
-        } catch (NSException *e) {
-            NSLog(@"Unable to fetch contacts: %@", e);
-            
-            NSMutableDictionary *details = [NSMutableDictionary dictionary];
-            [details setValue:@"Lấy dữ liệu danh bạ thất bại." forKey:NSLocalizedDescriptionKey];
-            NSError *error = [[NSError alloc] initWithDomain:@"ContactAdapter" code:200 userInfo:details];
-            completionHandle(nil, error);
+        } else {
+            [self refetchContactsWithCompletion:completionHandle withSaveToCoreData:YES];
         }
     });
 }
 
-- (void)refetchContactsWithCompletion:(void (^)(NSMutableArray<Contact *> *contacts, NSError *error))completionHandle {
+- (void)fetchContactsFromCoreData {
+    NSManagedObjectContext *managedContext = [self.appDelegate.persistentContainer viewContext];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"Person"];
+    
+    try {
+        NSArray<NSManagedObject *> *contacts = [managedContext executeFetchRequest:fetchRequest error:nil];
+        [self saveContactManagedObjectToContactsArray:contacts];
+    } catch (NSError *err) {
+        NSLog(@"Could not fetch: %@", err.userInfo);
+    }
+}
+
+- (void)refetchFromPhoneContactsWithCompletion:(void (^)(NSMutableArray<Contact *> *contacts, NSError *error))completionHandle {
+    dispatch_async(self.serialQueue, ^{
+        [self refetchContactsWithCompletion:completionHandle withSaveToCoreData:YES];
+    });
+}
+
+- (void)refetchContactsWithCompletion:(void (^)(NSMutableArray<Contact *> *contacts, NSError *error))completionHandle withSaveToCoreData:(BOOL)save {
     if (!completionHandle)
         return;
     
-    dispatch_async(self.serialQueue, ^{
-        NSMutableArray<CNContact*> *contacts = [[NSMutableArray alloc] init];
-        CNContactStore *contactStore = [[CNContactStore alloc] init];
+    NSMutableArray<CNContact*> *contacts = [[NSMutableArray alloc] init];
+    CNContactStore *contactStore = [[CNContactStore alloc] init];
+    
+    CNContactFetchRequest *request = [[CNContactFetchRequest alloc] initWithKeysToFetch:self.keysToFetch];
+    
+    try {
+        [contactStore enumerateContactsWithFetchRequest:request error:nil usingBlock:^(CNContact *contact, BOOL *stop) {
+            [contacts addObject:contact];
+        }];
         
-        CNContactFetchRequest *request = [[CNContactFetchRequest alloc] initWithKeysToFetch:self.keysToFetch];
-        
-        try {
-            [contactStore enumerateContactsWithFetchRequest:request error:nil usingBlock:^(CNContact *contact, BOOL *stop) {
-                [contacts addObject:contact];
-            }];
-            
-            // Caching here
-            [self saveCNContactsToContactsArray:contacts];
-            completionHandle(self.contacts, nil);
-            
-        } catch (NSException *e) {
-            NSLog(@"Unable to fetch contacts: %@", e);
-            
-            NSMutableDictionary *details = [NSMutableDictionary dictionary];
-            [details setValue:@"Lấy dữ liệu danh bạ thất bại." forKey:NSLocalizedDescriptionKey];
-            NSError *error = [[NSError alloc] initWithDomain:@"ContactAdapter" code:200 userInfo:details];
-            completionHandle(nil, error);
+        [self saveCNContactsToContactsArray:contacts];
+        if (save) {
+            [self saveContactsDataToCoreData:self.contacts];
+            [self setDataUpdated:YES];
         }
-    });
+        
+        completionHandle(self.contacts, nil);
+        
+    } catch (NSException *e) {
+        NSLog(@"Unable to fetch contacts: %@", e);
+        
+        NSMutableDictionary *details = [NSMutableDictionary dictionary];
+        [details setValue:@"Lấy dữ liệu danh bạ thất bại." forKey:NSLocalizedDescriptionKey];
+        NSError *error = [[NSError alloc] initWithDomain:@"ContactAdapter" code:200 userInfo:details];
+        completionHandle(nil, error);
+    }
 }
 
 - (void)fetchContactImageDataByID:(NSString *)contactID completion:(void (^)(UIImage *image, NSError *error))completionHandle {
@@ -176,36 +185,46 @@
     });
 }
 
-- (void)fetchContactsByPredicate:(NSPredicate *)predicate withCompletion:(void (^)(NSMutableArray<Contact *> *contacts, NSError *error))completionHandle {
+
+#pragma mark - AuthorizationStatusHandler
+
+- (CNAuthorizationStatus)getAccessContactAuthorizationStatus {
+    return [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts];
+}
+
+- (void)requestAccessWithCompletionHandle:(void (^)(BOOL granted))completionHandle {
     if (!completionHandle)
         return;
     
-    CNContactStore *contactStore = [[CNContactStore alloc] init];
-    NSError *error = [[NSError alloc] initWithDomain:@"ContactAdapter" code:200 userInfo:@{@"Tải danh bạ thất bại": NSLocalizedDescriptionKey}];
-    
-    dispatch_async(self.serialQueue, ^{
-        try {
-            NSArray<CNContact *> *contacts = [contactStore unifiedContactsMatchingPredicate:predicate keysToFetch:self.keysToFetch error:nil];
-            
-            if (contacts.count == 0) {
-                completionHandle(nil, error);
-                return;
-            }
-            
-            NSMutableArray<Contact *> *contactModels = [self getContactModelsFromCNContacts:contacts];
-            completionHandle(contactModels, nil);
-            
-        } catch (NSException *e) {
-            NSLog(@"Load contact with predicate failed: %@", e);
-            completionHandle(nil, error);
+    [[[CNContactStore alloc] init] requestAccessForEntityType:CNEntityTypeContacts completionHandler:^(BOOL granted, NSError *error) {
+        if (error or !granted) {
+            completionHandle(false);
+        } else {
+            completionHandle(true);
         }
-    });
+    }];
 }
+
+#pragma mark - SaveToContactEntityHandler
 
 - (void)saveCNContactsToContactsArray:(NSMutableArray<CNContact*> *)CNContacts {
     @synchronized (self) {
         [self.contacts removeAllObjects];
         self.contacts = [self getContactModelsFromCNContacts:CNContacts];
+    }
+}
+
+- (void)saveContactManagedObjectToContactsArray:(NSArray<NSManagedObject *> *)contacts {
+    @synchronized (self) {
+        [self.contacts removeAllObjects];
+        for (int i = 0; i < contacts.count; i++) {
+            Contact *contactModel = [[Contact alloc] init];
+            contactModel.identifier = [contacts[i] valueForKey:@"identifier"];
+            contactModel.name = [contacts[i] valueForKey:@"name"];
+            contactModel.phoneNumber = [contacts[i] valueForKey:@"phoneNumber"];
+            
+            [self.contacts addObject:contactModel];
+        }
     }
 }
 
@@ -229,21 +248,19 @@
     return contacts;
 }
 
-- (CNAuthorizationStatus)getAccessContactAuthorizationStatus {
-    return [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts];
-}
+#pragma mark - ContactDidChangedDelegate
 
-- (void)requestAccessWithCompletionHandle:(void (^)(BOOL granted))completionHandle {
-    if (!completionHandle)
-        return;
+- (void)contactsDidChange {
+    NSLog(@"TONHIEU: contact did changed!");
     
-    [[[CNContactStore alloc] init] requestAccessForEntityType:CNEntityTypeContacts completionHandler:^(BOOL granted, NSError *error) {
-        if (error or !granted) {
-            completionHandle(false);
-        } else {
-            completionHandle(true);
+    [self setDataUpdated:NO];
+    
+    for (int i = 0; i < self.contactDidChangedDelegates.count; i++) {
+        id<ContactDidChangedDelegate> delegate = [self.contactDidChangedDelegates objectAtIndex:i];
+        if (delegate and [delegate respondsToSelector:@selector(contactsDidChanged)]) {
+            [delegate contactsDidChanged];
         }
-    }];
+    }
 }
 
 - (void)resigterContactDidChangedDelegate:(id<ContactDidChangedDelegate>)delegate {
@@ -267,5 +284,71 @@
         [self.contactDidChangedDelegates removeObject:delegate];
     }
 }
+
+- (void)checkDataOutUpdateWithComletion:(void (^)(BOOL outUpdated))completionHandle {
+    dispatch_async(self.serialQueue, ^{
+        NSMutableArray<CNContact*> *contacts = [[NSMutableArray alloc] init];
+        CNContactStore *contactStore = [[CNContactStore alloc] init];
+        
+        CNContactFetchRequest *request = [[CNContactFetchRequest alloc] initWithKeysToFetch:self.keysToFetch];
+        
+        try {
+            [contactStore enumerateContactsWithFetchRequest:request error:nil usingBlock:^(CNContact *contact, BOOL *stop) {
+                [contacts addObject:contact];
+            }];
+            
+            if (contacts.count != self.contacts.count) {
+                completionHandle(YES);
+            }
+            
+            int i = 0;
+            for (CNContact *cnContact in contacts) {
+                Contact *contact = [[Contact alloc] init];
+                contact.identifier = cnContact.identifier;
+                contact.name = [[NSString alloc] initWithFormat:@"%@ %@", cnContact.givenName, cnContact.familyName];
+                contact.name = [StringHelper standardizeString:contact.name];
+                
+                if (cnContact.phoneNumbers.count > 0)
+                    contact.phoneNumber = [cnContact.phoneNumbers objectAtIndex:0].value.stringValue;
+                else
+                    contact.phoneNumber = @"";
+                
+                if (contact.i)
+            }
+            
+        } catch (NSException *e) {
+            
+        }
+        
+    });
+}
+
+#pragma mark - CoreDataHandler
+
+- (void)saveContactsDataToCoreData:(NSMutableArray<Contact *> *)contacts {
+    if (!contacts)
+        return;
+    
+    for (int i = 0; i < contacts.count; i++) {
+        [self saveContactToCoreData:contacts[i]];
+    }
+}
+
+- (void)saveContactToCoreData:(Contact *)contact {
+    NSManagedObjectContext *managedContext =  [self.appDelegate.persistentContainer viewContext];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Person" inManagedObjectContext:managedContext];
+    NSManagedObject *contactObject = [[NSManagedObject alloc] initWithEntity:entity insertIntoManagedObjectContext:managedContext];
+    
+    [contactObject setValue:contact.identifier forKey:@"identifier"];
+    [contactObject setValue:contact.name forKey:@"name"];
+    [contactObject setValue:contact.phoneNumber forKey:@"phoneNumber"];
+    
+    try {
+        [managedContext save:nil];
+    } catch (NSError *e) {
+        NSLog(@"Could not save: %@", e.userInfo);
+    }
+}
+
 
 @end

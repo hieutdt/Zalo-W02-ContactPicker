@@ -24,6 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (void)loadContactsWithCompletion:(void (^)(NSMutableArray<Contact *> *contacts, NSError *error))completionHandle;
 
++ (void)reloadContactsWithCompletion:(void (^)(NSMutableArray<Contact *> *contacts, NSError *error))completionHandle;
+
 + (void)loadContactImageByID:(NSString*)contactID completion:(void (^)(UIImage *image, NSError *error))completionHandle;
 
 + (NSMutableArray<NSMutableArray *> *)sortedByAlphabetSectionsArrayFromContacts:(NSMutableArray<Contact *> *)contacts;
@@ -33,6 +35,10 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)resigterContactDidChangedDelegate:(id<ContactDidChangedDelegate>)delegate;
 
 + (void)removeContactDidChangedDelegate:(id<ContactDidChangedDelegate>)delegate;
+
++ (BOOL)contactsDataOutUpdated;
+
++ (void)checkAppDataOutUpdatedWhenInitWithCompletion:(void (^)(BOOL outUpdated))completionHandle;
 
 @end
 

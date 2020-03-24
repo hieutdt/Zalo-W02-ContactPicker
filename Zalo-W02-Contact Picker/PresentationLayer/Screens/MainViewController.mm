@@ -34,6 +34,7 @@
 @property (strong, nonatomic) UILabel *titleLabel;
 @property (strong, nonatomic) UILabel *subTitleLabel;
 @property (strong, nonatomic) UIBarButtonItem *cancelButtonItem;
+@property (strong, nonatomic) UIBarButtonItem *updateButtonItem;
 
 @property (strong, nonatomic) NSMutableArray<Contact *> *contacts;
 @property (strong, nonatomic) NSMutableArray<NSMutableArray *> *sectionData;
@@ -72,6 +73,7 @@
     _errorView = [[ErrorView alloc] init];
     
     [self customInitNavigationBar];
+    [self checkDataOutUpdatedAndShowButton];
     [self checkPermissionAndLoadContacts];
 }
 
@@ -117,34 +119,24 @@
     [[LoadingHelper instance] showLoadingEffect];
     
     [ContactBusiness loadContactsWithCompletion:^(NSMutableArray<Contact *> *contacts, NSError *error) {
-        if (!error) {
-            self.contacts = contacts;
-            
-            if (self.contacts.count > 0) {
-                // Set up data will run in background
-                [self initContactsData:contacts];
-                self.pickerModels = [self getPickerModelsArrayFromContacts];
-                [self.tableView setModelsData:self.pickerModels];
-                
-                // tableView.reloadData have to run after set up models data
-                ASYNC_MAIN({
-                    [[LoadingHelper instance] hideLoadingEffectDelay:1];
-                    self.contactStackView.hidden = false;
-                    [self.tableView reloadData];
-                });
-            } else {
-                ASYNC_MAIN({
-                    [[LoadingHelper instance] hideLoadingEffectDelay:1];
-                    [self showEmptyView];
-                });
-            }
-        } else {
-            ASYNC_MAIN({
-                [[LoadingHelper instance] hideLoadingEffectDelay:1];
-                [self showErrorViewWithErrorDescription:[error.userInfo valueForKey:NSLocalizedDescriptionKey]];
-            });
-        }
+        [self updateAfterLoadContacts:contacts error:error];
     }];
+}
+
+- (void)reloadContacts {
+    [[LoadingHelper instance] showLoadingEffect];
+    
+    [ContactBusiness reloadContactsWithCompletion:^(NSMutableArray<Contact *> *contacts, NSError *error) {
+        [self updateAfterLoadContacts:contacts error:error];
+    }];
+}
+
+- (void)checkDataOutUpdatedAndShowButton {
+    if ([ContactBusiness contactsDataOutUpdated]) {
+        [self showUpdateNavigationButton];
+    } else {
+        [self hideUpdateNavigationButton];
+    }
 }
 
 - (void)initContactsData:(NSMutableArray<Contact *> *)contacts {
@@ -233,6 +225,43 @@
     [self.tableView removeAllElements];
     [self.contactPickerView removeAll];
     [self updateNavigationBar];
+}
+
+- (void)updateNewContacts {
+    [self reloadContacts];
+}
+
+- (void)updateAfterLoadContacts:(NSMutableArray<Contact *> *)contacts error:(NSError *)error {
+    if (!error) {
+        self.contacts = contacts;
+        
+        if (self.contacts.count > 0) {
+            // Set up data will run in background
+            [self initContactsData:contacts];
+            self.pickerModels = [self getPickerModelsArrayFromContacts];
+            [self.tableView setModelsData:self.pickerModels];
+            
+            // tableView.reloadData have to run after set up models data
+            ASYNC_MAIN({
+                [[LoadingHelper instance] hideLoadingEffectDelay:1];
+                [self checkDataOutUpdatedAndShowButton];
+                self.contactStackView.hidden = false;
+                [self.tableView reloadData];
+            });
+        } else {
+            ASYNC_MAIN({
+                [[LoadingHelper instance] hideLoadingEffectDelay:1];
+                [self checkDataOutUpdatedAndShowButton];
+                [self showEmptyView];
+            });
+        }
+    } else {
+        ASYNC_MAIN({
+            [[LoadingHelper instance] hideLoadingEffectDelay:1];
+            [self checkDataOutUpdatedAndShowButton];
+            [self showErrorViewWithErrorDescription:[error.userInfo valueForKey:NSLocalizedDescriptionKey]];
+        });
+    }
 }
 
 
@@ -341,6 +370,9 @@
     self.cancelButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelPickContacts)];
     self.cancelButtonItem.tintColor = [UIColor blackColor];
     
+    self.updateButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Update" style:UIBarButtonItemStylePlain target:self action:@selector(updateNewContacts)];
+    self.updateButtonItem.tintColor = [UIColor blackColor];
+    
     self.subTitleLabel.hidden = true;
 }
 
@@ -350,6 +382,14 @@
 
 - (void)hideCancelPickNavigationButton {
     self.navigationItem.leftBarButtonItem = nil;
+}
+
+- (void)showUpdateNavigationButton {
+    self.navigationItem.rightBarButtonItem = self.updateButtonItem;
+}
+
+- (void)hideUpdateNavigationButton {
+    self.navigationItem.rightBarButtonItem = nil;
 }
 
 - (void)updateNavigationBar {
@@ -368,11 +408,7 @@
 
 - (void)contactsDidChanged {
     ASYNC_MAIN({
-        if ([self.tableView selectedCount] > 0) {
-            [self cancelPickContacts];
-        }
-        
-        [self loadContacts];
+        [self showUpdateNavigationButton];
     });
 }
 

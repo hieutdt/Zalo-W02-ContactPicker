@@ -33,6 +33,19 @@
     }];
 }
 
++ (void)reloadContactsWithCompletion:(void (^)(NSMutableArray<Contact *> *contacts, NSError *error))completionHandle {
+    [[ContactAdaper instance] refetchFromPhoneContactsWithCompletion:^(NSMutableArray<Contact *> *contacts, NSError *error) {
+        if (!completionHandle)
+            return;
+        
+        if (!error) {
+            completionHandle(contacts, nil);
+        } else {
+            completionHandle(nil, error);
+        }
+    }];
+}
+
 + (void)loadContactImageByID:(NSString *)contactID completion:(void (^)(UIImage *image, NSError * error))completionHandle {
     [[ContactAdaper instance] fetchContactImageDataByID:contactID completion:^(UIImage *image, NSError *error) {
         if (!completionHandle)
@@ -114,6 +127,14 @@
         return;
     
     [[ContactAdaper instance] removeContactDidChangedDelegate:delegate];
+}
+
++ (BOOL)contactsDataOutUpdated {
+    return [[ContactAdaper instance] isDataOutUpdate];
+}
+
++ (void)checkAppDataOutUpdatedWhenInitWithCompletion:(void (^)(BOOL outUpdated))completionHandle {
+    
 }
 
 @end
