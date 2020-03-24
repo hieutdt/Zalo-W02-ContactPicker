@@ -139,8 +139,8 @@
 				0478F5BD2419ED9A00DA753C /* PickerTableView.mm */,
 				0478F5BF2419EDB100DA753C /* PickerTableView.xib */,
 				0478F5C12419EEA900DA753C /* PickerTableViewCell.h */,
-				0478F5C22419EEAA00DA753C /* PickerTableViewCell.mm */,
 				0478F5C32419EEAA00DA753C /* PickerTableViewCell.xib */,
+				0478F5C22419EEAA00DA753C /* PickerTableViewCell.mm */,
 			);
 			path = Picker;
 			sourceTree = "<group>";
@@ -153,22 +153,22 @@
 			path = Delegate;
 			sourceTree = "<group>";
 		};
-		049C6F7D24192BD500DEFA45 /* PresentationModels */ = {
+		049C6F7D24192BD500DEFA45 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
 				049C6F8224192ECB00DEFA45 /* PickerViewModel.h */,
 				049C6F8324192ECB00DEFA45 /* PickerVIewModel.mm */,
 			);
-			path = PresentationModels;
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
-		049C6F7E24192BE000DEFA45 /* BusinessModels */ = {
+		049C6F7E24192BE000DEFA45 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
 				049C6F7F24192BF100DEFA45 /* Contact.h */,
 				049C6F8024192BF100DEFA45 /* Contact.mm */,
 			);
-			path = BusinessModels;
+			path = Entities;
 			sourceTree = "<group>";
 		};
 		04C2972C241A29AB0067D1DF /* Frameworks */ = {
@@ -240,8 +240,8 @@
 		04D30479241926320031A670 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				049C6F7E24192BE000DEFA45 /* BusinessModels */,
-				049C6F7D24192BD500DEFA45 /* PresentationModels */,
+				049C6F7E24192BE000DEFA45 /* Entities */,
+				049C6F7D24192BD500DEFA45 /* ViewModels */,
 			);
 			path = Models;
 			sourceTree = "<group>";

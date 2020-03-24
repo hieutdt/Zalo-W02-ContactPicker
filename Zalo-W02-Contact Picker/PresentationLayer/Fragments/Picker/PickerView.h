@@ -13,8 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol PickerViewDelegate <NSObject>
 
-- (void)removeElementFromPickerview:(PickerViewModel *)pickerModel;
-- (void)nextButtonTapped;
+- (void)pickerView:(UIView *)pickerView removeElement:(PickerViewModel *)pickerModel;
+- (void)nextButtonTappedFromPickerView:(UIView *)pickerView;
 
 @end
 

@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol PickerCollectionCellDelegate <NSObject>
 
-- (void)removeButtonTapped:(PickerViewModel *)pickerModel;
+- (void)pickerCollectionCell:(UICollectionViewCell *)cell removeButtonTapped:(PickerViewModel *)pickerModel;
 
 @end
 

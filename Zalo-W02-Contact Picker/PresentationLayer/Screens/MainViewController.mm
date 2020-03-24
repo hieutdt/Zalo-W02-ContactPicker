@@ -249,23 +249,30 @@
 
 #pragma mark - PickerViewDelegateProtocol
 
-- (void)removeElementFromPickerview:(PickerViewModel *)pickerModel {
-    [self.tableView removeElement:pickerModel];
-    [self updateNavigationBar];
+- (void)pickerView:(UIView *)pickerView removeElement:(PickerViewModel *)pickerModel {
+    if (pickerView == self.contactPickerView) {
+        [self.tableView removeElement:pickerModel];
+        [self updateNavigationBar];
+    }
 }
 
-- (void)nextButtonTapped {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Thông báo" message:@"Bạn đã ấn nút Tiếp tục" preferredStyle:UIAlertControllerStyleActionSheet];
-    
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
-    
-    [alert addAction:cancelAction];
-    [self presentViewController:alert animated:true completion:nil];
+- (void)nextButtonTappedFromPickerView:(UIView *)pickerView {
+    if (pickerView == self.contactPickerView) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Thông báo" message:@"Bạn đã ấn nút Tiếp tục" preferredStyle:UIAlertControllerStyleActionSheet];
+        
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+        
+        [alert addAction:cancelAction];
+        [self presentViewController:alert animated:true completion:nil];
+    }
 }
 
 #pragma mark - PickerTableViewDelegateProtocol
 
-- (void)loadImageToCell:(PickerTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+- (void)pickerTableView:(UIView *)tableView loadImageToCell:(PickerTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+    if (tableView != self.tableView)
+        return;
+    
     Contact *contact = (Contact *)self.sectionData[indexPath.section][indexPath.row];
     
     UIImage *imageFromCache = [[ImageCache instance] imageForKey:contact.identifier];
@@ -283,26 +290,31 @@
     }
 }
 
-- (void)uncheckCellOfElement:(PickerViewModel *)element {
-    [self.contactPickerView removeElement:element];
-    [self updateNavigationBar];
+- (void)pickerTableView:(UIView *)tableView uncheckCellOfElement:(PickerViewModel *)element {
+    if (tableView == self.tableView) {
+        [self.contactPickerView removeElement:element];
+        [self updateNavigationBar];
+    }
 }
 
-- (void)checkedCellOfElement:(PickerViewModel *)element {
-    UIImage *imageFromCache = [[ImageCache instance] imageForKey:element.identifier];
-    if (imageFromCache) {
-        [self.contactPickerView addElement:element withImage:imageFromCache];
-    } else {
-        [ContactBusiness loadContactImageByID:element.identifier completion:^(UIImage *image, NSError *error) {
-            ASYNC_MAIN({
-                [[ImageCache instance] setImage:image forKey:element.identifier];
-                [self.contactPickerView addElement:element withImage:image];
-            });
-        }];
+- (void)pickerTableView:(UIView *)tableView checkedCellOfElement:(PickerViewModel *)element {
+    if (tableView == self.tableView) {
+        UIImage *imageFromCache = [[ImageCache instance] imageForKey:element.identifier];
+        if (imageFromCache) {
+            [self.contactPickerView addElement:element withImage:imageFromCache];
+        } else {
+            [ContactBusiness loadContactImageByID:element.identifier completion:^(UIImage *image, NSError *error) {
+                ASYNC_MAIN({
+                    [[ImageCache instance] setImage:image forKey:element.identifier];
+                    [self.contactPickerView addElement:element withImage:image];
+                });
+            }];
+        }
+        
+        [self updateNavigationBar];
     }
-    
-    [self updateNavigationBar];
 }
+
 
 #pragma mark - SetUpNavigationBar
 

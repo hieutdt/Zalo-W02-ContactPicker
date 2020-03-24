@@ -73,8 +73,8 @@
 }
 
 - (IBAction)removeButtonTapped:(id)sender {
-    if (self.delegate and [self.delegate respondsToSelector:@selector(removeButtonTapped:)]) {
-        [self.delegate removeButtonTapped:self.model];
+    if (self.delegate and [self.delegate respondsToSelector:@selector(pickerCollectionCell:removeButtonTapped:)]) {
+        [self.delegate pickerCollectionCell:self removeButtonTapped:self.model];
     }
 }
 

@@ -161,12 +161,12 @@
     
     if (pickerModel.isChosen) {
         self.selectedCount--;
-        if (self.delegate and [self.delegate respondsToSelector:@selector(uncheckCellOfElement:)])
-            [self.delegate uncheckCellOfElement:pickerModel];
+        if (self.delegate and [self.delegate respondsToSelector:@selector(pickerTableView:uncheckCellOfElement:)])
+            [self.delegate pickerTableView:self uncheckCellOfElement:pickerModel];
     } else if (self.selectedCount < 5) {
         self.selectedCount++;
-        if (self.delegate and [self.delegate respondsToSelector:@selector(checkedCellOfElement:)])
-            [self.delegate checkedCellOfElement:pickerModel];
+        if (self.delegate and [self.delegate respondsToSelector:@selector(pickerTableView:checkedCellOfElement:)])
+            [self.delegate pickerTableView:self checkedCellOfElement:pickerModel];
     } else
         return;
     
@@ -246,8 +246,8 @@
     [cell setGradientColorBackground:pickerModel.gradientColorCode];
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     
-    if (self.delegate and [self.delegate respondsToSelector:@selector(loadImageToCell:atIndexPath:)]) {
-        [self.delegate loadImageToCell:cell atIndexPath:indexPath];
+    if (self.delegate and [self.delegate respondsToSelector:@selector(pickerTableView:loadImageToCell:atIndexPath:)]) {
+        [self.delegate pickerTableView:self loadImageToCell:cell atIndexPath:indexPath];
     }
     
     if (indexPath.row == _sectionsArray[indexPath.section].count - 1)

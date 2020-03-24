@@ -14,9 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol PickerTableViewDelegate <NSObject>
 
-- (void)loadImageToCell:(PickerTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
-- (void)uncheckCellOfElement:(PickerViewModel *)element;
-- (void)checkedCellOfElement:(PickerViewModel *)element;
+- (void)pickerTableView:(UIView *)tableView loadImageToCell:(PickerTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
+- (void)pickerTableView:(UIView *)tableView uncheckCellOfElement:(PickerViewModel *)element;
+- (void)pickerTableView:(UIView *)tableView checkedCellOfElement:(PickerViewModel *)element;
 
 @end
 

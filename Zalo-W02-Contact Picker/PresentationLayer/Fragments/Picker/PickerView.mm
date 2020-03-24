@@ -153,8 +153,8 @@
 }
 
 - (IBAction)nextButtonTapped:(id)sender {
-    if (_delegate and [_delegate respondsToSelector:@selector(nextButtonTapped)]) {
-        [_delegate nextButtonTapped];
+    if (self.delegate and [self.delegate respondsToSelector:@selector(nextButtonTappedFromPickerView:)]) {
+        [self.delegate nextButtonTappedFromPickerView:self];
     }
 }
 
@@ -173,11 +173,12 @@
 
 #pragma mark - PickerCollectionViewDelegateProtocol
 
-- (void)removeButtonTapped:(PickerViewModel *)pickerModel {
+- (void)pickerCollectionCell:(UICollectionViewCell *)cell removeButtonTapped:(PickerViewModel *)pickerModel {
     [self removeElement:pickerModel];
     
-    if (_delegate and [_delegate respondsToSelector:@selector(removeElementFromPickerview:)])
-        [_delegate removeElementFromPickerview:pickerModel];
+    if (self.delegate and [self.delegate respondsToSelector:@selector(pickerView:removeElement:)]) {
+        [self.delegate pickerView:self removeElement:pickerModel];
+    }
 }
 
 @end
