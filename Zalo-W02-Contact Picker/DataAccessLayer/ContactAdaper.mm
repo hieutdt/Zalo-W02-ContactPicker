@@ -18,6 +18,7 @@
 @property (nonatomic, strong) dispatch_queue_t serialQueue;
 @property (nonatomic, strong) dispatch_queue_t concurrentQueue;
 @property (nonatomic, strong) NSMutableArray<id<ContactDidChangedDelegate>> *contactDidChangedDelegates;
+@property (nonatomic, strong) NSMutableArray<NSString *> *keysToFetch;
 
 @end
 
@@ -30,6 +31,9 @@
         _serialQueue = dispatch_queue_create("contactAdaperSerialQueue", DISPATCH_QUEUE_SERIAL);
         _concurrentQueue = dispatch_queue_create("contactAdapterConcurrentQueue", DISPATCH_QUEUE_CONCURRENT);
         _contactDidChangedDelegates = [[NSMutableArray alloc] init];
+        
+        auto *fullNameKey = [CNContactFormatter descriptorForRequiredKeysForStyle:CNContactFormatterStyleFullName];
+        _keysToFetch = [NSMutableArray arrayWithArray:@[fullNameKey, CNContactPhoneNumbersKey, CNContactThumbnailImageDataKey]];
         
         // Add Contact changes Observer
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contactsDidChange) name:CNContactStoreDidChangeNotification object:nil];
@@ -92,8 +96,7 @@
         NSMutableArray<CNContact*> *contacts = [[NSMutableArray alloc] init];
         CNContactStore *contactStore = [[CNContactStore alloc] init];
         
-        auto *fullNameKey = [CNContactFormatter descriptorForRequiredKeysForStyle:CNContactFormatterStyleFullName];
-        CNContactFetchRequest *request = [[CNContactFetchRequest alloc] initWithKeysToFetch:@[fullNameKey, CNContactPhoneNumbersKey, CNContactThumbnailImageDataKey]];
+        CNContactFetchRequest *request = [[CNContactFetchRequest alloc] initWithKeysToFetch:self.keysToFetch];
         
         try {
             [contactStore enumerateContactsWithFetchRequest:request error:nil usingBlock:^(CNContact *contact, BOOL *stop) {
@@ -123,8 +126,7 @@
         NSMutableArray<CNContact*> *contacts = [[NSMutableArray alloc] init];
         CNContactStore *contactStore = [[CNContactStore alloc] init];
         
-        auto *fullNameKey = [CNContactFormatter descriptorForRequiredKeysForStyle:CNContactFormatterStyleFullName];
-        CNContactFetchRequest *request = [[CNContactFetchRequest alloc] initWithKeysToFetch:@[fullNameKey, CNContactPhoneNumbersKey, CNContactThumbnailImageDataKey]];
+        CNContactFetchRequest *request = [[CNContactFetchRequest alloc] initWithKeysToFetch:self.keysToFetch];
         
         try {
             [contactStore enumerateContactsWithFetchRequest:request error:nil usingBlock:^(CNContact *contact, BOOL *stop) {
@@ -157,7 +159,7 @@
     // Fetch multiple images concurrently
     dispatch_async(self.concurrentQueue, ^{
         try {
-            NSArray<CNContact*> *contacts = [contactStore unifiedContactsMatchingPredicate:predicate keysToFetch:@[CNContactThumbnailImageDataKey] error:nil];
+            NSArray<CNContact *> *contacts = [contactStore unifiedContactsMatchingPredicate:predicate keysToFetch:@[CNContactThumbnailImageDataKey] error:nil];
             
             if (contacts.count == 0) {
                 completionHandle(nil, error);
@@ -174,24 +176,57 @@
     });
 }
 
+- (void)fetchContactsByPredicate:(NSPredicate *)predicate withCompletion:(void (^)(NSMutableArray<Contact *> *contacts, NSError *error))completionHandle {
+    if (!completionHandle)
+        return;
+    
+    CNContactStore *contactStore = [[CNContactStore alloc] init];
+    NSError *error = [[NSError alloc] initWithDomain:@"ContactAdapter" code:200 userInfo:@{@"Tải danh bạ thất bại": NSLocalizedDescriptionKey}];
+    
+    dispatch_async(self.serialQueue, ^{
+        try {
+            NSArray<CNContact *> *contacts = [contactStore unifiedContactsMatchingPredicate:predicate keysToFetch:self.keysToFetch error:nil];
+            
+            if (contacts.count == 0) {
+                completionHandle(nil, error);
+                return;
+            }
+            
+            NSMutableArray<Contact *> *contactModels = [self getContactModelsFromCNContacts:contacts];
+            completionHandle(contactModels, nil);
+            
+        } catch (NSException *e) {
+            NSLog(@"Load contact with predicate failed: %@", e);
+            completionHandle(nil, error);
+        }
+    });
+}
+
 - (void)saveCNContactsToContactsArray:(NSMutableArray<CNContact*> *)CNContacts {
     @synchronized (self) {
         [self.contacts removeAllObjects];
-        
-        for (CNContact *cnContact in CNContacts) {
-            Contact *contact = [[Contact alloc] init];
-            contact.identifier = cnContact.identifier;
-            contact.name = [[NSString alloc] initWithFormat:@"%@ %@", cnContact.givenName, cnContact.familyName];
-            contact.name = [StringHelper standardizeString:contact.name];
-            
-            if (cnContact.phoneNumbers.count > 0)
-                contact.phoneNumber = [cnContact.phoneNumbers objectAtIndex:0].value.stringValue;
-            else
-                contact.phoneNumber = @"";
-            
-            [self.contacts addObject:contact];
-        }
+        self.contacts = [self getContactModelsFromCNContacts:CNContacts];
     }
+}
+
+- (NSMutableArray<Contact *> *) getContactModelsFromCNContacts:(NSArray<CNContact *> *)CNContacts {
+    NSMutableArray<Contact *> *contacts = [[NSMutableArray alloc] init];
+    
+    for (CNContact *cnContact in CNContacts) {
+        Contact *contact = [[Contact alloc] init];
+        contact.identifier = cnContact.identifier;
+        contact.name = [[NSString alloc] initWithFormat:@"%@ %@", cnContact.givenName, cnContact.familyName];
+        contact.name = [StringHelper standardizeString:contact.name];
+        
+        if (cnContact.phoneNumbers.count > 0)
+            contact.phoneNumber = [cnContact.phoneNumbers objectAtIndex:0].value.stringValue;
+        else
+            contact.phoneNumber = @"";
+        
+        [contacts addObject:contact];
+    }
+    
+    return contacts;
 }
 
 - (CNAuthorizationStatus)getAccessContactAuthorizationStatus {
