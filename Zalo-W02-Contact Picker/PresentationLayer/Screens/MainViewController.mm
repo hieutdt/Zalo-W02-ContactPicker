@@ -243,11 +243,12 @@
 }
 
 - (void)updateContactsTapped {
+    [self hideUpdateContactNavigationButton];
+    
     if (self.tableView.selectedCount > 0) {
         [self cancelPickContacts];
     }
     
-    [self hideUpdateContactNavigationButton];
     [self loadContacts];
 }
 
@@ -379,24 +380,26 @@
     self.cancelButtonItem.tintColor = [UIColor blackColor];
     
     self.updateButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Update" style:UIBarButtonItemStylePlain target:self action:@selector(updateContactsTapped)];
+    self.updateButtonItem.tintColor = [UIColor blackColor];
     
     self.subTitleLabel.hidden = YES;
 }
 
 - (void)showCancelPickNavigationButton {
-    self.navigationItem.leftBarButtonItem = self.cancelButtonItem;
+    [self.navigationItem setLeftBarButtonItem:self.cancelButtonItem animated:YES];
 }
 
 - (void)hideCancelPickNavigationButton {
-    self.navigationItem.leftBarButtonItem = nil;
+    [self.navigationItem setLeftBarButtonItem:nil animated:YES];
 }
 
 - (void)showUpdateContactNavigationButton {
-    self.navigationItem.rightBarButtonItem = self.updateButtonItem;
+    [self.navigationItem setRightBarButtonItem:self.updateButtonItem animated:YES];
 }
 
 - (void)hideUpdateContactNavigationButton {
     self.navigationItem.rightBarButtonItem = nil;
+    [self.navigationItem setRightBarButtonItem:nil animated:YES];
 }
 
 - (void)updateNavigationBar {
