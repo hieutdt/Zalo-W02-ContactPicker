@@ -60,7 +60,6 @@ static LoadingHelper *sharedInstance = nil;
     [_HUD showInView:_view];
 }
 
-
 - (void)hideLoadingEffect {
     [_HUD dismissAnimated:true];
     [_view removeFromSuperview];

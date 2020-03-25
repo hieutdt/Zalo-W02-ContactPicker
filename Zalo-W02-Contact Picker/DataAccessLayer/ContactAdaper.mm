@@ -58,34 +58,16 @@
     return sharedInstance;
 }
 
-- (void)contactsDidChange {
-    NSLog(@"TONHIEU: contact did changed!");
-    
-    [self refetchContactsWithCompletion:^(NSMutableArray<Contact *> *contacts, NSError *error) {
-        if (error)
-            return;
-        
-        for (int i = 0; i < self.contactDidChangedDelegates.count; i++) {
-            id<ContactDidChangedDelegate> delegate = [self.contactDidChangedDelegates objectAtIndex:i];
-            if (delegate and [delegate respondsToSelector:@selector(contactsDidChanged)]) {
-                [delegate contactsDidChanged];
-            }
-        }
-    }];
-}
-
 - (BOOL)hasContactsData {
     return self.contacts and self.contacts.count > 0;
 }
 
+
+#pragma mark - FetchMethods
+
 - (void)fetchContactsWithCompletion:(void (^)(NSMutableArray<Contact *> *contacts, NSError * error))completionHandle {
     if (!completionHandle)
         return;
-    
-    if ([self hasContactsData]) {
-        completionHandle(self.contacts, nil);
-        return;
-    }
     
     dispatch_async(self.serialQueue, ^{
         if ([self hasContactsData]) {
@@ -108,7 +90,7 @@
             completionHandle(self.contacts, nil);
             
         } catch (NSException *e) {
-            NSLog(@"Unable to fetch contacts: %@", e);
+            NSLog(@"ContactAdapter: Unable to fetch contacts: %@", e);
             
             NSMutableDictionary *details = [NSMutableDictionary dictionary];
             [details setValue:@"Lấy dữ liệu danh bạ thất bại." forKey:NSLocalizedDescriptionKey];
@@ -138,7 +120,7 @@
             completionHandle(self.contacts, nil);
             
         } catch (NSException *e) {
-            NSLog(@"Unable to fetch contacts: %@", e);
+            NSLog(@"ContactAdapter: Unable to fetch contacts: %@", e);
             
             NSMutableDictionary *details = [NSMutableDictionary dictionary];
             [details setValue:@"Lấy dữ liệu danh bạ thất bại." forKey:NSLocalizedDescriptionKey];
@@ -170,7 +152,7 @@
             completionHandle(image, nil);
             
         } catch (NSException *e) {
-            NSLog(@"Load image failed: %@", e);
+            NSLog(@"ContactAdapter: Load image failed: %@", e);
             completionHandle(nil, error);
         }
     });
@@ -202,6 +184,9 @@
     });
 }
 
+
+#pragma mark - SaveDataMethods
+
 - (void)saveCNContactsToContactsArray:(NSMutableArray<CNContact*> *)CNContacts {
     @synchronized (self) {
         [self.contacts removeAllObjects];
@@ -209,7 +194,7 @@
     }
 }
 
-- (NSMutableArray<Contact *> *) getContactModelsFromCNContacts:(NSArray<CNContact *> *)CNContacts {
+- (NSMutableArray<Contact *> *)getContactModelsFromCNContacts:(NSArray<CNContact *> *)CNContacts {
     NSMutableArray<Contact *> *contacts = [[NSMutableArray alloc] init];
     
     for (CNContact *cnContact in CNContacts) {
@@ -229,6 +214,9 @@
     return contacts;
 }
 
+
+#pragma mark - ContactAuthorizationStatusMethods
+
 - (CNAuthorizationStatus)getAccessContactAuthorizationStatus {
     return [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts];
 }
@@ -242,6 +230,24 @@
             completionHandle(false);
         } else {
             completionHandle(true);
+        }
+    }];
+}
+
+#pragma mark - ContactDidChangedHandlers
+
+- (void)contactsDidChange {
+    NSLog(@"ContactAdapter: Contact did changed!");
+    
+    [self refetchContactsWithCompletion:^(NSMutableArray<Contact *> *contacts, NSError *error) {
+        if (error)
+            return;
+        
+        for (int i = 0; i < self.contactDidChangedDelegates.count; i++) {
+            id<ContactDidChangedDelegate> delegate = [self.contactDidChangedDelegates objectAtIndex:i];
+            if (delegate and [delegate respondsToSelector:@selector(contactsDidChanged)]) {
+                [delegate contactsDidChanged];
+            }
         }
     }];
 }

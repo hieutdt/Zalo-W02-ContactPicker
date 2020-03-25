@@ -60,36 +60,36 @@
 }
 
 - (void)createNextButton {
-    _nextButton.layer.masksToBounds = false;
-    _nextButton.layer.cornerRadius = _nextButton.bounds.size.width / 2;
-    _nextButton.layer.shadowColor = [UIColor blackColor].CGColor;
-    _nextButton.layer.shadowOpacity = 0.3;
-    _nextButton.layer.shadowOffset = CGSizeZero;
-    _nextButton.layer.shadowRadius = 3;
+    self.nextButton.layer.masksToBounds = false;
+    self.nextButton.layer.cornerRadius = self.nextButton.bounds.size.width / 2;
+    self.nextButton.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.nextButton.layer.shadowOpacity = 0.3;
+    self.nextButton.layer.shadowOffset = CGSizeZero;
+    self.nextButton.layer.shadowRadius = 3;
 }
 
 - (void)resigterNib {
     UINib *nib = [UINib nibWithNibName:PickerCollectionCell.nibName bundle:nil];
-    [_collectionView registerNib:nib forCellWithReuseIdentifier:PickerCollectionCell.reuseIdentifier];
+    [self.collectionView registerNib:nib forCellWithReuseIdentifier:PickerCollectionCell.reuseIdentifier];
 }
 
 - (void)reloadData {
-    [_collectionView reloadData];
+    [self.collectionView reloadData];
 }
 
 - (void)addElement:(PickerViewModel *)pickerModel withImage:(nonnull UIImage *)image {
-    if (_dataArray.count == MAX_PICK)
+    if (self.dataArray.count == MAX_PICK)
         return;
     
     self.hidden = false;
     
-    [_collectionView performBatchUpdates:^{
-        [_dataArray addObject:pickerModel];
+    [self.collectionView performBatchUpdates:^{
+        [self.dataArray addObject:pickerModel];
         if (image)
             [self.imageCache setObject:image forKey:pickerModel.identifier];
         
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:_dataArray.count - 1 inSection:0];
-        [_collectionView insertItemsAtIndexPaths:@[indexPath]];
+        [self.collectionView insertItemsAtIndexPaths:@[indexPath]];
         
     } completion:^(BOOL finished) {
         [self scrollToBottom:self.collectionView];
@@ -98,8 +98,8 @@
 }
 
 - (void)removeElement:(PickerViewModel *)pickerModel {
-    [_collectionView performBatchUpdates:^{
-        NSUInteger indexInArray = [_dataArray indexOfObject:pickerModel];
+    [self.collectionView performBatchUpdates:^{
+        NSUInteger indexInArray = [self.dataArray indexOfObject:pickerModel];
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:indexInArray inSection:0];
         
         [self.dataArray removeObject:pickerModel];
@@ -112,14 +112,14 @@
     }];
 }
 
-- (void)removeAll {
-    [_dataArray removeAllObjects];
-    self.hidden = true;
+- (void)removeAllElements {
+    [self.dataArray removeAllObjects];
+    [self setHidden:YES];
     [self reloadData];
 }
 
 -(void)scrollToBottom:(UICollectionView*)collectionView {
-    [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:_dataArray.count - 1 inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:true];
+    [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:self.dataArray.count - 1 inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:true];
 }
 
 
@@ -133,7 +133,7 @@
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return _dataArray.count;
+    return self.dataArray.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -144,7 +144,7 @@
         cell = [nib objectAtIndex:0];
     }
 
-    //TODO: Set up for cell here
+    // Set up for cell here
     [cell setUpPickerModelForCell:_dataArray[indexPath.row]];
     [cell setUpImageForCell:[self.imageCache objectForKey:_dataArray[indexPath.row].identifier]];
     cell.delegate = self;

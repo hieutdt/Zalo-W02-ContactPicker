@@ -19,6 +19,8 @@
 		0478F5C8241A181E00DA753C /* StringHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0478F5C7241A181E00DA753C /* StringHelper.mm */; };
 		049C6F8124192BF100DEFA45 /* Contact.mm in Sources */ = {isa = PBXBuildFile; fileRef = 049C6F8024192BF100DEFA45 /* Contact.mm */; };
 		049C6F8424192ECB00DEFA45 /* PickerVIewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 049C6F8324192ECB00DEFA45 /* PickerVIewModel.mm */; };
+		04A2B33E242B36E3000F4D9B /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A2B33C242B36E3000F4D9B /* SecondViewController.m */; };
+		04A2B33F242B36E3000F4D9B /* SecondViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04A2B33D242B36E3000F4D9B /* SecondViewController.xib */; };
 		04C2972E241A29AC0067D1DF /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04C2972D241A29AC0067D1DF /* Contacts.framework */; };
 		04C819FF2419313100918A84 /* ContactAdaper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04C819FE2419313100918A84 /* ContactAdaper.mm */; };
 		04C81A022419313F00918A84 /* ContactBusiness.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04C81A012419313F00918A84 /* ContactBusiness.mm */; };
@@ -61,6 +63,10 @@
 		049C6F8024192BF100DEFA45 /* Contact.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Contact.mm; sourceTree = "<group>"; };
 		049C6F8224192ECB00DEFA45 /* PickerViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PickerViewModel.h; sourceTree = "<group>"; };
 		049C6F8324192ECB00DEFA45 /* PickerVIewModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PickerVIewModel.mm; sourceTree = "<group>"; };
+		04A2B33A242B02C0000F4D9B /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		04A2B33B242B36E3000F4D9B /* SecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SecondViewController.h; sourceTree = "<group>"; };
+		04A2B33C242B36E3000F4D9B /* SecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
+		04A2B33D242B36E3000F4D9B /* SecondViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SecondViewController.xib; sourceTree = "<group>"; };
 		04C2459C2424A1660048143A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		04C2972D241A29AC0067D1DF /* Contacts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Contacts.framework; path = System/Library/Frameworks/Contacts.framework; sourceTree = SDKROOT; };
 		04C819FD2419313100918A84 /* ContactAdaper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactAdaper.h; sourceTree = "<group>"; };
@@ -174,6 +180,7 @@
 		04C2972C241A29AB0067D1DF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				04A2B33A242B02C0000F4D9B /* libc++.tbd */,
 				04C2459C2424A1660048143A /* XCTest.framework */,
 				04C2972D241A29AC0067D1DF /* Contacts.framework */,
 				98F59C91C0CFBFFA00C59DC9 /* Pods_Zalo_W02_Contact_Picker.framework */,
@@ -280,6 +287,9 @@
 				04D3047F241927360031A670 /* MainViewController.h */,
 				04D30480241927360031A670 /* MainViewController.mm */,
 				04D30482241927530031A670 /* MainViewController.xib */,
+				04A2B33B242B36E3000F4D9B /* SecondViewController.h */,
+				04A2B33C242B36E3000F4D9B /* SecondViewController.m */,
+				04A2B33D242B36E3000F4D9B /* SecondViewController.xib */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -365,6 +375,7 @@
 				0478F5C52419EEAA00DA753C /* PickerTableViewCell.xib in Resources */,
 				04D30470241925E20031A670 /* LaunchScreen.storyboard in Resources */,
 				04D3046D241925E10031A670 /* Assets.xcassets in Resources */,
+				04A2B33F242B36E3000F4D9B /* SecondViewController.xib in Resources */,
 				04C81A0C2419359400918A84 /* PickerCollectionCell.xib in Resources */,
 				04D3046B241925E00031A670 /* Main.storyboard in Resources */,
 				041901ED24206BC4001F82C1 /* ErrorView.xib in Resources */,
@@ -437,6 +448,7 @@
 				041901EB24206BA2001F82C1 /* ErrorView.mm in Sources */,
 				04D30481241927360031A670 /* MainViewController.mm in Sources */,
 				049C6F8124192BF100DEFA45 /* Contact.mm in Sources */,
+				04A2B33E242B36E3000F4D9B /* SecondViewController.m in Sources */,
 				0478F5BE2419ED9A00DA753C /* PickerTableView.mm in Sources */,
 				04FA5EE224208F8900B1395C /* LoadingHelper.mm in Sources */,
 				04D30489241929000031A670 /* PickerView.mm in Sources */,

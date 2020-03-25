@@ -21,6 +21,9 @@
 @implementation ContactBusiness
 
 + (void)loadContactsWithCompletion:(void (^)(NSMutableArray<Contact *> * contacts, NSError * error))completionHandle {
+    if (!completionHandle)
+        return;
+    
     [[ContactAdaper instance] fetchContactsWithCompletion:^(NSMutableArray<Contact *> *contacts, NSError *error) {
         if (!completionHandle)
             return;
@@ -84,7 +87,11 @@
 }
 
 + (void)fitContactsData:(NSMutableArray<Contact *> *)contacts toSectionArray:(NSMutableArray<NSMutableArray *> *)sections {
-    if (!contacts or contacts.count == 0 or !sections or sections.count != ALPHABET_SECTIONS_NUMBER)
+    if (!contacts or !sections)
+        return;
+    if (contacts and contacts.count == 0)
+        return;
+    if (sections and sections.count == 0)
         return;
     
     for (int i = 0; i < sections.count; i++) {

@@ -45,16 +45,26 @@
                         <constraint firstAttribute="trailing" secondItem="IpT-ey-Txi" secondAttribute="trailing" id="rob-UW-hvv"/>
                     </constraints>
                 </stackView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lnG-N0-wzK">
+                    <rect key="frame" x="195" y="62" width="46" height="30"/>
+                    <state key="normal" title="Button"/>
+                    <connections>
+                        <action selector="buttonTapped:" destination="-1" eventType="touchUpInside" id="wS2-9J-6LM"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
             <constraints>
                 <constraint firstItem="Fxc-ZP-X4Q" firstAttribute="leading" secondItem="rv6-1W-1IG" secondAttribute="leading" symbolic="YES" id="7fg-cx-oGD"/>
                 <constraint firstItem="ehR-G3-bjA" firstAttribute="top" secondItem="Fxc-ZP-X4Q" secondAttribute="bottom" id="8MI-IV-fsK"/>
+                <constraint firstItem="jfY-n9-Pe8" firstAttribute="trailing" secondItem="lnG-N0-wzK" secondAttribute="trailing" constant="173" id="BIm-KG-Ak8"/>
                 <constraint firstAttribute="trailing" secondItem="Fxc-ZP-X4Q" secondAttribute="trailing" symbolic="YES" id="F0f-z4-2QT"/>
                 <constraint firstItem="ehR-G3-bjA" firstAttribute="leading" secondItem="jfY-n9-Pe8" secondAttribute="leading" id="G62-FL-DDY"/>
                 <constraint firstAttribute="bottom" secondItem="ehR-G3-bjA" secondAttribute="bottom" id="ILx-OG-PMR"/>
                 <constraint firstItem="ehR-G3-bjA" firstAttribute="trailing" secondItem="jfY-n9-Pe8" secondAttribute="trailing" id="YuZ-eS-yHG"/>
+                <constraint firstItem="lnG-N0-wzK" firstAttribute="top" secondItem="jfY-n9-Pe8" secondAttribute="top" constant="18" id="gI2-Jm-7sR"/>
                 <constraint firstItem="Fxc-ZP-X4Q" firstAttribute="top" secondItem="jfY-n9-Pe8" secondAttribute="top" id="oOC-6z-7xi"/>
+                <constraint firstItem="lnG-N0-wzK" firstAttribute="leading" secondItem="jfY-n9-Pe8" secondAttribute="leading" constant="195" id="qgg-hW-WZI"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="jfY-n9-Pe8"/>
             <point key="canvasLocation" x="153.62318840579712" y="122.54464285714285"/>

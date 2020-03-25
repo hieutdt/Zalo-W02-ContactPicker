@@ -10,6 +10,7 @@
 #import "PickerView.h"
 #import "PickerTableView.h"
 #import "ErrorView.h"
+#import "SecondViewController.h"
 
 #import "LayoutHelper.h"
 #import "LoadingHelper.h"
@@ -34,6 +35,7 @@
 @property (strong, nonatomic) UILabel *titleLabel;
 @property (strong, nonatomic) UILabel *subTitleLabel;
 @property (strong, nonatomic) UIBarButtonItem *cancelButtonItem;
+@property (strong, nonatomic) UIBarButtonItem *updateButtonItem;
 
 @property (strong, nonatomic) NSMutableArray<Contact *> *contacts;
 @property (strong, nonatomic) NSMutableArray<NSMutableArray *> *sectionData;
@@ -88,7 +90,7 @@
 }
 
 - (void)checkPermissionAndLoadContacts {
-    [_errorView removeFromSuperview];
+    [self.errorView removeFromSuperview];
     
     ContactAuthorState authorizationState = [ContactBusiness permissionStateToAccessContactData];
     switch (authorizationState) {
@@ -118,10 +120,10 @@
     
     [ContactBusiness loadContactsWithCompletion:^(NSMutableArray<Contact *> *contacts, NSError *error) {
         if (!error) {
+            // Set up data will run in background
             self.contacts = contacts;
             
             if (self.contacts.count > 0) {
-                // Set up data will run in background
                 [self initContactsData:contacts];
                 self.pickerModels = [self getPickerModelsArrayFromContacts];
                 [self.tableView setModelsData:self.pickerModels];
@@ -231,8 +233,17 @@
 
 - (void)cancelPickContacts {
     [self.tableView removeAllElements];
-    [self.contactPickerView removeAll];
+    [self.contactPickerView removeAllElements];
     [self updateNavigationBar];
+}
+
+- (void)updateContactsTapped {
+    if (self.tableView.selectedCount > 0) {
+        [self cancelPickContacts];
+    }
+    
+    [self hideUpdateContactNavigationButton];
+    [self loadContacts];
 }
 
 
@@ -272,6 +283,10 @@
 - (void)pickerTableView:(UIView *)tableView loadImageToCell:(PickerTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     if (tableView != self.tableView)
         return;
+    if (indexPath.section >= self.sectionData.count)
+        return;
+    if (indexPath.row >= self.sectionData[indexPath.section].count)
+        return;
     
     Contact *contact = (Contact *)self.sectionData[indexPath.section][indexPath.row];
     
@@ -291,6 +306,9 @@
 }
 
 - (void)pickerTableView:(UIView *)tableView uncheckCellOfElement:(PickerViewModel *)element {
+    if (!element)
+        return;
+    
     if (tableView == self.tableView) {
         [self.contactPickerView removeElement:element];
         [self updateNavigationBar];
@@ -298,6 +316,9 @@
 }
 
 - (void)pickerTableView:(UIView *)tableView checkedCellOfElement:(PickerViewModel *)element {
+    if (!element)
+        return;
+    
     if (tableView == self.tableView) {
         UIImage *imageFromCache = [[ImageCache instance] imageForKey:element.identifier];
         if (imageFromCache) {
@@ -341,6 +362,8 @@
     self.cancelButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelPickContacts)];
     self.cancelButtonItem.tintColor = [UIColor blackColor];
     
+    self.updateButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Update" style:UIBarButtonItemStylePlain target:self action:@selector(updateContactsTapped)];
+    
     self.subTitleLabel.hidden = true;
 }
 
@@ -350,6 +373,14 @@
 
 - (void)hideCancelPickNavigationButton {
     self.navigationItem.leftBarButtonItem = nil;
+}
+
+- (void)showUpdateContactNavigationButton {
+    self.navigationItem.rightBarButtonItem = self.updateButtonItem;
+}
+
+- (void)hideUpdateContactNavigationButton {
+    self.navigationItem.rightBarButtonItem = nil;
 }
 
 - (void)updateNavigationBar {
@@ -368,11 +399,7 @@
 
 - (void)contactsDidChanged {
     ASYNC_MAIN({
-        if ([self.tableView selectedCount] > 0) {
-            [self cancelPickContacts];
-        }
-        
-        [self loadContacts];
+        [self showUpdateContactNavigationButton];
     });
 }
 

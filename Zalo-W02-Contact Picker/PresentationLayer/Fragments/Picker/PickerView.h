@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)addElement:(PickerViewModel *)pickerModel withImage:(UIImage *)image;
 - (void)removeElement:(PickerViewModel *)pickerModel;
-- (void)removeAll;
+- (void)removeAllElements;
 
 @end
 
