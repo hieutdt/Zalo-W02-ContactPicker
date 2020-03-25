@@ -14,13 +14,11 @@
 
 @interface ContactBusiness ()
 
-@property (strong, nonatomic) NSMutableArray<Contact*> *contacts;
-
 @end
 
 @implementation ContactBusiness
 
-+ (void)loadContactsWithCompletion:(void (^)(NSMutableArray<Contact *> * contacts, NSError * error))completionHandle {
+- (void)loadContactsWithCompletion:(void (^)(NSMutableArray<Contact *> * contacts, NSError * error))completionHandle {
     if (!completionHandle)
         return;
     
@@ -36,7 +34,7 @@
     }];
 }
 
-+ (void)loadContactImageByID:(NSString *)contactID completion:(void (^)(UIImage *image, NSError * error))completionHandle {
+- (void)loadContactImageByID:(NSString *)contactID completion:(void (^)(UIImage *image, NSError * error))completionHandle {
     [[ContactAdaper instance] fetchContactImageDataByID:contactID completion:^(UIImage *image, NSError *error) {
         if (!completionHandle)
             return;
@@ -49,7 +47,7 @@
     }];
 }
 
-+ (ContactAuthorState)permissionStateToAccessContactData {
+- (ContactAuthorState)permissionStateToAccessContactData {
     CNAuthorizationStatus authorStatus = [[ContactAdaper instance] getAccessContactAuthorizationStatus];
     if (authorStatus == CNAuthorizationStatusAuthorized) {
         return ContactAuthorStateAuthorized;
@@ -62,7 +60,7 @@
     }
 }
 
-+ (void)requestAccessWithCompletionHandle:(void (^)(BOOL granted))completionHandle {
+- (void)requestAccessWithCompletionHandle:(void (^)(BOOL granted))completionHandle {
     if (!completionHandle)
         return;
     
@@ -71,7 +69,7 @@
     }];
 }
 
-+ (NSMutableArray<NSMutableArray *> *)sortedByAlphabetSectionsArrayFromContacts:(NSMutableArray<Contact *> *)contacts {
+- (NSMutableArray<NSMutableArray *> *)sortedByAlphabetSectionsArrayFromContacts:(NSMutableArray<Contact *> *)contacts {
     if (!contacts)
         return nil;
     
@@ -81,12 +79,12 @@
         sectionsArray[i] = [[NSMutableArray alloc] init];
     }
     
-    [ContactBusiness fitContactsData:contacts toSectionArray:sectionsArray];
+    [self fitContactsData:contacts toSectionArray:sectionsArray];
     
     return sectionsArray;
 }
 
-+ (void)fitContactsData:(NSMutableArray<Contact *> *)contacts toSectionArray:(NSMutableArray<NSMutableArray *> *)sections {
+- (void)fitContactsData:(NSMutableArray<Contact *> *)contacts toSectionArray:(NSMutableArray<NSMutableArray *> *)sections {
     if (!contacts or !sections)
         return;
     if (contacts and contacts.count == 0)
@@ -109,14 +107,14 @@
     }
 }
 
-+ (void)resigterContactDidChangedDelegate:(id<ContactDidChangedDelegate>)delegate {
+- (void)resigterContactDidChangedDelegate:(id<ContactDidChangedDelegate>)delegate {
     if (!delegate)
         return;
     
     [[ContactAdaper instance] resigterContactDidChangedDelegate:delegate];
 }
 
-+ (void)removeContactDidChangedDelegate:(id<ContactDidChangedDelegate>)delegate {
+- (void)removeContactDidChangedDelegate:(id<ContactDidChangedDelegate>)delegate {
     if (!delegate)
         return;
     

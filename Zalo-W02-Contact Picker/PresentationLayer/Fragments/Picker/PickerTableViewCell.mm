@@ -66,7 +66,7 @@
 }
 
 - (void)setGradientColorBackground:(int)colorCode {
-    //TODO: Show gradient avatar here
+    // Show gradient avatar here
     self.gradientAvatarLabel.hidden = false;
     self.gradientAvatarLabel.text = [StringHelper getShortName:self.nameLabel.text];
     [ColorHelper setGradientColorBackgroundToView:self.avatarImageView withColorCode:colorCode];
@@ -74,7 +74,7 @@
 
 - (void)setAvatar:(UIImage*)avatarImage {
     if (avatarImage) {
-        //TODO: Show thumbnail avatar here
+        // Show thumbnail avatar here
         self.gradientAvatarLabel.hidden = true;
         [self.avatarImageView setImage:avatarImage];
         self.avatarImageView.layer.sublayers = nil;

@@ -18,21 +18,21 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ContactBusiness : NSObject
 
-+ (ContactAuthorState)permissionStateToAccessContactData;
+- (ContactAuthorState)permissionStateToAccessContactData;
 
-+ (void)requestAccessWithCompletionHandle:(void (^)(BOOL granted))completionHandle;
+- (void)requestAccessWithCompletionHandle:(void (^)(BOOL granted))completionHandle;
 
-+ (void)loadContactsWithCompletion:(void (^)(NSMutableArray<Contact *> *contacts, NSError *error))completionHandle;
+- (void)loadContactsWithCompletion:(void (^)(NSMutableArray<Contact *> *contacts, NSError *error))completionHandle;
 
-+ (void)loadContactImageByID:(NSString*)contactID completion:(void (^)(UIImage *image, NSError *error))completionHandle;
+- (void)loadContactImageByID:(NSString*)contactID completion:(void (^)(UIImage *image, NSError *error))completionHandle;
 
-+ (NSMutableArray<NSMutableArray *> *)sortedByAlphabetSectionsArrayFromContacts:(NSMutableArray<Contact *> *)contacts;
+- (NSMutableArray<NSMutableArray *> *)sortedByAlphabetSectionsArrayFromContacts:(NSMutableArray<Contact *> *)contacts;
 
-+ (void)fitContactsData:(NSMutableArray<Contact *> *)contacts toSectionArray:(NSMutableArray<NSMutableArray *> *)sections;
+- (void)fitContactsData:(NSMutableArray<Contact *> *)contacts toSectionArray:(NSMutableArray<NSMutableArray *> *)sections;
 
-+ (void)resigterContactDidChangedDelegate:(id<ContactDidChangedDelegate>)delegate;
+- (void)resigterContactDidChangedDelegate:(id<ContactDidChangedDelegate>)delegate;
 
-+ (void)removeContactDidChangedDelegate:(id<ContactDidChangedDelegate>)delegate;
+- (void)removeContactDidChangedDelegate:(id<ContactDidChangedDelegate>)delegate;
 
 @end
 

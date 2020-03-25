@@ -54,7 +54,7 @@
         _filteredSectionsArray[i] = [[NSMutableArray alloc] init];
     }
     
-    _isSearching = false;
+    _isSearching = NO;
     _selectedCount = 0;
     
     [self resigterNib];
@@ -87,10 +87,12 @@
 }
 
 - (void)searchWithSearchString:(NSString *)searchString {
-    if (searchString.length == 0) {
-        self.isSearching = false;
+    if (!searchString) {
+        self.isSearching = NO;
+    } else if (searchString.length == 0) {
+        self.isSearching = NO;
     } else {
-        self.isSearching = true;
+        self.isSearching = YES;
 
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"self.name contains[c] %@", searchString];
         self.filteredPickerModels = (NSMutableArray*)[_pickerModels filteredArrayUsingPredicate:predicate];
@@ -101,7 +103,7 @@
     [self reloadData];
 }
 
-- (NSMutableArray<NSMutableArray*>*)getValidSectionsArray {
+- (NSMutableArray<NSMutableArray *> *)getValidSectionsArray {
     if (self.isSearching)
         return self.filteredSectionsArray;
     return self.sectionsArray;
@@ -118,18 +120,20 @@
 - (void)removeElement:(PickerViewModel *)element {
     if (self.selectedCount > 0) {
         self.selectedCount--;
-        element.isChosen = false;
+        element.isChosen = NO;
         [self reloadData];
     }
 }
 
 - (void)fitPickerModelsData:(NSMutableArray<PickerViewModel*> *)models toSections:(NSMutableArray<NSMutableArray*> *)sectionsArray {
+    if (!models or models.count == 0)
+        return;
+    if (!sectionsArray)
+        return;
+    
     for (int i = 0; i < sectionsArray.count; i++) {
         [sectionsArray[i] removeAllObjects];
     }
-    
-    if (!models or models.count == 0)
-        return;
     
     for (int i = 0; i < models.count; i++) {
         int index = [models[i] getSectionIndex];
@@ -145,7 +149,7 @@
 - (void)removeAllElements {
     self.selectedCount = 0;
     for (int i = 0; i < self.pickerModels.count; i++) {
-        self.pickerModels[i].isChosen = false;
+        self.pickerModels[i].isChosen = NO;
     }
     
     [self reloadData];
@@ -155,6 +159,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSMutableArray<NSMutableArray *> *data = [self getValidSectionsArray];
+    
+    if (indexPath.section >= data.count)
+        return;
+    if (indexPath.row >= data[indexPath.section].count)
+        return;
     
     PickerTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     PickerViewModel *pickerModel = data[indexPath.section][indexPath.row];
@@ -178,7 +187,7 @@
     view.tintColor = [UIColor whiteColor];
 }
 
-// TODO: Hide section header if this is empty section
+// Hide section header if this is empty section
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if ([tableView.dataSource tableView:tableView numberOfRowsInSection:section] == 0) {
         return 0;
@@ -237,6 +246,11 @@
     }
     
     NSMutableArray<NSMutableArray *> *data = [self getValidSectionsArray];
+    if (indexPath.section >= data.count)
+        return nil;
+    if (indexPath.row >= data[indexPath.section].count)
+        return nil;
+    
     PickerViewModel *pickerModel = data[indexPath.section][indexPath.row];
     if (!pickerModel)
         return nil;
@@ -251,9 +265,9 @@
     }
     
     if (indexPath.row == _sectionsArray[indexPath.section].count - 1)
-        [cell showSeparatorLine:true];
+        [cell showSeparatorLine:YES];
     else
-        [cell showSeparatorLine:false];
+        [cell showSeparatorLine:NO];
     
     return cell;
 }

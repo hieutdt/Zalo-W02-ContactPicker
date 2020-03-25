@@ -10,7 +10,6 @@
 #import "PickerView.h"
 #import "PickerTableView.h"
 #import "ErrorView.h"
-#import "SecondViewController.h"
 
 #import "LayoutHelper.h"
 #import "LoadingHelper.h"
@@ -46,6 +45,8 @@
 
 @property (strong, nonatomic) void (^contactChangedHandler)();
 
+@property (strong, nonatomic) ContactBusiness *contactBusiness;
+
 @end
 
 
@@ -54,12 +55,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    _contactBusiness = [[ContactBusiness alloc] init];
+    
     _tableView.delegate = self;
-    _tableView.layer.masksToBounds = false;
+    _tableView.layer.masksToBounds = NO;
     
     _contactPickerView.delegate = self;
-    _contactPickerView.hidden = true;
-    _contactPickerView.layer.masksToBounds = false;
+    _contactPickerView.hidden = YES;
+    _contactPickerView.layer.masksToBounds = NO;
     _contactPickerView.layer.shadowColor = [UIColor blackColor].CGColor;
     _contactPickerView.layer.shadowOpacity = 0.2;
     _contactPickerView.layer.shadowOffset = CGSizeZero;
@@ -73,26 +76,20 @@
     
     _errorView = [[ErrorView alloc] init];
     
+    [self.contactBusiness resigterContactDidChangedDelegate:self];
+    
     [self customInitNavigationBar];
     [self checkPermissionAndLoadContacts];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
-    [ContactBusiness resigterContactDidChangedDelegate:self];
-}
-
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    
-    [ContactBusiness removeContactDidChangedDelegate:self];
+- (void)dealloc {
+    [self.contactBusiness removeContactDidChangedDelegate:self];
 }
 
 - (void)checkPermissionAndLoadContacts {
     [self.errorView removeFromSuperview];
     
-    ContactAuthorState authorizationState = [ContactBusiness permissionStateToAccessContactData];
+    ContactAuthorState authorizationState = [self.contactBusiness permissionStateToAccessContactData];
     switch (authorizationState) {
         case ContactAuthorStateAuthorized: {
             [self loadContacts];
@@ -103,7 +100,7 @@
             break;
         }
         default: {
-            [ContactBusiness requestAccessWithCompletionHandle:^(BOOL granted) {
+            [self.contactBusiness requestAccessWithCompletionHandle:^(BOOL granted) {
                 if (granted) {
                     [self loadContacts];
                 } else {
@@ -118,20 +115,20 @@
 - (void)loadContacts {
     [[LoadingHelper instance] showLoadingEffect];
     
-    [ContactBusiness loadContactsWithCompletion:^(NSMutableArray<Contact *> *contacts, NSError *error) {
+    [self.contactBusiness loadContactsWithCompletion:^(NSMutableArray<Contact *> *contacts, NSError *error) {
         if (!error) {
             // Set up data will run in background
             self.contacts = contacts;
             
             if (self.contacts.count > 0) {
                 [self initContactsData:contacts];
-                self.pickerModels = [self getPickerModelsArrayFromContacts];
+                [self setPickerModels:[self getPickerModelsArrayFromContacts]];
                 [self.tableView setModelsData:self.pickerModels];
                 
                 // tableView.reloadData have to run after set up models data
                 ASYNC_MAIN({
                     [[LoadingHelper instance] hideLoadingEffectDelay:1];
-                    self.contactStackView.hidden = false;
+                    self.contactStackView.hidden = NO;
                     [self.tableView reloadData];
                 });
             } else {
@@ -151,11 +148,11 @@
 
 - (void)initContactsData:(NSMutableArray<Contact *> *)contacts {
     self.contacts = contacts;
-    self.sectionData = [ContactBusiness sortedByAlphabetSectionsArrayFromContacts:self.contacts];
+    self.sectionData = [self.contactBusiness sortedByAlphabetSectionsArrayFromContacts:self.contacts];
 }
 
 - (void)showEmptyView {
-    self.contactStackView.hidden = true;
+    self.contactStackView.hidden = YES;
     
     __weak MainViewController *weakSelf = self;
     [self.errorView setTilte:@"KHÔNG TÌM THẤY DỮ LIỆU" andDescription:@"Danh bạ của bạn đang trống! Vui lòng cập nhật danh bạ và thử lại sau!"];
@@ -171,7 +168,7 @@
 }
 
 - (void)showNotPermissionView {
-    self.contactStackView.hidden = true;
+    self.contactStackView.hidden = YES;
     
     [self.errorView setTilte:@"TRUY CẬP BỊ TỪ CHỐI" andDescription:@"Bạn đã từ chối ứng dụng truy cập vào danh bạ. Vui lòng cấp quyền ở \"Cài đặt\" để tiếp tục sử dụng!"];
     [self.errorView setImage:[UIImage imageNamed:@"locked-icon"]];
@@ -184,11 +181,16 @@
 }
 
 - (void)showErrorViewWithErrorDescription:(NSString *)description {
-    self.contactStackView.hidden = true;
+    self.contactStackView.hidden = YES;
     
     __weak MainViewController *weakSelf = self;
     [self.errorView setImage:[UIImage imageNamed:@"fail-icon"]];
-    [self.errorView setTilte:@"THẤT BẠI" andDescription:[NSString stringWithFormat:@"%@ Vui lòng thử lại sau!", description]];
+    
+    if (description) {
+        [self.errorView setTilte:@"THẤT BẠI" andDescription:[NSString stringWithFormat:@"%@ Vui lòng thử lại sau!", description]];
+    } else {
+        [self.errorView setTilte:@"THẤT BẠI" andDescription:@"Vui lòng thử lại sau!"];
+    }
     [self.errorView setRetryButtonTitle:@"Thử lại"];
     [self.errorView setRetryBlock:^{
         ASYNC_MAIN({
@@ -200,14 +202,17 @@
 }
 
 - (void)showSubView:(UIView *)view {
-    view.hidden = false;
+    if (!view)
+        return;
+    
+    view.hidden = NO;
     
     [self.view addSubview:view];
-    view.translatesAutoresizingMaskIntoConstraints = false;
-    [view.topAnchor constraintEqualToAnchor:self.searchBar.bottomAnchor].active = true;
-    [view.leadingAnchor constraintEqualToAnchor:view.superview.leadingAnchor].active = true;
-    [view.trailingAnchor constraintEqualToAnchor:view.superview.trailingAnchor].active = true;
-    [view.bottomAnchor constraintEqualToAnchor:view.superview.bottomAnchor].active = true;
+    [view setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [view.topAnchor constraintEqualToAnchor:self.searchBar.bottomAnchor].active = YES;
+    [view.leadingAnchor constraintEqualToAnchor:view.superview.leadingAnchor].active = YES;
+    [view.trailingAnchor constraintEqualToAnchor:view.superview.trailingAnchor].active = YES;
+    [view.bottomAnchor constraintEqualToAnchor:view.superview.bottomAnchor].active = YES;
     
     [self.view layoutIfNeeded];
 }
@@ -223,7 +228,7 @@
         PickerViewModel *pickerModel = [[PickerViewModel alloc] init];
         pickerModel.identifier = contact.identifier;
         pickerModel.name = contact.name;
-        pickerModel.isChosen = false;
+        pickerModel.isChosen = NO;
         
         [pickerModels addObject:pickerModel];
     }
@@ -250,17 +255,27 @@
 #pragma mark - UISearchBarDelegateProtocol
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
-    [self.tableView searchWithSearchString:searchText];
+    if (!searchText)
+        return;
+    
+    if (searchBar == self.searchBar) {
+        [self.tableView searchWithSearchString:searchText];
+    }
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-    [self.searchBar endEditing:true];
+    if (searchBar == self.searchBar) {
+        [self.searchBar endEditing:YES];
+    }
 }
 
 
 #pragma mark - PickerViewDelegateProtocol
 
 - (void)pickerView:(UIView *)pickerView removeElement:(PickerViewModel *)pickerModel {
+    if (!pickerModel)
+        return;
+    
     if (pickerView == self.contactPickerView) {
         [self.tableView removeElement:pickerModel];
         [self updateNavigationBar];
@@ -274,9 +289,10 @@
         UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
         
         [alert addAction:cancelAction];
-        [self presentViewController:alert animated:true completion:nil];
+        [self presentViewController:alert animated:YES completion:nil];
     }
 }
+
 
 #pragma mark - PickerTableViewDelegateProtocol
 
@@ -295,7 +311,7 @@
         [cell setAvatar:imageFromCache];
         [cell setNeedsLayout];
     } else {
-        [ContactBusiness loadContactImageByID:contact.identifier completion:^(UIImage *image, NSError *error) {
+        [self.contactBusiness loadContactImageByID:contact.identifier completion:^(UIImage *image, NSError *error) {
             ASYNC_MAIN({
                 [[ImageCache instance] setImage:image forKey:contact.identifier];
                 [cell setAvatar:image];
@@ -324,7 +340,7 @@
         if (imageFromCache) {
             [self.contactPickerView addElement:element withImage:imageFromCache];
         } else {
-            [ContactBusiness loadContactImageByID:element.identifier completion:^(UIImage *image, NSError *error) {
+            [self.contactBusiness loadContactImageByID:element.identifier completion:^(UIImage *image, NSError *error) {
                 ASYNC_MAIN({
                     [[ImageCache instance] setImage:image forKey:element.identifier];
                     [self.contactPickerView addElement:element withImage:image];
@@ -340,7 +356,7 @@
 #pragma mark - SetUpNavigationBar
 
 - (void)customInitNavigationBar {
-    [self.navigationController setNavigationBarHidden:false animated:true];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
     
     self.titleLabel = [[UILabel alloc] init];
     self.titleLabel.text = @"Contacts list";
@@ -364,7 +380,7 @@
     
     self.updateButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Update" style:UIBarButtonItemStylePlain target:self action:@selector(updateContactsTapped)];
     
-    self.subTitleLabel.hidden = true;
+    self.subTitleLabel.hidden = YES;
 }
 
 - (void)showCancelPickNavigationButton {
@@ -385,15 +401,16 @@
 
 - (void)updateNavigationBar {
     if ([self.tableView selectedCount] > 0) {
-        self.subTitleLabel.hidden = false;
+        self.subTitleLabel.hidden = NO;
         [self showCancelPickNavigationButton];
     } else {
-        self.subTitleLabel.hidden = true;
+        self.subTitleLabel.hidden = YES;
         [self hideCancelPickNavigationButton];
     }
     
     self.subTitleLabel.text = [NSString stringWithFormat:@"Selected: %d/5", [self.tableView selectedCount]];
 }
+
 
 #pragma mark - ContactDidChangedDelegateProtocol
 
