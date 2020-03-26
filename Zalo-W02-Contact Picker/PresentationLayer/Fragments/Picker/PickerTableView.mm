@@ -126,6 +126,11 @@
 }
 
 - (void)fitPickerModelsData:(NSMutableArray<PickerViewModel*> *)models toSections:(NSMutableArray<NSMutableArray*> *)sectionsArray {
+    #if DEBUG
+        assert(sectionsArray);
+        assert(sectionsArray.count == ALPHABET_SECTIONS_NUMBER);
+    #endif
+    
     if (!models or models.count == 0)
         return;
     if (!sectionsArray)
@@ -159,7 +164,14 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSMutableArray<NSMutableArray *> *data = [self getValidSectionsArray];
+    #if DEBUG
+        assert(indexPath);
+        assert(indexPath.section < data.count);
+        assert(indexPath.row < data[indexPath.section].count);
+    #endif
     
+    if (!indexPath)
+        return;
     if (indexPath.section >= data.count)
         return;
     if (indexPath.row >= data[indexPath.section].count)
@@ -246,6 +258,15 @@
     }
     
     NSMutableArray<NSMutableArray *> *data = [self getValidSectionsArray];
+    
+    #if DEBUG
+        assert(indexPath);
+        assert(indexPath.section < data.count);
+        assert(indexPath.row < data[indexPath.section].count);
+    #endif
+    
+    if (!indexPath)
+        return nil;
     if (indexPath.section >= data.count)
         return nil;
     if (indexPath.row >= data[indexPath.section].count)

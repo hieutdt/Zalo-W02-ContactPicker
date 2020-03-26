@@ -35,6 +35,9 @@
 }
 
 - (void)loadContactImageByID:(NSString *)contactID completion:(void (^)(UIImage *image, NSError * error))completionHandle {
+    if (!completionHandle)
+        return;
+    
     [[ContactAdaper instance] fetchContactImageDataByID:contactID completion:^(UIImage *image, NSError *error) {
         if (!completionHandle)
             return;
@@ -85,6 +88,11 @@
 }
 
 - (void)fitContactsData:(NSMutableArray<Contact *> *)contacts toSectionArray:(NSMutableArray<NSMutableArray *> *)sections {
+    #if DEBUG
+        assert(sections);
+        assert(sections.count == ALPHABET_SECTIONS_NUMBER);
+    #endif
+    
     if (!contacts or !sections)
         return;
     if (contacts and contacts.count == 0)
@@ -108,6 +116,10 @@
 }
 
 - (void)resigterContactDidChangedDelegate:(id<ContactDidChangedDelegate>)delegate {
+    #if DEBUG
+        assert(delegate);
+    #endif
+    
     if (!delegate)
         return;
     
@@ -115,6 +127,10 @@
 }
 
 - (void)removeContactDidChangedDelegate:(id<ContactDidChangedDelegate>)delegate {
+    #if DEBUG
+        assert(delegate);
+    #endif
+    
     if (!delegate)
         return;
     

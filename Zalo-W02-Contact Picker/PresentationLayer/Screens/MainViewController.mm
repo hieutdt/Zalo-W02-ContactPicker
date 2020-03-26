@@ -43,8 +43,6 @@
 
 @property (strong, nonatomic) ErrorView *errorView;
 
-@property (strong, nonatomic) void (^contactChangedHandler)();
-
 @property (strong, nonatomic) ContactBusiness *contactBusiness;
 
 @end
@@ -147,6 +145,9 @@
 }
 
 - (void)initContactsData:(NSMutableArray<Contact *> *)contacts {
+    if (!contacts)
+        return;
+    
     self.contacts = contacts;
     self.sectionData = [self.contactBusiness sortedByAlphabetSectionsArrayFromContacts:self.contacts];
 }
@@ -276,6 +277,10 @@
 - (void)pickerView:(UIView *)pickerView removeElement:(PickerViewModel *)pickerModel {
     if (!pickerModel)
         return;
+
+    #if DEBUG
+        assert(pickerModel);
+    #endif
     
     if (pickerView == self.contactPickerView) {
         [self.tableView removeElement:pickerModel];
@@ -298,7 +303,15 @@
 #pragma mark - PickerTableViewDelegateProtocol
 
 - (void)pickerTableView:(UIView *)tableView loadImageToCell:(PickerTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+    #if DEBUG
+        assert(indexPath);
+        assert(indexPath.section < self.sectionData.count);
+        assert(indexPath.row < self.sectionData[indexPath.section].count);
+    #endif
+    
     if (tableView != self.tableView)
+        return;
+    if (!indexPath)
         return;
     if (indexPath.section >= self.sectionData.count)
         return;
@@ -323,6 +336,10 @@
 }
 
 - (void)pickerTableView:(UIView *)tableView uncheckCellOfElement:(PickerViewModel *)element {
+    #if DEBUG
+        assert(element);
+    #endif
+    
     if (!element)
         return;
     
@@ -333,6 +350,10 @@
 }
 
 - (void)pickerTableView:(UIView *)tableView checkedCellOfElement:(PickerViewModel *)element {
+    #if DEBUG
+        assert(element);
+    #endif
+    
     if (!element)
         return;
     
@@ -398,7 +419,6 @@
 }
 
 - (void)hideUpdateContactNavigationButton {
-    self.navigationItem.rightBarButtonItem = nil;
     [self.navigationItem setRightBarButtonItem:nil animated:YES];
 }
 

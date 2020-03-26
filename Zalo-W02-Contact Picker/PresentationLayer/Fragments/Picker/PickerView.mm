@@ -78,7 +78,14 @@
 }
 
 - (void)addElement:(PickerViewModel *)pickerModel withImage:(nonnull UIImage *)image {
+    #if DEBUG
+        assert(pickerModel);
+    #endif
+    
     if (self.dataArray.count == MAX_PICK)
+        return;
+    
+    if (!pickerModel)
         return;
     
     self.hidden = false;
@@ -98,6 +105,13 @@
 }
 
 - (void)removeElement:(PickerViewModel *)pickerModel {
+    #if DEBUG
+        assert(pickerModel);
+    #endif
+    
+    if (!pickerModel)
+        return;
+    
     [self.collectionView performBatchUpdates:^{
         NSUInteger indexInArray = [self.dataArray indexOfObject:pickerModel];
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:indexInArray inSection:0];
@@ -174,6 +188,13 @@
 #pragma mark - PickerCollectionViewDelegateProtocol
 
 - (void)pickerCollectionCell:(UICollectionViewCell *)cell removeButtonTapped:(PickerViewModel *)pickerModel {
+    #if DEBUG
+        assert(pickerModel);
+    #endif
+    
+    if (!pickerModel)
+        return;
+    
     [self removeElement:pickerModel];
     
     if (self.delegate and [self.delegate respondsToSelector:@selector(pickerView:removeElement:)]) {
